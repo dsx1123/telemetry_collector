@@ -1,0 +1,52 @@
+version: "3"
+services:
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    user: "${INFLUX_UID}:${INFLUX_GID}"
+    ports:
+      - 8086:8086
+    networks:
+      - telemetry
+    volumes:
+      - ${INFLUX_CONFIG}:/etc/influxdb
+      - ${INFLUX_DATA}:/var/lib/influxdb
+      - ${INFLUX_CONFIG}/scripts:/docker-entrypoint-initdb.d
+    environment:
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_USER=influxdb
+      - INFLUXDB_ADMIN_PASSWORD=influxdb
+
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    ports:
+      - 57000:57000
+    networks:
+      - telemetry
+    volumes:
+      - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
+    entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    user: 472:472
+    ports:
+      - 3000:3000
+    networks:
+      - telemetry
+    volumes:
+      - grafana-volume:/var/lib/grafana
+networks:
+  telemetry:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+volumes:
+  grafana-volume:
+    external:
+      name: "${GRAFANA_VOLUME}"
