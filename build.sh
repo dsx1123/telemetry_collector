@@ -86,8 +86,6 @@ EOF
     log "gernerating private key for CN $common_name"
     log "gernerating csr for CN $common_name"
     openssl req -config $csr_config -new -newkey rsa:2048 -nodes -keyout $key_file -out $csr_file
-    # get random passpharse
-    export PASSPHRASE=$(head -c 500 /dev/urandom | tr -dc a-z0-9A-Z | head -c 128; echo)
 
     log "gerenrating certificate for CN $common_name "
     openssl x509 -req -days 3650 -in $csr_file  -signkey $key_file -out $cert_file
