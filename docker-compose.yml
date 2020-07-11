@@ -22,6 +22,7 @@ services:
     image: telegraf
     container_name: telegraf
     restart: always
+    user: "${TELEGRAF_UID}:${TELEGRAF_GID}"
     ports:
       - 57000:57000
     networks:
@@ -33,7 +34,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     restart: always
-    user: 472:472
+    user: "${GRAFANA_UID}:${GRAFANA_GID}"
     ports:
       - 3000:3000
     networks:
