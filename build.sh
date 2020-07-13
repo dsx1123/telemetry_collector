@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
-self=$0
-INFLUX_USER="influxdb"
-TELEGRAF_USER="telegraf"
 export GRAFANA_VOLUME="grafana-volume"
 export GRAFANA_UID="472"  # default uid of grafana
 export GRAFANA_GID="472"  # default gid of grafana
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
 export INFLUX_CONFIG="`pwd`/etc/influxdb"
 export INFLUX_DATA="`pwd`/influxdb"
+
+self=$0
+INFLUX_USER="influxdb"
+TELEGRAF_USER="telegraf"
+TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
+GNMI_CERT_PASSWD="cisco123"
 
 
 #For telegraf certificate
@@ -20,8 +23,6 @@ organizationalunit=BU
 email=telemetry@cisco.com
 cn_mdt=telegraf
 cn_gnmi=gnmi
-
-
 
 
 function log() {
@@ -38,13 +39,8 @@ function clean() {
 
     #clean certificates
     log "cleaning certificates"
-    for cn in $cn_mdt $cn_gnmi
-    do
-        rm -rf $cn.csr.conf
-        rm -rf $TELEGRAF_CONFIG/$cn.csr
-        rm -rf $TELEGRAF_CONFIG/$cn.key
-        rm -rf $TELEGRAF_CONFIG/$cn.crt
-    done
+    log "deleting $TELEGRAF_CERT_PATH"
+    rm -rf $TELEGRAF_CERT_PATH
 
 }
 
@@ -55,17 +51,30 @@ function prepare_grafana() {
 
 function gen_telegraf_cert() {
     log "gernerating self-signed certificates for telegraf plugins"
-    generate_self_signed_cert $cn_mdt
-    generate_self_signed_cert $cn_gnmi
+    if [ ! -d $TELEGRAF_CERT_PATH ]; then
+        mkdir $TELEGRAF_CERT_PATH
+    fi
+
+    for cn in $cn_mdt $cn_gnmi
+    do
+        generate_self_signed_cert $cn
+    done
+    log "export $cn_gnmi.crt to pkcs12 format to import to switches"
+    openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
+        -inkey $TELEGRAF_CERT_PATH/$cn_gnmi.key \
+        -in $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+        -certfile $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+        -password pass:$GNMI_CERT_PASSWD
+    log "$TELEGRAF_CERT_PATH/$cn_gnmi.pfx has been exported with password $GNMI_CERT_PASSWD please use to import to switches"
 }
 
 function generate_self_signed_cert() {
     # create csr config file
     common_name=$1
-    csr_config=./$common_name.csr.conf
-    key_file=$TELEGRAF_CONFIG/$common_name.key
-    csr_file=$TELEGRAF_CONFIG/$common_name.csr
-    cert_file=$TELEGRAF_CONFIG/$common_name.crt
+    csr_config=$TELEGRAF_CERT_PATH/$common_name.csr.conf
+    key_file=$TELEGRAF_CERT_PATH/$common_name.key
+    csr_file=$TELEGRAF_CERT_PATH/$common_name.csr
+    cert_file=$TELEGRAF_CERT_PATH/$common_name.crt
     cat > $csr_config <<EOF
 [ req ]
 default_bits        = 2048
@@ -107,6 +116,18 @@ function prepare_influxdb() {
 }
 
 function prepare_telegraf() {
+    # generate certificate if doesn't exist
+    if [ ! -d $TELEGRAF_CERT_PATH ]; then
+        mkdir $TELEGRAF_CERT_PATH
+    fi
+    for cn in $cn_mdt $cn_gnmi
+    do
+        if [ ! -e $TELEGRAF_CERT_PATH/$cn.key ] || [ ! -e $TELEGRAF_CERT_PATH/$cn.crt ]
+        then
+            log "$cn certificate does not exist, generating"
+            generate_self_signed_cert $cn
+        fi
+    done
     log "getting uid gid of telegraf inside container"
     export TELEGRAF_UID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     export TELEGRAF_GID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
@@ -117,15 +138,6 @@ function prepare_telegraf() {
 }
 
 function start() {
-    # generate certificate if doesn't exist
-    for cn in $cn_mdt $cn_gnmi
-    do
-        if [ ! -e $TELEGRAF_CONFIG/$cn.key ] || [ ! -e $TELEGRAF_CONFIG/$cn.crt ]
-        then
-            log "$cn certificate does not exist, generating"
-            generate_self_signed_cert $cn
-        fi
-    done
 
     prepare_influxdb
     prepare_telegraf
@@ -141,6 +153,11 @@ function stop(){
 
 function display_help() {
     echo "Usage: $self {start|stop|restart|cert|clean}"
+    echo "  start  :   start docker service for telegraf/influxdb/grafana"
+    echo "  stop   :   stop docker service for telegraf/influxdb/grafana"
+    echo "  restart:   restart docker service for telegraf/influxdb/grafana"
+    echo "  cert   :   generate certificates for telegraf plugin"
+    echo "  clean  :   clean the database of influxdb, volume of grafana and all certificates"
 }
 
 if [ $# -gt 1 ]; then
