@@ -32,8 +32,8 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
     ```
     # uncomment below to enable tls for dial-out plguin
-    # tls_cert = "/etc/telegraf/cert/telegraf.crt"
-    # tls_key = "/etc/telegraf/cert/telegraf.key"
+    tls_cert = "/etc/telegraf/cert/telegraf.crt"
+    tls_key = "/etc/telegraf/cert/telegraf.key"
     ```
     certificate `/telegraf/cert/telegraf.crt` need be copied to nx-os also to verify the collector's identity, then use below command to enabled TLS transport for destination group, the `<certificate name>`  needs match the common name of `telegraf.crt`, it is set to `telegraf` in `build.sh`:
     ```
