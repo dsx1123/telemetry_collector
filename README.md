@@ -29,6 +29,8 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
 
     gnmi dial-in is also enabled by default,  modify the `address` of `[[inputs.cisco_telemetry_gnmi]]` in file  `etc/telegraf/telegraf.d/gnmi.conf`with mgmt address and grpc port.
     
+    When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
+
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
     ```
     # uncomment below to enable tls for dial-out plguin
