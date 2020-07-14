@@ -51,6 +51,10 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     switch(config-trustpoint)# crypto ca import gnmi_trustpoint pkcs12 bootflash:gnmi.pfx <export password>
     switch(config)# grpc certificate gnmi_trustpoint
     ```
+## Known issue
+1. Currently on nx-os, a single subscription of gnmi dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gnmi plugin configuraiton.
+Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release. 
+
 
 ## Reference
 1. [# Cisco Nexus 9000 Series NX-OS Programmability Guide, Release 9.3(x)](https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/93x/progammability/guide/b-cisco-nexus-9000-series-nx-os-programmability-guide-93x.html)

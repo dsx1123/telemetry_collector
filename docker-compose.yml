@@ -32,6 +32,8 @@ services:
     entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
 
   telegraf2:
+    # second telegraf instance with gnmi on_change subscription config only
+    # refer to README.md for detail
     image: telegraf
     container_name: telegraf2
     restart: always
