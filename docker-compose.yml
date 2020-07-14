@@ -30,6 +30,18 @@ services:
     volumes:
       - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
     entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
+
+  telegraf2:
+    image: telegraf
+    container_name: telegraf2
+    restart: always
+    user: "${TELEGRAF_UID}:${TELEGRAF_GID}"
+    networks:
+      - telemetry
+    volumes:
+      - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
+    entrypoint: /entrypoint.sh -config /etc/telegraf/gnmi_on_change.conf
+
   grafana:
     image: grafana/grafana
     container_name: grafana
