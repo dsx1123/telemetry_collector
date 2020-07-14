@@ -1,6 +1,8 @@
 # telemetry_collector
 Automatically build telemetry collector with telegraf, influxdb and grafana, `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create services using docker-compose. tested with `telegraf>=1.12.1`, `influxdb>=1.8.0` and `gafana>=7.0.5`.
 
+## Requirements:
+docker-ce, openssl, docker-compose
 ## How to use
 
  1. to quick start, use `sudo ./build.sh start` to start the containers:
@@ -28,7 +30,7 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     By default, telegraf listens on `tcp:57000` for grpc dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
 
     gnmi dial-in is also enabled by default,  modify the `address` of `[[inputs.cisco_telemetry_gnmi]]` in file  `etc/telegraf/telegraf.d/gnmi.conf`with mgmt address and grpc port.
-    
+
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
 
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
@@ -53,7 +55,7 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     ```
 ## Known issue
 1. Currently on nx-os, a single subscription of gnmi dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gnmi plugin configuraiton.
-Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release. 
+Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release.
 
 
 ## Reference
