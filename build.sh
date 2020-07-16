@@ -68,7 +68,11 @@ function gen_telegraf_cert() {
 
     for cn in $cn_mdt $cn_gnmi
     do
-        generate_self_signed_cert $cn
+        if [ ! -e $TELEGRAF_CERT_PATH/$cn.key ] || [ ! -e $TELEGRAF_CERT_PATH/$cn.crt ]
+        then
+            log "$cn certificate does not exist, generating"
+            generate_self_signed_cert $cn
+        fi
     done
     log "export $cn_gnmi.crt to pkcs12 format to import to switches"
     openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
@@ -128,17 +132,8 @@ function prepare_influxdb() {
 
 function prepare_telegraf() {
     # generate certificate if doesn't exist
-    if [ ! -d $TELEGRAF_CERT_PATH ]; then
-        mkdir $TELEGRAF_CERT_PATH
-    fi
-    for cn in $cn_mdt $cn_gnmi
-    do
-        if [ ! -e $TELEGRAF_CERT_PATH/$cn.key ] || [ ! -e $TELEGRAF_CERT_PATH/$cn.crt ]
-        then
-            log "$cn certificate does not exist, generating"
-            generate_self_signed_cert $cn
-        fi
-    done
+    gen_telegraf_cert
+
     log "getting uid gid of telegraf inside container"
     export TELEGRAF_UID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     export TELEGRAF_GID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`

@@ -1,6 +1,8 @@
 # telemetry_collector
 Automatically build telemetry collector with telegraf, influxdb and grafana, `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create services using docker-compose. tested with `telegraf>=1.12.1`, `influxdb>=1.8.0` and `gafana>=7.0.5`.
 
+## Requirements:
+docker-ce, openssl, docker-compose
 ## How to use
 
  1. to quick start, use `sudo ./build.sh start` to start the containers:
@@ -25,8 +27,9 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     Creating grafana ... done
     ```
 
-    By default, telegraf listens on `tcp:57000` for grpc dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
+    By default, telegraf listens on `tcp:57000` for gRPC dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
 
+<<<<<<< HEAD
     gnmi dial-in is also enabled by default,  modify the `switches` in `build.sh` with mgmt address and grpc port:
     ```
     # swtiches accept gNMI dial-in
@@ -34,6 +37,11 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     ```
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
+=======
+    gNMI dial-in is also enabled by default,  modify the `address` of `[[inputs.cisco_telemetry_gnmi]]` in file  `etc/telegraf/telegraf.d/gnmi.conf`with mgmt address and grpc port.
+
+    When first start the service, script will check if certificates are genearted, if not will create them for mdt and gNMI plugin validate for 10 years.
+>>>>>>> 920a004377df1c1efc3c7c4b885c404a27b5d178
 
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
     ```
@@ -41,7 +49,7 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     tls_cert = "/etc/telegraf/cert/telegraf.crt"
     tls_key = "/etc/telegraf/cert/telegraf.key"
     ```
-    certificate `/telegraf/cert/telegraf.crt` need be copied to nx-os also to verify the collector's identity, then use below command to enabled TLS transport for destination group, the `<certificate name>`  needs match the common name of `telegraf.crt`, it is set to `telegraf` in `build.sh`:
+    certificate `./etc/telegraf/cert/telegraf.crt` need be copied to nx-os to verify the collector's identity, then use below command to enabled TLS transport for destination group, the `<certificate name>`  needs match the common name of `telegraf.crt`, it is set to `telegraf` in `build.sh`:
     ```
     switch(config)# telemetry
     switch(config-telemetry)# destination-group 1
@@ -49,15 +57,15 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
     switch(conf-tm-dest)# certificate /bootflash/telegraf.crt <certificate name>
 
     ```
-3. TLS need be enabled for gnmi plugin as well as nx-os, when configure feature grpc on switch, a default certificate with 1 day validation is auto-generated, to configure the certificate for grpc on nx-os, copy `etc/telegraf/cert/gnmi.pfx` to bootflash, then use below commands to import the certificate, the `<export password>` is set to `cisco123` by default, you could modify it in `build.sh`
+3. TLS need be enabled for gNMI plugin as well as nx-os, when configure feature gRPC on switch, a default certificate with 1 day validation is auto-generated, to configure the certificate for gRPC on nx-os, copy `etc/telegraf/cert/gnmi.pfx` to bootflash, then use below commands to import the certificate, the `<export password>` is set to `cisco123` by default, you could modify it in `build.sh`
     ```
     switch(config)# crypto ca trustpoint gnmi_trustpoint
     switch(config-trustpoint)# crypto ca import gnmi_trustpoint pkcs12 bootflash:gnmi.pfx <export password>
     switch(config)# grpc certificate gnmi_trustpoint
     ```
 ## Known issue
-1. Currently on nx-os, a single subscription of gnmi dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gnmi plugin configuraiton.
-Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release. 
+1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gNMI plugin configuraiton.
+Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release.
 
 
 ## Reference
