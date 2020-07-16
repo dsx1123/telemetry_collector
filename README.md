@@ -29,7 +29,6 @@ docker-ce, openssl, docker-compose
 
     By default, telegraf listens on `tcp:57000` for gRPC dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
 
-<<<<<<< HEAD
     gnmi dial-in is also enabled by default,  modify the `switches` in `build.sh` with mgmt address and grpc port:
     ```
     # swtiches accept gNMI dial-in
@@ -37,11 +36,6 @@ docker-ce, openssl, docker-compose
     ```
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
-=======
-    gNMI dial-in is also enabled by default,  modify the `address` of `[[inputs.cisco_telemetry_gnmi]]` in file  `etc/telegraf/telegraf.d/gnmi.conf`with mgmt address and grpc port.
-
-    When first start the service, script will check if certificates are genearted, if not will create them for mdt and gNMI plugin validate for 10 years.
->>>>>>> 920a004377df1c1efc3c7c4b885c404a27b5d178
 
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
     ```
