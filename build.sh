@@ -13,6 +13,9 @@ TELEGRAF_USER="telegraf"
 TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
 
+# swtiches accept gNMI dial-in
+switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
+
 
 #For telegraf certificate
 country=US
@@ -28,6 +31,14 @@ cn_gnmi=gnmi
 function log() {
     ts=`date '+%Y-%m-%dT%H:%M:%S'`
     echo "$ts-LOG-$@"
+}
+
+function join_by {
+    local d=$1
+    shift
+    echo -n "$1"
+    shift
+    printf "%s" "${@/#/$d}"
 }
 
 function clean() {
@@ -132,6 +143,16 @@ function prepare_telegraf() {
     export TELEGRAF_UID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     export TELEGRAF_GID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     log "got user $TELEGRAF_USER id:$TELEGRAF_UID and gid:$TELEGRAF_GID"
+    
+    for a in ${swtiches[@]}; do
+        echo "\" $a \" " 
+    done
+    
+    # Modify the addresses in gnmi config to the switches provided
+    switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
+    addresses="addresses = [$switch_list]"
+    sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     log "change permission of config of telegraf"
     chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG

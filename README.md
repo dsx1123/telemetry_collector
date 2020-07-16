@@ -27,7 +27,11 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, `bu
 
     By default, telegraf listens on `tcp:57000` for grpc dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
 
-    gnmi dial-in is also enabled by default,  modify the `address` of `[[inputs.cisco_telemetry_gnmi]]` in file  `etc/telegraf/telegraf.d/gnmi.conf`with mgmt address and grpc port.
+    gnmi dial-in is also enabled by default,  modify the `switches` in `build.sh` with mgmt address and grpc port:
+    ```
+    # swtiches accept gNMI dial-in
+    switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
+    ```
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
 
