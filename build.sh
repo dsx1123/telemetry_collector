@@ -16,6 +16,10 @@ GNMI_CERT_PASSWD="cisco123"
 # swtiches accept gNMI dial-in
 switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
 
+# user on swtich for authentication, need network-operator role at least
+gnmi_user="telemetry"
+gnmi_password="cisco123"
+
 
 #For telegraf certificate
 country=US
@@ -148,6 +152,12 @@ function prepare_telegraf() {
     addresses="addresses = [$switch_list]"
     sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
     sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+
+    # Modify the username and password in gnmi config
+    sed -i "s/^username\ =.*/username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "s/^username\ =.*/username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "s/^password\ =.*/password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "s/^password\ =.*/password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     log "change permission of config of telegraf"
     chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG

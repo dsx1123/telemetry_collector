@@ -6,7 +6,7 @@ docker-ce, openssl, docker-compose
 ## How to use
 
  1. to quick start, use `sudo ./build.sh start` to start the containers:
-    ```
+    ```bash
     ➜  telemetry_collector git:(master) ✗ sudo ./build.sh start
     2020-07-13T12:37:47-LOG-getting uid gid of influxdb inside container
     2020-07-13T12:37:52-LOG-got user influxdb id:999 and gid:999
@@ -30,15 +30,22 @@ docker-ce, openssl, docker-compose
     By default, telegraf listens on `tcp:57000` for gRPC dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
 
     gnmi dial-in is also enabled by default,  modify the `switches` in `build.sh` with mgmt address and grpc port:
-    ```
+    ```ini
     # swtiches accept gNMI dial-in
     switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
     ```
+    To change the username and password of gnmi plugin modify it in `build.sh`:
+    ```ini
+    # user on swtich for authentication, need network-operator role at least
+    gnmi_user="telemetry"
+    gnmi_password="cisco123"
+    ```
+
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
 
 2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
-    ```
+    ```ini
     # uncomment below to enable tls for dial-out plguin
     tls_cert = "/etc/telegraf/cert/telegraf.crt"
     tls_key = "/etc/telegraf/cert/telegraf.key"
