@@ -35,7 +35,7 @@ docker-ce, openssl, docker-compose
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
 
-2. to enable TLS of mdt plugin, uncomment below lines in `etc/telegraf/telegraf.conf`:
+2. TLS is enabeld on cisco_telemetry_mdt plugin, comment below lines in `etc/telegraf/telegraf.conf` to disable it:
     ```ini
     # uncomment below to enable tls for dial-out plguin
     tls_cert = "/etc/telegraf/cert/telegraf.crt"
@@ -56,6 +56,11 @@ docker-ce, openssl, docker-compose
     switch(config)# grpc certificate gnmi_trustpoint
     ```
 4. It will import two pre-built dashboards. `fabric_dashboard` is example of querying data from telemetry dial-out, you can find the example of swtich telemetry config that is used for this dashboard in [telemetry.cfg](/examples/telemetry.cfg), `fabric_dashboard_gnmi` is example of querying data from gNMI dial-in.
+5. Example of telegraf configuration can be found below:
+- [telegraf.conf](etc/telegraf/telegraf.conf) example of cisco_telemetry_mdt config
+- [gnmi.conf](etc/telegraf/telegraf.d/gnmi.conf) exmaple of sample-based gnmi plugin config
+- [gnmi_on_change.conf](etc/telegraf/gnmi_on_change.conf) exmaple of event-based plugin config
+   
 
 ## Known issue
 1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gNMI plugin configuraiton.
