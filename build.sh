@@ -56,7 +56,6 @@ function clean() {
     docker volume rm $CHRONOGRAF_VOLUME
 }
 
-
 function prepare_grafana() {
     log "create docker volume $GRAFANA_VOLUME"
     docker volume create --name $GRAFANA_VOLUME
