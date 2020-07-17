@@ -211,7 +211,6 @@ function post_chronograf () {
         fi
     fi
     result=`curl --silent http://localhost:8888/chronograf/v1/dashboards`
-    echo $result
     if [[ $result == *'"dashboards":[]'* ]]; then
         log "no dashboards, importing prebuild dashboards"
         for d in "fabric_dashboard" "fabric_dashboard_gnmi" ; do
