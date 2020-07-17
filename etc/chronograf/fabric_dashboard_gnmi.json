@@ -1,1 +1,1349 @@
-{"id":"4","cells":[{"i":"bc91e1b5-358a-4ebd-b637-03d143803e29","x":6,"y":3,"w":6,"h":3,"name":"Routes per VRF","queries":[{"query":"SELECT \"table4_items/Table4_list/routeCount\" FROM \"nxos\".\"one_week\".\"urib-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY \"vrfName\"","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"table4_items/Table4_list/routeCount\" FROM \"nxos\".\"one_week\".\"urib-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY \"vrfName\"","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"Prefixes","prefix":"","suffix":"","base":"raw","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line-stacked","colors":[{"id":"80a580fe-6ed3-40bf-9b6b-8ef061313a1d","type":"scale","hex":"#DA6FF1","name":"Ectoplasm","value":"0"},{"id":"dc9afa94-c996-4718-9d12-176a56e3fd3f","type":"scale","hex":"#00717A","name":"Ectoplasm","value":"0"},{"id":"c300715f-bf2f-44e2-aac6-a07ba2145ae6","type":"scale","hex":"#ACFF76","name":"Ectoplasm","value":"0"}],"legend":{"type":"static","orientation":"bottom"},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/bc91e1b5-358a-4ebd-b637-03d143803e29"}},{"i":"424b621f-00db-4744-b40f-e6557c4d8cf5","x":4,"y":0,"w":2,"h":3,"name":"number of l2vni","queries":[{"query":"SELECT count(\"BDEvi_list/encap\") AS \"count_BDEvi_list/encap\" FROM \"nxos\".\"one_week\".\"bdevi-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(none)","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT count(\"BDEvi_list/encap\") AS \"count_BDEvi_list/encap\" FROM \"nxos\".\"one_week\".\"bdevi-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(none)","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"single-stat","colors":[{"id":"base","type":"text","hex":"#7CE490","name":"honeydew","value":"-1000000000000000000"}],"legend":{},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/424b621f-00db-4744-b40f-e6557c4d8cf5"}},{"i":"93df9fe6-4976-4019-8855-976031e23dab","x":0,"y":6,"w":6,"h":3,"name":"BGP peers","queries":[{"query":"SELECT \"inst_items/dom_items/Dom_list/numPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"='172.25.74.61' GROUP BY \"name\"","queryConfig":{"database":"nxos","measurement":"bgp-items","retentionPolicy":"one_week","fields":[{"value":"inst_items/dom_items/Dom_list/numPeers","type":"field","alias":""}],"tags":{"source":["172.25.74.61"]},"groupBy":{"time":"","tags":["name"]},"areTagsAccepted":true,"rawText":null,"range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line","colors":[{"id":"1e91f81a-8c17-4b38-ae92-d146cd51cef4","type":"scale","hex":"#DA6FF1","name":"Ectoplasm","value":"0"},{"id":"1f50dc46-9c05-41d1-8f9b-c53c97b4502d","type":"scale","hex":"#00717A","name":"Ectoplasm","value":"0"},{"id":"753621ed-4bcc-4ae1-bbec-cb6538286d82","type":"scale","hex":"#ACFF76","name":"Ectoplasm","value":"0"}],"legend":{"type":"static","orientation":"bottom"},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true},{"internalName":"name","displayName":"","visible":true},{"internalName":"bgp_peers.count_Peer_list/addr","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/93df9fe6-4976-4019-8855-976031e23dab"}},{"i":"320dc153-15d1-4273-a40c-1d405994c94b","x":2,"y":0,"w":2,"h":3,"name":"memeory usage","queries":[{"query":"SELECT \"sysmem_items/sysmemusage_items/curr\" FROM \"nxos\".\"one_week\".\"procsys-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source:","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"sysmem_items/sysmemusage_items/curr\" FROM \"nxos\".\"one_week\".\"procsys-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source:","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"gauge","colors":[{"id":"0","type":"min","hex":"#00C9FF","name":"laser","value":"0"},{"id":"1","type":"max","hex":"#9394FF","name":"comet","value":"100"}],"legend":{},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true},{"internalName":"procsys-items.sysmem_items/sysmemfree_items/curr","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/320dc153-15d1-4273-a40c-1d405994c94b"}},{"i":"b9d87d3f-572e-4196-a7ae-ebd25650cb13","x":0,"y":3,"w":6,"h":3,"name":"total mac address learned","queries":[{"query":"SELECT count(\"vlan_items/MacAddressEntry_list/macAddress\") AS \"count_vlan_items/MacAddressEntry_list/macAddress\" FROM \"nxos\".\"one_week\".\"table-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(previous)","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT count(\"vlan_items/MacAddressEntry_list/macAddress\") AS \"count_vlan_items/MacAddressEntry_list/macAddress\" FROM \"nxos\".\"one_week\".\"table-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(previous)","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line-plus-single-stat","colors":[{"id":"base","type":"scale","hex":"#31C0F6","name":"Nineteen Eighty Four","value":"0"},{"id":"22b36c39-fa2d-4ed2-b7a1-f76afd49e1d5","type":"scale","hex":"#A500A5","name":"Nineteen Eighty Four","value":"0"},{"id":"f25cee7a-02db-4d2a-8ba8-39187ade0f96","type":"scale","hex":"#FF7E27","name":"Nineteen Eighty Four","value":"0"}],"legend":{},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/b9d87d3f-572e-4196-a7ae-ebd25650cb13"}},{"i":"2e6e8ba8-cb10-4af2-8337-6861814a39f8","x":6,"y":0,"w":6,"h":3,"name":"temperature","queries":[{"query":"SELECT \"supslot_items/SupCSlot_list/sup_items/sensor_items/Sensor_list/tempValue\" FROM \"nxos\".\"one_week\".\"ch-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND (\"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='1' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='2' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='3' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='4') AND \"source\"=:source: GROUP BY \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\" ","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"supslot_items/SupCSlot_list/sup_items/sensor_items/Sensor_list/tempValue\" FROM \"nxos\".\"one_week\".\"ch-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND (\"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='1' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='2' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='3' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='4') AND \"source\"=:source: GROUP BY \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\" ","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"raw","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line","colors":[{"id":"cf47db4d-5160-463d-bbef-91d5f0c5850d","type":"scale","hex":"#31C0F6","name":"Nineteen Eighty Four","value":"0"},{"id":"494239ab-b4dd-4fde-9f76-ada7adcbb2d0","type":"scale","hex":"#A500A5","name":"Nineteen Eighty Four","value":"0"},{"id":"18360bbe-da10-43b1-a0ae-8ec0bbc4ad78","type":"scale","hex":"#FF7E27","name":"Nineteen Eighty Four","value":"0"}],"legend":{"type":"static","orientation":"bottom"},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/2e6e8ba8-cb10-4af2-8337-6861814a39f8"}},{"i":"53e6148f-04b7-4e3b-b210-6f9859bbc190","x":0,"y":9,"w":12,"h":3,"name":"interface ingress octet rate","queries":[{"query":"SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfIn-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND source=:source: GROUP BY \"id\"","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfIn-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND source=:source: GROUP BY \"id\"","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["0","10"],"label":"in octet","prefix":"","suffix":"","base":"2","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line","colors":[{"id":"403a8cb4-093b-4e67-b7df-9b56e69d1ee0","type":"scale","hex":"#31C0F6","name":"Nineteen Eighty Four","value":"0"},{"id":"a4059330-a58e-4212-9210-7454fb64c4c9","type":"scale","hex":"#A500A5","name":"Nineteen Eighty Four","value":"0"},{"id":"4c7d2af9-d4bd-41d0-a6f3-9a47389fd1b0","type":"scale","hex":"#FF7E27","name":"Nineteen Eighty Four","value":"0"}],"legend":{},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/53e6148f-04b7-4e3b-b210-6f9859bbc190"}},{"i":"a8531c4c-6236-40c6-ab1b-d8c5feafc11c","x":0,"y":0,"w":2,"h":3,"name":"CPU","queries":[{"query":"SELECT \"usageAvg\" FROM \"nxos\".\"one_week\".\"usageAvg\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source:","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"usageAvg\" FROM \"nxos\".\"one_week\".\"usageAvg\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source:","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"2","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"gauge","colors":[{"id":"0","type":"min","hex":"#00C9FF","name":"laser","value":"0"},{"id":"1","type":"max","hex":"#9394FF","name":"comet","value":"100"}],"legend":{"type":"static","orientation":"bottom"},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/a8531c4c-6236-40c6-ab1b-d8c5feafc11c"}},{"i":"e4018b50-9a3e-47f8-854d-4aea79554b69","x":0,"y":12,"w":12,"h":3,"name":"interface egress octet rate ","queries":[{"query":"SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfOut-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND source=:source: GROUP BY \"id\"","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfOut-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND source=:source: GROUP BY \"id\"","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["0","10"],"label":"Out octet","prefix":"","suffix":"","base":"2","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line","colors":[{"id":"32f8ebe3-48a2-400d-b158-d46036814670","type":"scale","hex":"#FD7A5D","name":"Delorean","value":"0"},{"id":"8fa3daee-6187-4e59-8d01-74f2e3d7d752","type":"scale","hex":"#5F1CF2","name":"Delorean","value":"0"},{"id":"16c00b32-9a74-4087-8064-95f04082fe92","type":"scale","hex":"#4CE09A","name":"Delorean","value":"0"}],"legend":{},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/e4018b50-9a3e-47f8-854d-4aea79554b69"}},{"i":"d387ec11-3e3f-4d3d-ba8a-df5b2c6f253e","x":6,"y":6,"w":6,"h":3,"name":"Established BGP Peers per vrf ","queries":[{"query":"SELECT \"inst_items/dom_items/Dom_list/numEstPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY \"name\"","queryConfig":{"database":"","measurement":"","retentionPolicy":"","fields":[],"tags":{},"groupBy":{"time":"","tags":[]},"areTagsAccepted":false,"rawText":"SELECT \"inst_items/dom_items/Dom_list/numEstPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time \u003e :dashboardTime: AND time \u003c :upperDashboardTime: AND \"source\"=:source: GROUP BY \"name\"","range":null,"shifts":null},"source":"","type":"influxql"}],"axes":{"x":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"},"y2":{"bounds":["",""],"label":"","prefix":"","suffix":"","base":"10","scale":"linear"}},"type":"line","colors":[{"id":"508afa25-ae77-4c63-b528-4cc86744642b","type":"scale","hex":"#FDC44F","name":"Cthulhu","value":"0"},{"id":"0b330040-ed10-4c86-b56f-100576766a66","type":"scale","hex":"#007C76","name":"Cthulhu","value":"0"},{"id":"b8391ee0-f6a6-463d-8ed2-bb0da628f5f2","type":"scale","hex":"#8983FF","name":"Cthulhu","value":"0"}],"legend":{"type":"static","orientation":"bottom"},"tableOptions":{"verticalTimeAxis":true,"sortBy":{"internalName":"time","displayName":"","visible":true},"wrapping":"truncate","fixFirstColumn":true},"fieldOptions":[{"internalName":"time","displayName":"","visible":true},{"internalName":"name","displayName":"","visible":true},{"internalName":"bgp-items.count_inst_items/dom_items/Dom_list/peer_items/Peer_list/ent_items/PeerEntry_list/addr","displayName":"","visible":true}],"timeFormat":"MM/DD/YYYY HH:mm:ss","decimalPlaces":{"isEnforced":true,"digits":2},"note":"","noteVisibility":"default","links":{"self":"/chronograf/v1/dashboards/4/cells/d387ec11-3e3f-4d3d-ba8a-df5b2c6f253e"}}],"templates":[{"tempVar":":source:","values":[{"value":"172.25.74.61","type":"tagValue","selected":true}],"id":"bbb6e5e8-273c-4eb6-b195-92bb5924f246","type":"tagValues","label":"","query":{"influxql":"SHOW TAG VALUES ON :database: FROM :measurement: WITH KEY=:tagKey:","db":"nxos","measurement":"dbgIfIn-items","tagKey":"source","fieldKey":""},"sourceID":"dynamic","links":{"self":"/chronograf/v1/dashboards/4/templates/bbb6e5e8-273c-4eb6-b195-92bb5924f246"}}],"name":"fabric_dashborad_gnmi","organization":"default","links":{"self":"/chronograf/v1/dashboards/4","cells":"/chronograf/v1/dashboards/4/cells","templates":"/chronograf/v1/dashboards/4/templates"}}
+{
+    "id": "2",
+    "cells": [
+        {
+            "i": "9226326e-f158-460b-8f69-b8cc42649077",
+            "x": 4,
+            "y": 3,
+            "w": 4,
+            "h": 3,
+            "name": "EVPN paths",
+            "queries": [
+                {
+                    "query": "SELECT \"numRoutes\" FROM \"nxos\".\"one_week\".\"DomAf-list\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"name\"='default' AND \"source\"=:source: AND \"type\"='l2vpn-evpn'",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"numRoutes\" FROM \"nxos\".\"one_week\".\"DomAf-list\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"name\"='default' AND \"source\"=:source: AND \"type\"='l2vpn-evpn'",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "bgp evpn paths",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line-plus-single-stat",
+            "colors": [
+                {
+                    "id": "base",
+                    "type": "scale",
+                    "hex": "#31C0F6",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "d7f43107-8486-4839-a525-7f3a0e3fd8c2",
+                    "type": "scale",
+                    "hex": "#A500A5",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "b7c94dca-8e07-4f67-a89d-c45c7d034f53",
+                    "type": "scale",
+                    "hex": "#FF7E27",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/9226326e-f158-460b-8f69-b8cc42649077"
+            }
+        },
+        {
+            "i": "bda3b367-7f2a-4450-bb6c-e0b4ee675347",
+            "x": 8,
+            "y": 3,
+            "w": 4,
+            "h": 3,
+            "name": "Routes per VRF",
+            "queries": [
+                {
+                    "query": "SELECT \"table4_items/Table4_list/routeCount\" FROM \"nxos\".\"one_week\".\"urib-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY \"vrfName\"",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"table4_items/Table4_list/routeCount\" FROM \"nxos\".\"one_week\".\"urib-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY \"vrfName\"",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "Prefixes",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "raw",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line-stacked",
+            "colors": [
+                {
+                    "id": "80a580fe-6ed3-40bf-9b6b-8ef061313a1d",
+                    "type": "scale",
+                    "hex": "#DA6FF1",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                },
+                {
+                    "id": "dc9afa94-c996-4718-9d12-176a56e3fd3f",
+                    "type": "scale",
+                    "hex": "#00717A",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                },
+                {
+                    "id": "c300715f-bf2f-44e2-aac6-a07ba2145ae6",
+                    "type": "scale",
+                    "hex": "#ACFF76",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                }
+            ],
+            "legend": {
+                "type": "static",
+                "orientation": "bottom"
+            },
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/bda3b367-7f2a-4450-bb6c-e0b4ee675347"
+            }
+        },
+        {
+            "i": "f0cb2586-55cb-48a3-8950-4ec2c80fc51f",
+            "x": 4,
+            "y": 0,
+            "w": 2,
+            "h": 3,
+            "name": "number of l2vni",
+            "queries": [
+                {
+                    "query": "SELECT count(\"BDEvi_list/encap\") AS \"count_BDEvi_list/encap\" FROM \"nxos\".\"one_week\".\"bdevi-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(none)",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT count(\"BDEvi_list/encap\") AS \"count_BDEvi_list/encap\" FROM \"nxos\".\"one_week\".\"bdevi-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(none)",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "single-stat",
+            "colors": [
+                {
+                    "id": "base",
+                    "type": "text",
+                    "hex": "#7CE490",
+                    "name": "honeydew",
+                    "value": "-1000000000000000000"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/f0cb2586-55cb-48a3-8950-4ec2c80fc51f"
+            }
+        },
+        {
+            "i": "c7b1603e-825c-4065-a18d-1edfc65f52b2",
+            "x": 0,
+            "y": 6,
+            "w": 6,
+            "h": 3,
+            "name": "BGP peers",
+            "queries": [
+                {
+                    "query": "SELECT \"inst_items/dom_items/Dom_list/numPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"='172.25.74.61' GROUP BY \"name\"",
+                    "queryConfig": {
+                        "database": "nxos",
+                        "measurement": "bgp-items",
+                        "retentionPolicy": "one_week",
+                        "fields": [
+                            {
+                                "value": "inst_items/dom_items/Dom_list/numPeers",
+                                "type": "field",
+                                "alias": ""
+                            }
+                        ],
+                        "tags": {
+                            "source": [
+                                "172.25.74.61"
+                            ]
+                        },
+                        "groupBy": {
+                            "time": "",
+                            "tags": [
+                                "name"
+                            ]
+                        },
+                        "areTagsAccepted": true,
+                        "rawText": null,
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line",
+            "colors": [
+                {
+                    "id": "1e91f81a-8c17-4b38-ae92-d146cd51cef4",
+                    "type": "scale",
+                    "hex": "#DA6FF1",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                },
+                {
+                    "id": "1f50dc46-9c05-41d1-8f9b-c53c97b4502d",
+                    "type": "scale",
+                    "hex": "#00717A",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                },
+                {
+                    "id": "753621ed-4bcc-4ae1-bbec-cb6538286d82",
+                    "type": "scale",
+                    "hex": "#ACFF76",
+                    "name": "Ectoplasm",
+                    "value": "0"
+                }
+            ],
+            "legend": {
+                "type": "static",
+                "orientation": "bottom"
+            },
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                {
+                    "internalName": "name",
+                    "displayName": "",
+                    "visible": true
+                },
+                {
+                    "internalName": "bgp_peers.count_Peer_list/addr",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/c7b1603e-825c-4065-a18d-1edfc65f52b2"
+            }
+        },
+        {
+            "i": "35a5e494-a159-4998-b120-45d09e7cbf69",
+            "x": 2,
+            "y": 0,
+            "w": 2,
+            "h": 3,
+            "name": "memeory usage",
+            "queries": [
+                {
+                    "query": "SELECT \"sysmem_items/sysmemusage_items/curr\" FROM \"nxos\".\"one_week\".\"procsys-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source:",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"sysmem_items/sysmemusage_items/curr\" FROM \"nxos\".\"one_week\".\"procsys-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source:",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "gauge",
+            "colors": [
+                {
+                    "id": "0",
+                    "type": "min",
+                    "hex": "#00C9FF",
+                    "name": "laser",
+                    "value": "0"
+                },
+                {
+                    "id": "1",
+                    "type": "max",
+                    "hex": "#9394FF",
+                    "name": "comet",
+                    "value": "100"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                {
+                    "internalName": "procsys-items.sysmem_items/sysmemfree_items/curr",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/35a5e494-a159-4998-b120-45d09e7cbf69"
+            }
+        },
+        {
+            "i": "ac7fdd98-20a1-43c2-afca-3bfc33cc53ee",
+            "x": 0,
+            "y": 3,
+            "w": 4,
+            "h": 3,
+            "name": "mac address learned",
+            "queries": [
+                {
+                    "query": "SELECT count(\"vlan_items/MacAddressEntry_list/macAddress\") AS \"count_vlan_items/MacAddressEntry_list/macAddress\" FROM \"nxos\".\"one_week\".\"table-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(previous)",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT count(\"vlan_items/MacAddressEntry_list/macAddress\") AS \"count_vlan_items/MacAddressEntry_list/macAddress\" FROM \"nxos\".\"one_week\".\"table-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY time(:interval:) FILL(previous)",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line-plus-single-stat",
+            "colors": [
+                {
+                    "id": "base",
+                    "type": "scale",
+                    "hex": "#31C0F6",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "22b36c39-fa2d-4ed2-b7a1-f76afd49e1d5",
+                    "type": "scale",
+                    "hex": "#A500A5",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "f25cee7a-02db-4d2a-8ba8-39187ade0f96",
+                    "type": "scale",
+                    "hex": "#FF7E27",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/ac7fdd98-20a1-43c2-afca-3bfc33cc53ee"
+            }
+        },
+        {
+            "i": "7b27db33-5c8a-459c-bbda-603fe4f3bbd2",
+            "x": 6,
+            "y": 0,
+            "w": 6,
+            "h": 3,
+            "name": "temperature",
+            "queries": [
+                {
+                    "query": "SELECT \"supslot_items/SupCSlot_list/sup_items/sensor_items/Sensor_list/tempValue\" FROM \"nxos\".\"one_week\".\"ch-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND (\"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='1' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='2' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='3' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='4') AND \"source\"=:source: GROUP BY \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\" ",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"supslot_items/SupCSlot_list/sup_items/sensor_items/Sensor_list/tempValue\" FROM \"nxos\".\"one_week\".\"ch-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND (\"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='1' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='2' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='3' OR \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"='4') AND \"source\"=:source: GROUP BY \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\" ",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "raw",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line",
+            "colors": [
+                {
+                    "id": "cf47db4d-5160-463d-bbef-91d5f0c5850d",
+                    "type": "scale",
+                    "hex": "#31C0F6",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "494239ab-b4dd-4fde-9f76-ada7adcbb2d0",
+                    "type": "scale",
+                    "hex": "#A500A5",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "18360bbe-da10-43b1-a0ae-8ec0bbc4ad78",
+                    "type": "scale",
+                    "hex": "#FF7E27",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                }
+            ],
+            "legend": {
+                "type": "static",
+                "orientation": "bottom"
+            },
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/7b27db33-5c8a-459c-bbda-603fe4f3bbd2"
+            }
+        },
+        {
+            "i": "6b9833fa-c489-40bf-b686-f9c9d8f25cbd",
+            "x": 0,
+            "y": 9,
+            "w": 12,
+            "h": 3,
+            "name": "interface ingress octet rate",
+            "queries": [
+                {
+                    "query": "SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfIn-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND source=:source: GROUP BY \"id\"",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfIn-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND source=:source: GROUP BY \"id\"",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "0",
+                        "10"
+                    ],
+                    "label": "in octet",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "2",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line",
+            "colors": [
+                {
+                    "id": "403a8cb4-093b-4e67-b7df-9b56e69d1ee0",
+                    "type": "scale",
+                    "hex": "#31C0F6",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "a4059330-a58e-4212-9210-7454fb64c4c9",
+                    "type": "scale",
+                    "hex": "#A500A5",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                },
+                {
+                    "id": "4c7d2af9-d4bd-41d0-a6f3-9a47389fd1b0",
+                    "type": "scale",
+                    "hex": "#FF7E27",
+                    "name": "Nineteen Eighty Four",
+                    "value": "0"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/6b9833fa-c489-40bf-b686-f9c9d8f25cbd"
+            }
+        },
+        {
+            "i": "abd6e460-db5b-413d-9791-b52056bccb11",
+            "x": 0,
+            "y": 0,
+            "w": 2,
+            "h": 3,
+            "name": "CPU",
+            "queries": [
+                {
+                    "query": "SELECT \"usageAvg\" FROM \"nxos\".\"one_week\".\"usageAvg\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source:",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"usageAvg\" FROM \"nxos\".\"one_week\".\"usageAvg\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source:",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "2",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "gauge",
+            "colors": [
+                {
+                    "id": "0",
+                    "type": "min",
+                    "hex": "#00C9FF",
+                    "name": "laser",
+                    "value": "0"
+                },
+                {
+                    "id": "1",
+                    "type": "max",
+                    "hex": "#9394FF",
+                    "name": "comet",
+                    "value": "100"
+                }
+            ],
+            "legend": {
+                "type": "static",
+                "orientation": "bottom"
+            },
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/abd6e460-db5b-413d-9791-b52056bccb11"
+            }
+        },
+        {
+            "i": "4b531e5e-3d97-4593-bc65-6a512e426ba1",
+            "x": 0,
+            "y": 12,
+            "w": 12,
+            "h": 3,
+            "name": "interface egress octet rate ",
+            "queries": [
+                {
+                    "query": "SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfOut-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND source=:source: GROUP BY \"id\"",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"octetRate\" FROM \"nxos\".\"one_week\".\"dbgIfOut-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND source=:source: GROUP BY \"id\"",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "0",
+                        "10"
+                    ],
+                    "label": "Out octet",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "2",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line",
+            "colors": [
+                {
+                    "id": "32f8ebe3-48a2-400d-b158-d46036814670",
+                    "type": "scale",
+                    "hex": "#FD7A5D",
+                    "name": "Delorean",
+                    "value": "0"
+                },
+                {
+                    "id": "8fa3daee-6187-4e59-8d01-74f2e3d7d752",
+                    "type": "scale",
+                    "hex": "#5F1CF2",
+                    "name": "Delorean",
+                    "value": "0"
+                },
+                {
+                    "id": "16c00b32-9a74-4087-8064-95f04082fe92",
+                    "type": "scale",
+                    "hex": "#4CE09A",
+                    "name": "Delorean",
+                    "value": "0"
+                }
+            ],
+            "legend": {},
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/4b531e5e-3d97-4593-bc65-6a512e426ba1"
+            }
+        },
+        {
+            "i": "ffccf5b2-4498-4430-a99c-00ba456860a3",
+            "x": 6,
+            "y": 6,
+            "w": 6,
+            "h": 3,
+            "name": "Established BGP Peers per vrf ",
+            "queries": [
+                {
+                    "query": "SELECT \"inst_items/dom_items/Dom_list/numEstPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY \"name\"",
+                    "queryConfig": {
+                        "database": "",
+                        "measurement": "",
+                        "retentionPolicy": "",
+                        "fields": [],
+                        "tags": {},
+                        "groupBy": {
+                            "time": "",
+                            "tags": []
+                        },
+                        "areTagsAccepted": false,
+                        "rawText": "SELECT \"inst_items/dom_items/Dom_list/numEstPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY \"name\"",
+                        "range": null,
+                        "shifts": null
+                    },
+                    "source": "",
+                    "type": "influxql"
+                }
+            ],
+            "axes": {
+                "x": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                },
+                "y2": {
+                    "bounds": [
+                        "",
+                        ""
+                    ],
+                    "label": "",
+                    "prefix": "",
+                    "suffix": "",
+                    "base": "10",
+                    "scale": "linear"
+                }
+            },
+            "type": "line",
+            "colors": [
+                {
+                    "id": "508afa25-ae77-4c63-b528-4cc86744642b",
+                    "type": "scale",
+                    "hex": "#FDC44F",
+                    "name": "Cthulhu",
+                    "value": "0"
+                },
+                {
+                    "id": "0b330040-ed10-4c86-b56f-100576766a66",
+                    "type": "scale",
+                    "hex": "#007C76",
+                    "name": "Cthulhu",
+                    "value": "0"
+                },
+                {
+                    "id": "b8391ee0-f6a6-463d-8ed2-bb0da628f5f2",
+                    "type": "scale",
+                    "hex": "#8983FF",
+                    "name": "Cthulhu",
+                    "value": "0"
+                }
+            ],
+            "legend": {
+                "type": "static",
+                "orientation": "bottom"
+            },
+            "tableOptions": {
+                "verticalTimeAxis": true,
+                "sortBy": {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                "wrapping": "truncate",
+                "fixFirstColumn": true
+            },
+            "fieldOptions": [
+                {
+                    "internalName": "time",
+                    "displayName": "",
+                    "visible": true
+                },
+                {
+                    "internalName": "name",
+                    "displayName": "",
+                    "visible": true
+                },
+                {
+                    "internalName": "bgp-items.count_inst_items/dom_items/Dom_list/peer_items/Peer_list/ent_items/PeerEntry_list/addr",
+                    "displayName": "",
+                    "visible": true
+                }
+            ],
+            "timeFormat": "MM/DD/YYYY HH:mm:ss",
+            "decimalPlaces": {
+                "isEnforced": true,
+                "digits": 2
+            },
+            "note": "",
+            "noteVisibility": "default",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/cells/ffccf5b2-4498-4430-a99c-00ba456860a3"
+            }
+        }
+    ],
+    "templates": [
+        {
+            "tempVar": ":source:",
+            "values": [
+                {
+                    "value": "172.25.74.61",
+                    "type": "tagValue",
+                    "selected": true
+                }
+            ],
+            "id": "bbb6e5e8-273c-4eb6-b195-92bb5924f246",
+            "type": "tagValues",
+            "label": "",
+            "query": {
+                "influxql": "SHOW TAG VALUES ON :database: FROM :measurement: WITH KEY=:tagKey:",
+                "db": "nxos",
+                "measurement": "dbgIfIn-items",
+                "tagKey": "source",
+                "fieldKey": ""
+            },
+            "sourceID": "dynamic",
+            "links": {
+                "self": "/chronograf/v1/dashboards/2/templates/bbb6e5e8-273c-4eb6-b195-92bb5924f246"
+            }
+        }
+    ],
+    "name": "fabric_dashborad_gnmi",
+    "organization": "default",
+    "links": {
+        "self": "/chronograf/v1/dashboards/2",
+        "cells": "/chronograf/v1/dashboards/2/cells",
+        "templates": "/chronograf/v1/dashboards/2/templates"
+    }
+}
