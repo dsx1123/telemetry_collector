@@ -51,12 +51,6 @@ function clean() {
     rm -rf $INFLUX_DATA
     log "deleting grafana volume"
     docker volume rm $GRAFANA_VOLUME
-
-    #clean certificates
-    log "cleaning certificates"
-    log "deleting $TELEGRAF_CERT_PATH"
-    rm -rf $TELEGRAF_CERT_PATH
-
 }
 
 function prepare_grafana() {
@@ -65,8 +59,8 @@ function prepare_grafana() {
 }
 
 function gen_telegraf_cert() {
-    log "gernerating self-signed certificates for telegraf plugins"
     if [ ! -d $TELEGRAF_CERT_PATH ]; then
+        log "gernerating self-signed certificates for telegraf plugins"
         mkdir $TELEGRAF_CERT_PATH
     fi
 
@@ -150,14 +144,14 @@ function prepare_telegraf() {
     # Modify the addresses in gnmi config to the switches provided
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
     addresses="addresses = [$switch_list]"
-    sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "s/^addresses\ =.*/$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     # Modify the username and password in gnmi config
-    sed -i "s/^username\ =.*/username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "s/^username\ =.*/username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    sed -i "s/^password\ =.*/password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "s/^password\ =.*/password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     log "change permission of config of telegraf"
     chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG
