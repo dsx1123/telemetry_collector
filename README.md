@@ -7,24 +7,15 @@ docker-ce, openssl, docker-compose
 
  1. to quick start, use `sudo ./build.sh start` to start the containers:
     ```bash
-    ➜  telemetry_collector git:(master) ✗ sudo ./build.sh start
-    2020-07-13T12:37:47-LOG-getting uid gid of influxdb inside container
-    2020-07-13T12:37:52-LOG-got user influxdb id:999 and gid:999
-    2020-07-13T12:37:52-LOG-influxdb database folder is not existed, creating one
-    2020-07-13T12:37:52-LOG-change permission of config and data folder of influxdb
-    2020-07-13T12:37:52-LOG-getting uid gid of telegraf inside container
-    2020-07-13T12:37:57-LOG-got user telegraf id:999 and gid:999
-    2020-07-13T12:37:57-LOG-change permission of config of telegraf
-    2020-07-13T12:37:57-LOG-create docker volume grafana-volume
-    grafana-volume
-    2020-07-13T12:37:57-LOG-starting docker containers
-    Creating network "telemetrycollector_telemetry" with the default driver
-    Creating telegraf ...
-    Creating influxdb ...
-    Creating grafana ...
-    Creating telegraf
-    Creating grafana
-    Creating grafana ... done
+     # ./build.sh start  
+    2020-07-16T23:12:26--LOG--got user influxdb id:999 and gid:999
+    2020-07-16T23:12:26--LOG--influxdb database folder is not existed, creating one
+    2020-07-16T23:12:26--LOG--change permission of config and data folder of influxdb
+    2020-07-16T23:12:26--LOG--gernerating self-signed certificates for telegraf plugins
+    2020-07-16T23:12:26--LOG--telegraf certificate does not exist, generating
+    2020-07-16T23:12:26--LOG--gernerating private key for CN telegraf
+    2020-07-16T23:12:26--LOG--gernerating csr for CN telegraf
+    ...
     ```
 
     By default, telegraf listens on `tcp:57000` for gRPC dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
