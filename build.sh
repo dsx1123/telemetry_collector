@@ -173,7 +173,7 @@ function check_influxdb () {
     # check if influxdb is ready for connection
     log "waiting for influxdb getting ready"
     while true; do
-        result=`curl -w %{http_code} -s localhost:8086/ping`
+        result=`curl -w %{http_code} --silent --output /dev/null localhost:8086/ping`
         if [ $result -eq 204 ]; then
             log "influxdb is online!"
             break
@@ -210,7 +210,8 @@ function post_chronograf () {
             log "datasource influxdb is not created! api error: $result"
         fi
     fi
-    result=`curl --silent  'http://10.195.225.176:8888/chronograf/v1/dashboards'`
+    result=`curl --silent http://localhost:8888/chronograf/v1/dashboards`
+    echo $result
     if [[ $result == *'"dashboards":[]'* ]]; then
         log "no dashboards, importing prebuild dashboards"
         for d in "fabric_dashboard" "fabric_dashboard_gnmi" ; do
