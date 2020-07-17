@@ -73,9 +73,9 @@ networks:
       config:
         - subnet: 172.16.238.0/24
 volumes:
-  grafana-volume:
-    external:
-      name: "${GRAFANA_VOLUME}"
+  #grafana-volume:
+    #external:
+      #name: "${GRAFANA_VOLUME}"
   chronograf-volume:
     external:
       name: "${CHRONOGRAF_VOLUME}"
