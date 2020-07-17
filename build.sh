@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 export GRAFANA_VOLUME="grafana-volume"
+export CHRONOGRAF_VOLUME="chronograf-volume"
 export GRAFANA_UID="472"  # default uid of grafana
 export GRAFANA_GID="472"  # default gid of grafana
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
+export CHRONOGRAF_CONFIG="`pwd`/etc/chronograf"
 export INFLUX_CONFIG="`pwd`/etc/influxdb"
 export INFLUX_DATA="`pwd`/influxdb"
 
@@ -20,7 +22,6 @@ switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
 gnmi_user="telemetry"
 gnmi_password="cisco123"
 
-
 #For telegraf certificate
 country=US
 state=CA
@@ -34,7 +35,7 @@ cn_gnmi=gnmi
 
 function log() {
     ts=`date '+%Y-%m-%dT%H:%M:%S'`
-    echo "$ts-LOG-$@"
+    echo "$ts--LOG--$@"
 }
 
 function join_by {
@@ -49,13 +50,24 @@ function clean() {
     # clean database of influxdb and volume of grafana
     log "cleaning influxdb database"
     rm -rf $INFLUX_DATA
-    log "deleting grafana volume"
-    docker volume rm $GRAFANA_VOLUME
+    #log "deleting grafana volume $GRAFANA_VOLUME"
+    #docker volume rm $GRAFANA_VOLUME
+    log "deleting chronograf volume $CHRONOGRAF_VOLUME"
+    docker volume rm $CHRONOGRAF_VOLUME
 }
+
 
 function prepare_grafana() {
     log "create docker volume $GRAFANA_VOLUME"
     docker volume create --name $GRAFANA_VOLUME
+}
+
+function prepare_chronograf() {
+    docker volume inspect chronograf-volume 1>/dev/null 2>/dev/null
+    if [ ! $? -eq 0 ]; then
+        log "create docker volume $CHRONOGRAF_VOLUME"
+        docker volume create --name $CHRONOGRAF_VOLUME
+    fi
 }
 
 function gen_telegraf_cert() {
@@ -72,13 +84,15 @@ function gen_telegraf_cert() {
             generate_self_signed_cert $cn
         fi
     done
-    log "export $cn_gnmi.crt to pkcs12 format to import to switches"
-    openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
-        -inkey $TELEGRAF_CERT_PATH/$cn_gnmi.key \
-        -in $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
-        -certfile $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
-        -password pass:$GNMI_CERT_PASSWD
-    log "$TELEGRAF_CERT_PATH/$cn_gnmi.pfx has been exported with password $GNMI_CERT_PASSWD please use to import to switches"
+    if [ ! -e $TELEGRAF_CERT_PATH/$cn_gnmi.pfx ]; then
+        log "export $cn_gnmi.crt to pkcs12 format to import to switches"
+        openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
+            -inkey $TELEGRAF_CERT_PATH/$cn_gnmi.key \
+            -in $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+            -certfile $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+            -password pass:$GNMI_CERT_PASSWD
+        log "$TELEGRAF_CERT_PATH/$cn_gnmi.pfx has been exported with password $GNMI_CERT_PASSWD please use to import to switches"
+    fi
 }
 
 function generate_self_signed_cert() {
@@ -136,39 +150,126 @@ function prepare_telegraf() {
     export TELEGRAF_UID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     export TELEGRAF_GID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
     log "got user $TELEGRAF_USER id:$TELEGRAF_UID and gid:$TELEGRAF_GID"
-    
+
     for a in ${swtiches[@]}; do
-        echo "\" $a \" " 
+        echo "\" $a \" "
     done
-    
+
     # Modify the addresses in gnmi config to the switches provided
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
     addresses="addresses = [$switch_list]"
-    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
-    # Modify the username and password in gnmi config
-    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    # modify the username and password in gnmi config
+    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     log "change permission of config of telegraf"
     chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG
 }
+function check_influxdb () {
+    # check if influxdb is ready for connection
+    log "waiting for influxdb getting ready"
+    while true; do
+        result=`curl -w %{http_code} -s localhost:8086/ping`
+        if [ $result -eq 204 ]; then
+            log "influxdb is online!"
+            break
+        fi
+        sleep 3
+    done
+}
+
+function post_chronograf () {
+    log "wait for chronograf getting ready"
+    while true; do
+        result=`curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]; then
+            log "chronograf is ready"
+            break
+        fi
+        sleep 3
+    done
+    sleep 3
+    result=`curl --silent http://localhost:8888/chronograf/v1/sources`
+    if [[ $result == *'"sources":[]'* ]]; then
+        log "datasource is empty, creating datasource"
+        result=`curl \
+            --write-out '%{http_code}' \
+            --silent \
+            --output /dev/null \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d @$CHRONOGRAF_CONFIG/datasource.json \
+            http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
+            log "datasource influxdb is created!"
+        else
+            log "datasource influxdb is not created! api error: $result"
+        fi
+    fi
+    result=`curl --silent  'http://10.195.225.176:8888/chronograf/v1/dashboards'`
+    if [[ $result == *'"dashboards":[]'* ]]; then
+        log "no dashboards, importing prebuild dashboards"
+        for d in "fabric_dashboard" "fabric_dashboard_gnmi" ; do
+            result=`curl \
+                --write-out '%{http_code}' \
+                --silent \
+                --output /dev/null \
+                -X POST \
+                -H "Content-Type: application/json" \
+                -d @$CHRONOGRAF_CONFIG/$d.json \
+                http://localhost:8888/chronograf/v1/dashboards`
+            if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
+                log "dashboard $d is created!"
+            else
+                log "failed to create dashboard $d! api error: $result"
+            fi
+        done
+    fi
+}
 
 function start() {
-
+    docker --version >/dev/null 2>&1
+    if [ ! $? -eq 0 ]; then
+        log "docker is not installed, exist"
+        exit 1
+    fi
     prepare_influxdb
     prepare_telegraf
-    prepare_grafana
+    prepare_chronograf
+    #prepare_grafana
     log "starting docker containers"
     docker-compose up -d
+    check_influxdb
+    post_chronograf
 }
 
 function stop(){
     log "stopping docker containers"
     docker-compose down
+}
+
+function reset () {
+    # reset project to initial state
+    stop
+    clean
+    # remove certificates
+    rm -rf $TELEGRAF_CERT_PATH
+
+    addresses="addresses = []"
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+
+    # modify the username and password in gnmi config
+    sed -i "0,/^username\ =.*/s//username\ = \"cisco\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^username\ =.*/s//username\ = \"cisco\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"cisco\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"cisco\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+
 }
 
 function display_help() {
@@ -177,7 +278,8 @@ function display_help() {
     echo "  stop   :   stop docker service for telegraf/influxdb/grafana"
     echo "  restart:   restart docker service for telegraf/influxdb/grafana"
     echo "  cert   :   generate certificates for telegraf plugin"
-    echo "  clean  :   clean the database of influxdb, volume of grafana and all certificates"
+    echo "  clean  :   clean the database of influxdb, volume of grafana"
+    echo "  reset  :   reset project to inital state"
 }
 
 if [ $# -gt 1 ]; then
@@ -200,6 +302,9 @@ case "$1" in
         ;;
     clean)
         clean
+        ;;
+    reset)
+        reset
         ;;
     *)
         display_help
