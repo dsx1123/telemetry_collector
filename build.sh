@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export GRAFANA_VOLUME="grafana-volume"
+export CHRONOGRAF_VOLUME="chronograf-volume"
 export GRAFANA_UID="472"  # default uid of grafana
 export GRAFANA_GID="472"  # default gid of grafana
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
@@ -34,7 +35,7 @@ cn_gnmi=gnmi
 
 function log() {
     ts=`date '+%Y-%m-%dT%H:%M:%S'`
-    echo "$ts-LOG-$@"
+    echo "$ts--LOG--$@"
 }
 
 function join_by {
@@ -49,13 +50,23 @@ function clean() {
     # clean database of influxdb and volume of grafana
     log "cleaning influxdb database"
     rm -rf $INFLUX_DATA
-    log "deleting grafana volume"
+    log "deleting grafana volume $GRAFANA_VOLUME"
     docker volume rm $GRAFANA_VOLUME
+    log "deleting chronograf volume $CHRONOGRAF_VOLUME"
+    docker volume rm $CHRONOGRAF_VOLUME
 }
 
 function prepare_grafana() {
     log "create docker volume $GRAFANA_VOLUME"
     docker volume create --name $GRAFANA_VOLUME
+}
+
+function prepare_chronograf() {
+    docker volume inspect chronograf-volume 1>/dev/null 2>/dev/null
+    if [ ! $? -eq 0 ]; then 
+        log "create docker volume $CHRONOGRAF_VOLUME"
+        docker volume create --name $CHRONOGRAF_VOLUME
+    fi
 }
 
 function gen_telegraf_cert() {
@@ -72,13 +83,15 @@ function gen_telegraf_cert() {
             generate_self_signed_cert $cn
         fi
     done
-    log "export $cn_gnmi.crt to pkcs12 format to import to switches"
-    openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
-        -inkey $TELEGRAF_CERT_PATH/$cn_gnmi.key \
-        -in $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
-        -certfile $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
-        -password pass:$GNMI_CERT_PASSWD
-    log "$TELEGRAF_CERT_PATH/$cn_gnmi.pfx has been exported with password $GNMI_CERT_PASSWD please use to import to switches"
+    if [ ! -e $TELEGRAF_CERT_PATH/$cn_gnmi.pfx ]; then
+        log "export $cn_gnmi.crt to pkcs12 format to import to switches"
+        openssl pkcs12 -export -out $TELEGRAF_CERT_PATH/$cn_gnmi.pfx \
+            -inkey $TELEGRAF_CERT_PATH/$cn_gnmi.key \
+            -in $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+            -certfile $TELEGRAF_CERT_PATH/$cn_gnmi.crt \
+            -password pass:$GNMI_CERT_PASSWD
+        log "$TELEGRAF_CERT_PATH/$cn_gnmi.pfx has been exported with password $GNMI_CERT_PASSWD please use to import to switches"
+    fi
 }
 
 function generate_self_signed_cert() {
@@ -144,26 +157,61 @@ function prepare_telegraf() {
     # Modify the addresses in gnmi config to the switches provided
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
     addresses="addresses = [$switch_list]"
-    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     # Modify the username and password in gnmi config
-    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
+    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
     log "change permission of config of telegraf"
     chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG
 }
 
-function start() {
+function post_chronograf () {
+    log "wait for chronograf getting ready"
+    while true; do
+        result=`curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]; then
+            log "chronograf is ready"
+            break
+        fi
+        sleep 3
+    done
+    result=`curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8888/chronograf/v1/sources/1`
+    if [ ! $result -eq 200 ]; then
+        log "datasource influxdb is not created"
+        result=`curl \
+            --write-out '%{http_code}' \
+            --silent \
+            --output /dev/null \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d @etc/chronograf/datasource.json \
+            http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
+            log "datasource influxdb is created!"
+        else
+            log "datasource influxdb is not created! api error: $result"
+        fi
+    fi
+}
 
+function start() {
+    jq --version >/dev/null 2>&1
+    if [ ! $? -eq 0 ]; then
+        log "jq is not installed, exist"
+        exit 1
+    fi
     prepare_influxdb
     prepare_telegraf
-    prepare_grafana
+    prepare_chronograf
+    #prepare_grafana
     log "starting docker containers"
     docker-compose up -d
+    post_chronograf
 }
 
 function stop(){
