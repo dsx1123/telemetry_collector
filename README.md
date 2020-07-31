@@ -8,14 +8,12 @@ docker-ce, openssl, docker-compose
  1. to quick start, use `sudo ./build.sh start` to start the containers:
     ```bash
      # ./build.sh start  
-    2020-07-16T23:12:26--LOG--got user influxdb id:999 and gid:999
-    2020-07-16T23:12:26--LOG--influxdb database folder is not existed, creating one
-    2020-07-16T23:12:26--LOG--change permission of config and data folder of influxdb
-    2020-07-16T23:12:26--LOG--gernerating self-signed certificates for telegraf plugins
-    2020-07-16T23:12:26--LOG--telegraf certificate does not exist, generating
-    2020-07-16T23:12:26--LOG--gernerating private key for CN telegraf
-    2020-07-16T23:12:26--LOG--gernerating csr for CN telegraf
-    ...
+    2020-07-30T22:49:02--LOG--influxdb database folder is not existed, creating one
+    2020-07-30T22:49:02--LOG--change permission of config and data folder of influxdb
+    2020-07-30T22:49:02--LOG--gernerating self-signed certificates for telegraf plugins
+    2020-07-30T22:49:02--LOG--telegraf certificate does not exist, generating
+    2020-07-30T22:49:02--LOG--gernerating private key for CN telegraf
+    ...<ommited>
     ```
 
     By default, telegraf listens on `tcp:57000` for gRPC dial-out, if you want to modify the port, change the config file `etc/telegraf/telegraf.conf` in project folder
@@ -34,6 +32,7 @@ docker-ce, openssl, docker-compose
 
     
     When first start the service, script will check if certificates are genearted, if not will create them for mdt and gnmi plugin validate for 10 years.
+    use `http://<ip_address_of_host>:8888` to open chronograf gui.
 
 2. TLS is enabeld on cisco_telemetry_mdt plugin, comment below lines in `etc/telegraf/telegraf.conf` to disable it:
     ```ini
@@ -56,10 +55,11 @@ docker-ce, openssl, docker-compose
     switch(config)# grpc certificate gnmi_trustpoint
     ```
 4. It will import two pre-built dashboards. `fabric_dashboard` is example of querying data from telemetry dial-out, you can find the example of swtich telemetry config that is used for this dashboard in [telemetry.cfg](/examples/telemetry.cfg), `fabric_dashboard_gnmi` is example of querying data from gNMI dial-in.
+
 5. Example of telegraf configuration can be found below:
    - [telegraf.conf](etc/telegraf/telegraf.conf) example of cisco_telemetry_mdt config
-   - [gnmi.conf](etc/telegraf/telegraf.d/gnmi.conf) exmaple of sample-based gnmi plugin config
-   - [gnmi_on_change.conf](etc/telegraf/gnmi_on_change.conf) exmaple of event-based plugin config
+   - [gnmi.conf.example](etc/telegraf/telegraf.d/gnmi.conf.example) exmaple of sample-based gnmi plugin config
+   - [gnmi_on_change.conf.example](etc/telegraf/gnmi_on_change.conf.example) exmaple of event-based plugin config
    
 
 ## Known issue
