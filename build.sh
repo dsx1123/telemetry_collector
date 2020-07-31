@@ -2,12 +2,12 @@
 
 export GRAFANA_VOLUME="grafana-volume"
 export CHRONOGRAF_VOLUME="chronograf-volume"
-export GRAFANA_UID="472"  # default uid of grafana
-export GRAFANA_GID="472"  # default gid of grafana
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
 export CHRONOGRAF_CONFIG="`pwd`/etc/chronograf"
 export INFLUX_CONFIG="`pwd`/etc/influxdb"
 export INFLUX_DATA="`pwd`/influxdb"
+export CURRENT_UID=`id -u`
+export CURRENT_GID=`id -g`
 
 self=$0
 INFLUX_USER="influxdb"
@@ -128,27 +128,18 @@ EOF
 }
 
 function prepare_influxdb() {
-    log "getting uid gid of influxdb inside container"
-    export INFLUX_UID=`docker run --rm -ti influxdb id -u $INFLUX_USER| tr -d '\r'`
-    export INFLUX_GID=`docker run --rm -ti influxdb id -u $INFLUX_USER| tr -d '\r'`
-    log "got user $INFLUX_USER id:$INFLUX_UID and gid:$INFLUX_GID"
     if [ ! -d $INFLUX_DATA ]; then
         log "influxdb database folder is not existed, creating one"
         mkdir $INFLUX_DATA
     fi
     log "change permission of config and data folder of influxdb"
-    chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_CONFIG
-    chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_DATA
+    #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_CONFIG
+    #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_DATA
 }
 
 function prepare_telegraf() {
     # generate certificate if doesn't exist
     gen_telegraf_cert
-
-    log "getting uid gid of telegraf inside container"
-    export TELEGRAF_UID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
-    export TELEGRAF_GID=`docker run --rm -ti telegraf id -u $TELEGRAF_USER| tr -d '\r'`
-    log "got user $TELEGRAF_USER id:$TELEGRAF_UID and gid:$TELEGRAF_GID"
 
     for a in ${swtiches[@]}; do
         echo "\" $a \" "
@@ -157,17 +148,21 @@ function prepare_telegraf() {
     # Modify the addresses in gnmi config to the switches provided
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
     addresses="addresses = [$switch_list]"
-    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
-    # modify the username and password in gnmi config
-    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    # generate gnmi config file from example
+    if [ ! -e $TELEGRAF_CONFIG/gnmi_on_change.conf ]; then
+        sed -e "0,/^addresses\ =.*/s//$addresses/" \
+            -e "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" \
+            -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
+            $TELEGRAF_CONFIG/gnmi_on_change.conf.example > $TELEGRAF_CONFIG/gnmi_on_change.conf
+    fi
 
-    log "change permission of config of telegraf"
-    chown -R $TELEGRAF_UID:$TELEGRAF_GID $TELEGRAF_CONFIG
+    if [ ! -e $TELEGRAF_CONFIG/telegraf.d/gnmi.conf ]; then
+        sed -e "0,/^addresses\ =.*/s//$addresses/" \
+            -e "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" \
+            -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
+            $TELEGRAF_CONFIG/telegraf.d/gnmi.conf.example > $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+    fi
 }
 function check_influxdb () {
     # check if influxdb is ready for connection
@@ -258,17 +253,8 @@ function reset () {
     clean
     # remove certificates
     rm -rf $TELEGRAF_CERT_PATH
-
-    addresses="addresses = []"
-    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^addresses\ =.*/s//$addresses/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-
-    # modify the username and password in gnmi config
-    sed -i "0,/^username\ =.*/s//username\ = \"cisco\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^username\ =.*/s//username\ = \"cisco\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    sed -i "0,/^password\ =.*/s//password\ = \"cisco\"/" $TELEGRAF_CONFIG/gnmi_on_change.conf
-    sed -i "0,/^password\ =.*/s//password\ = \"cisco\"/" $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-
+    rm -rf $TELEGRAF_CONFIG/gnmi_on_change.conf
+    rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 }
 
 function display_help() {

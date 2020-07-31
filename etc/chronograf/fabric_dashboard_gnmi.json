@@ -350,7 +350,7 @@
             "name": "BGP peers",
             "queries": [
                 {
-                    "query": "SELECT \"inst_items/dom_items/Dom_list/numPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"='172.25.74.61' GROUP BY \"name\"",
+                    "query": "SELECT \"inst_items/dom_items/Dom_list/numPeers\" FROM \"nxos\".\"one_week\".\"bgp-items\" WHERE time > :dashboardTime: AND time < :upperDashboardTime: AND \"source\"=:source: GROUP BY \"name\"",
                     "queryConfig": {
                         "database": "nxos",
                         "measurement": "bgp-items",
@@ -362,11 +362,7 @@
                                 "alias": ""
                             }
                         ],
-                        "tags": {
-                            "source": [
-                                "172.25.74.61"
-                            ]
-                        },
+                        "tags": {},
                         "groupBy": {
                             "time": "",
                             "tags": [
