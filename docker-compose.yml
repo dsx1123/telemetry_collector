@@ -4,7 +4,7 @@ services:
     image: influxdb
     container_name: influxdb
     restart: always
-    user: "${INFLUX_UID}:${INFLUX_GID}"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
     ports:
       - 8086:8086
     networks:
@@ -22,7 +22,7 @@ services:
     image: telegraf
     container_name: telegraf
     restart: always
-    user: "${TELEGRAF_UID}:${TELEGRAF_GID}"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
     ports:
       - 57000:57000
     networks:
@@ -37,7 +37,7 @@ services:
     image: telegraf
     container_name: telegraf2
     restart: always
-    user: "${TELEGRAF_UID}:${TELEGRAF_GID}"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
     networks:
       - telemetry
     volumes:
@@ -59,7 +59,6 @@ services:
     image: chronograf
     container_name: chronograf
     restart: always
-    #user: "${GRAFANA_UID}:${GRAFANA_GID}"
     ports:
       - 8888:8888
     networks:
