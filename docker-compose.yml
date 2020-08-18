@@ -44,17 +44,6 @@ services:
       - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
     entrypoint: /entrypoint.sh -config /etc/telegraf/gnmi_on_change.conf
 
-  #grafana:
-    #image: grafana/grafana
-    #container_name: grafana
-    #restart: always
-    #user: "${GRAFANA_UID}:${GRAFANA_GID}"
-    #ports:
-      #- 3000:3000
-    #networks:
-      #- telemetry
-    #volumes:
-      #- grafana-volume:/var/lib/grafana
   chronograf:
     image: chronograf
     container_name: chronograf

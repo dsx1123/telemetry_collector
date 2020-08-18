@@ -16,7 +16,12 @@ TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
 
 # swtiches accept gNMI dial-in
-switches=( "172.25.74.70:50051" "172.25.74.61:50051" )
+switches=( \
+    "172.25.74.70:50051" \ 
+    "172.25.74.61:50051" \
+    "172.25.74.87:50051" \ 
+    "172.25.74.88:50051" \
+    )
 
 # user on swtich for authentication, need network-operator role at least
 gnmi_user="telemetry"
@@ -50,6 +55,9 @@ function clean() {
     # clean database of influxdb and volume of grafana
     log "cleaning influxdb database"
     rm -rf $INFLUX_DATA
+    log "remove generated gnmi config"
+    rm -rf $TELEGRAF_CONFIG/gnmi_on_change.conf
+    rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
     #log "deleting grafana volume $GRAFANA_VOLUME"
     #docker volume rm $GRAFANA_VOLUME
     log "deleting chronograf volume $CHRONOGRAF_VOLUME"
@@ -253,8 +261,33 @@ function reset () {
     clean
     # remove certificates
     rm -rf $TELEGRAF_CERT_PATH
-    rm -rf $TELEGRAF_CONFIG/gnmi_on_change.conf
-    rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
+}
+
+function restart_svc () {
+    if [ $# -eq 0 ]; then
+        stop
+        start
+        exit 0
+    fi
+    case "$1" in
+        telegraf)
+            docker-compose restart telegraf
+            docker-compose restart telegraf2
+            ;;
+        influxdb)
+            docker-compose restart influxdb
+            ;;
+        chronograf)
+            docker-compose restart chronograf
+            ;;
+        *)
+            display_help
+            exit 1
+    esac
+
+
+    
+
 }
 
 function display_help() {
@@ -267,9 +300,6 @@ function display_help() {
     echo "  reset  :   reset project to inital state"
 }
 
-if [ $# -gt 1 ]; then
-    display_help
-fi
 
 case "$1" in
     start)
@@ -279,8 +309,7 @@ case "$1" in
         stop
         ;;
     restart)
-        stop
-        start
+        restart_svc $2
         ;;
     cert)
         gen_telegraf_cert
