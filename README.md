@@ -2,7 +2,7 @@
 Automatically build telemetry collector with telegraf, influxdb and chronograf, example of sensor paths is using native yang model and OpenConfig yang model of nx-os as example. `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and chronograf to create services with docker-compose. tested with `telegraf>=1.12.1`, `influxdb>=1.8.0` and `chronograf>=1.8.4`.
 
 ## Requirements:
-docker-ce, openssl, docker-compose
+docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if trying it on MacOS
 ## How to use
 
  1. to quick start, use `sudo ./build.sh start` to start the containers:
@@ -65,6 +65,7 @@ docker-ce, openssl, docker-compose
 ## Known issue
 1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gNMI plugin configuraiton.
 Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation will be removed in future release.
+2. MacOS uses BSD version of sed by default which doesn't work with this script, use `brew install gnu-sed` to install the gnu version of sed if you are trying this script on MacOS.
 
 
 ## Reference
