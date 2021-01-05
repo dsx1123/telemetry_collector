@@ -591,9 +591,7 @@
                                 "alias": ""
                             }
                         ],
-                        "tags": {
-                            "source": ""
-                        },
+                        "tags": {},
                         "groupBy": {
                             "time": "",
                             "tags": []
