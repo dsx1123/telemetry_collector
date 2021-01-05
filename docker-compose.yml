@@ -19,7 +19,7 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=influxdb
 
   telegraf:
-    image: telegraf
+    image: telegraf   #telegraf
     container_name: telegraf
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"
@@ -34,7 +34,7 @@ services:
   telegraf2:
     # second telegraf instance with gnmi on_change subscription config only
     # refer to README.md for detail
-    image: telegraf
+    image: telegraf   #telegraf
     container_name: telegraf2
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"

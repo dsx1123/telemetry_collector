@@ -4,6 +4,7 @@ export GRAFANA_VOLUME="grafana-volume"
 export CHRONOGRAF_VOLUME="chronograf-volume"
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
 export CHRONOGRAF_CONFIG="`pwd`/etc/chronograf"
+export PROMETHEUS_CONFIG="`pwd`/etc/prometheus"
 export INFLUX_CONFIG="`pwd`/etc/influxdb"
 export INFLUX_DATA="`pwd`/influxdb"
 export CURRENT_UID=`id -u`
@@ -16,12 +17,11 @@ TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
 
 # swtiches accept gNMI dial-in
-switches=( \
-    "172.25.74.70:50051" \ 
-    "172.25.74.61:50051" \
-    "172.25.74.87:50051" \ 
-    "172.25.74.88:50051" \
-    )
+switches=( "172.25.74.70:50051" \
+           "172.25.74.61:50051" \
+           "172.25.74.87:50051" \
+           "172.25.74.88:50051" \
+)
 
 # user on swtich for authentication, need network-operator role at least
 gnmi_user="telemetry"
