@@ -1306,7 +1306,7 @@
             "tempVar": ":source:",
             "values": [
                 {
-                    "value": "172.25.74.61",
+                    "value": "0.0.0.0",
                     "type": "tagValue",
                     "selected": true
                 }
@@ -1317,7 +1317,7 @@
             "query": {
                 "influxql": "SHOW TAG VALUES ON :database: FROM :measurement: WITH KEY=:tagKey:",
                 "db": "nxos",
-                "measurement": "dbgIfIn-items",
+                "measurement": "ch-items",
                 "tagKey": "source",
                 "fieldKey": ""
             },

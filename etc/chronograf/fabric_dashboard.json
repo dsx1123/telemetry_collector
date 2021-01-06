@@ -1304,7 +1304,7 @@
             "tempVar": ":source:",
             "values": [
                 {
-                    "value": "93240-FX2-1",
+                    "value": "0.0.0.0",
                     "type": "tagValue",
                     "selected": true
                 }
@@ -1315,7 +1315,7 @@
             "query": {
                 "influxql": "SHOW TAG VALUES ON :database: FROM :measurement: WITH KEY=:tagKey:",
                 "db": "nxos",
-                "measurement": "sys/bgp",
+                "measurement": "sys/ch",
                 "tagKey": "source",
                 "fieldKey": ""
             },
