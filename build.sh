@@ -78,6 +78,8 @@ function prepare_chronograf() {
         log "create docker volume $CHRONOGRAF_VOLUME"
         docker volume create --name $CHRONOGRAF_VOLUME
     fi
+    log "pull the latest image $CHRONOGRAF_IMAGE"
+    docker-compose  pull chronograf
 }
 
 function gen_telegraf_cert() {
@@ -143,9 +145,11 @@ function prepare_influxdb() {
         log "influxdb database folder is not existed, creating one"
         mkdir $INFLUX_DATA
     fi
-    log "change permission of config and data folder of influxdb"
+    #log "change permission of config and data folder of influxdb"
     #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_CONFIG
     #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_DATA
+    log "pull the latest version of image $INFLUXDB_IMAGE"
+    docker-compose pull influxdb
 }
 
 function prepare_telegraf() {
@@ -174,6 +178,10 @@ function prepare_telegraf() {
             -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
             $TELEGRAF_CONFIG/telegraf.d/gnmi.conf.example > $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
     fi
+
+    log "pull the latest version of image $TELEGRAF_IMAGE"
+    docker-compose pull telegraf
+    docker-compose pull telegraf2
 }
 function check_influxdb () {
     # check if influxdb is ready for connection
