@@ -1,7 +1,7 @@
 version: "3"
 services:
   influxdb:
-    image: influxdb
+    image: ${INFLUXDB_IMAGE}
     container_name: influxdb
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"
@@ -19,7 +19,7 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=influxdb
 
   telegraf:
-    image: telegraf   #telegraf
+    image: ${TELEGRAF_IMAGE}  #telegraf
     container_name: telegraf
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"
@@ -34,7 +34,7 @@ services:
   telegraf2:
     # second telegraf instance with gnmi on_change subscription config only
     # refer to README.md for detail
-    image: telegraf   #telegraf
+    image: ${TELEGRAF_IMAGE} #telegraf
     container_name: telegraf2
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"
@@ -45,7 +45,7 @@ services:
     entrypoint: /entrypoint.sh -config /etc/telegraf/gnmi_on_change.conf
 
   chronograf:
-    image: chronograf
+    image: ${CHRONOGRAF_IMAGE}
     container_name: chronograf
     restart: always
     ports:
