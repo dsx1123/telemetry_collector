@@ -10,7 +10,7 @@ export INFLUX_DATA="`pwd`/influxdb"
 export CURRENT_UID=`id -u`
 export CURRENT_GID=`id -g`
 export TELEGRAF_IMAGE="telegraf:latest"
-export INFLUXDB_IMAGE="influxdb:1.8.4"
+export INFLUXDB_IMAGE="influxdb:1.7.11"
 export CHRONOGRAF_IMAGE="chronograf:latest"
 
 self=$0
@@ -142,7 +142,7 @@ EOF
 
 function prepare_influxdb() {
     if [ ! -d $INFLUX_DATA ]; then
-        log "influxdb database folder is not existed, creating one"
+        log "influxdb database folder does not exist, creating one"
         mkdir $INFLUX_DATA
     fi
     #log "change permission of config and data folder of influxdb"

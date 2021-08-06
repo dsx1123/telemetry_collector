@@ -4,16 +4,16 @@
   gather_facts: no
   tasks:
     - name: copy gnmi certificate to switch
-      nxos_file_copy:
+      cisco.nxos.nxos_file_copy:
         file_pull: True
         remote_file: "/opt/telemetry_collector/etc/telegraf/cert/gnmi.pfx"
         local_file: "gnmi.pfx"
         remote_scp_server: "10.195.225.176"
-        remote_scp_server_user: "cisco"
-        remote_scp_server_password: "cisco123"
+        remote_scp_server_user: "root"
+        remote_scp_server_password: "cisco.123"
 
     - name: install new certificate and enable grpc
-      nxos_config:
+      cisco.nxos.nxos_config:
         lines:
           - crypto ca trustpoint gnmi
           - crypto ca import gnmi pkcs12 gnmi.pfx cisco123

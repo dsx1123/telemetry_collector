@@ -106,6 +106,12 @@ path = "/components/component/power-supply/state"
 subscription_mode = "sample"
 sample_interval = "10s"
 
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "openconfig"
+path = "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis"
+subscription_mode = "sample"
+sample_interval = "30s"
+
 ### native yang #### 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"

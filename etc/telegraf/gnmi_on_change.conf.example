@@ -58,6 +58,11 @@ origin = "openconfig"
 path = "/interfaces/interface/state/oper-status"
 subscription_mode = "on_change"
 
+[[inputs.cisco_telemetry_gnmi.subscription]]
+path = "syslog"
+origin = "syslog-oper"
+subscription_mode = "on_change"
+
 #[[inputs.cisco_telemetry_gnmi.subscription]]
 #origin = "openconfig"
 #path = "/network-instances/network-instance/vlans"
