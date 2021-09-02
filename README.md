@@ -1,8 +1,8 @@
 # telemetry_collector
 Automatically build telemetry collector with telegraf, influxdb and grafana, example of sensor paths is using native yang model and OpenConfig yang model of NX-OS as example. `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create containers with docker-compose. tested with `telegraf>=1.12.1`, `2.0 <=influxdb` and `grafana>=8.1`.
 
-#NOTE:
-This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://www.google.com/search?client=firefox-b-1-d&q=chronograf_influxdb_1_x)
+# NOTE:
+This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://github.com/dsx1123/telemetry_collector/tree/chronograf_influxdb_1_x)
 
 ## Requirements:
 docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if trying it on MacOS
@@ -64,8 +64,8 @@ docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if 
    - [gnmi_on_change.conf.example](etc/telegraf/gnmi_on_change.conf.example) exmaple of event-based plugin config
 
 ## Known issue
-1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gNMI plugin configuraiton.
-Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation has been lifted in 10.1.1, this script will still start two instances for previous version.
+1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances to seperate SAMPLE and ON_CHANGE sensor paths.
+Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation has been lifted in 10.1.1.
 2. MacOS uses BSD version of sed by default which doesn't work with this script, use `brew install gnu-sed` to install the gnu version of sed if you are trying this script on MacOS.
 
 
