@@ -2,7 +2,7 @@
 Automatically build telemetry collector with telegraf, influxdb and grafana, example of sensor paths is using native yang model and OpenConfig yang model of NX-OS as example. `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create containers with docker-compose. tested with `telegraf>=1.12.1`, `2.0 <=influxdb` and `grafana>=8.1`.
 
 # NOTE:
-This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://www.google.com/search?client=firefox-b-1-d&q=chronograf_influxdb_1_x)
+This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://github.com/dsx1123/telemetry_collector/tree/chronograf_influxdb_1_x)
 
 ## Requirements:
 docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if trying it on MacOS
