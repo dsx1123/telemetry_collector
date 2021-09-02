@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1630564321903,
+  "iteration": 1630564321909,
   "links": [],
   "panels": [
     {
@@ -1405,7 +1405,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "172.25.74.70",
           "value": "172.25.74.70"
         },
@@ -1434,7 +1434,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "VXLAN Dashboard gNMI",
+  "title": "fabric dashboard gnmi",
   "uid": "ug6ErxV7k",
   "version": 2
 }
