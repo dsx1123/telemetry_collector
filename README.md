@@ -64,8 +64,8 @@ docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if 
    - [gnmi_on_change.conf.example](etc/telegraf/gnmi_on_change.conf.example) exmaple of event-based plugin config
 
 ## Known issue
-1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances with different gNMI plugin configuraiton.
-Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation has been lifted in 10.1.1, this script will still start two instances for previous version.
+1. Currently on nx-os, a single subscription of gNMI dial-in can only be SAMPLE or ON_CHANGE, not both. In order to configure different type of subscription, need start two telegraf instances to seperate SAMPLE and ON_CHANGE sensor paths.
+Please refer to enhancement [CSCvu58102](https://bst.cloudapps.cisco.com/bugsearch/bug/CSCvu58102) for detail and this limiation has been lifted in 10.1.1.
 2. MacOS uses BSD version of sed by default which doesn't work with this script, use `brew install gnu-sed` to install the gnu version of sed if you are trying this script on MacOS.
 
 
