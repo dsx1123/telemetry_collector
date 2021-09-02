@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - name: "VXLAN Dashboard gNMI"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_gnmi.json

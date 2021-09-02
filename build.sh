@@ -4,17 +4,28 @@ export GRAFANA_VOLUME="grafana-volume"
 export CHRONOGRAF_VOLUME="chronograf-volume"
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
 export CHRONOGRAF_CONFIG="`pwd`/etc/chronograf"
-export PROMETHEUS_CONFIG="`pwd`/etc/prometheus"
-export INFLUX_CONFIG="`pwd`/etc/influxdb"
-export INFLUX_DATA="`pwd`/influxdb"
+#export PROMETHEUS_CONFIG="`pwd`/etc/prometheus"
+export GRAFANA_CONFIG="`pwd`/etc/grafana"
+export INFLUXDB_CONFIG="`pwd`/etc/influxdb"
+export INFLUXDB_ENGINE="`pwd`/influxdb"
 export CURRENT_UID=`id -u`
 export CURRENT_GID=`id -g`
+
 export TELEGRAF_IMAGE="telegraf:latest"
-export INFLUXDB_IMAGE="influxdb:1.7.11"
+export INFLUXDB_IMAGE="influxdb:2.0.8"
 export CHRONOGRAF_IMAGE="chronograf:latest"
+export GRAFANA_IMAGE="grafana/grafana:8.1.2"
+
+export INFLUXDB_USER="influxdb"
+export INFLUXDB_PASSWD="cisco123"
+export INFLUXDB_ORG="Cisco"
+export INFLUXDB_BUCKET="nxos"
+
+export GRAFANA_ADMIN_USER="grafana"
+export GRAFANA_ADMIN_PASSWD="cisco123"
+export INFLUXDB_INIT_TOKEN=`tr -dc A-Za-z0-9 </dev/urandom | head -c 16 ; echo ''`
 
 self=$0
-INFLUX_USER="influxdb"
 TELEGRAF_USER="telegraf"
 TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
@@ -24,6 +35,7 @@ switches=( "172.25.74.70:50051" \
            "172.25.74.61:50051" \
            "172.25.74.87:50051" \
            "172.25.74.88:50051" \
+           "172.25.74.163:50051" \
 )
 
 # user on swtich for authentication, need network-operator role at least
@@ -39,6 +51,7 @@ organizationalunit=BU
 email=telemetry@cisco.com
 cn_mdt=telegraf
 cn_gnmi=gnmi
+cn_influxdb=influxdb
 
 
 function log() {
@@ -57,19 +70,28 @@ function join_by {
 function clean() {
     # clean database of influxdb and volume of grafana
     log "cleaning influxdb database"
-    rm -rf $INFLUX_DATA
+    rm -rf $INFLUXDB_ENGINE
+    rm -rf $INFLUXDB_CONFIG/influx-configs
+
     log "remove generated gnmi config"
     rm -rf $TELEGRAF_CONFIG/gnmi_on_change.conf
+    rm -rf $TELEGRAF_CONFIG/telegraf.conf
     rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-    #log "deleting grafana volume $GRAFANA_VOLUME"
-    #docker volume rm $GRAFANA_VOLUME
-    log "deleting chronograf volume $CHRONOGRAF_VOLUME"
-    docker volume rm $CHRONOGRAF_VOLUME
+
+    log "deleting grafana volume $CHRONOGRAF_VOLUME"
+    docker volume rm $GRAFANA_VOLUME
 }
 
 function prepare_grafana() {
     log "create docker volume $GRAFANA_VOLUME"
     docker volume create --name $GRAFANA_VOLUME
+    docker volume inspect $GRAFANA_VOLUME  1>/dev/null 2>/dev/null
+    if [ ! $? -eq 0 ]; then
+        log "create docker volume $GRAFANA_VOLUME"
+        docker volume create --name $GRAFANA_VOLUME
+    fi
+    log "pull the latest image $GRAFANA_IMAGE"
+    docker-compose  pull grafana
 }
 
 function prepare_chronograf() {
@@ -93,7 +115,7 @@ function gen_telegraf_cert() {
         if [ ! -e $TELEGRAF_CERT_PATH/$cn.key ] || [ ! -e $TELEGRAF_CERT_PATH/$cn.crt ]
         then
             log "$cn certificate does not exist, generating"
-            generate_self_signed_cert $cn
+            generate_self_signed_cert $cn $TELEGRAF_CERT_PATH
         fi
     done
     if [ ! -e $TELEGRAF_CERT_PATH/$cn_gnmi.pfx ]; then
@@ -109,11 +131,12 @@ function gen_telegraf_cert() {
 
 function generate_self_signed_cert() {
     # create csr config file
-    common_name=$1
-    csr_config=$TELEGRAF_CERT_PATH/$common_name.csr.conf
-    key_file=$TELEGRAF_CERT_PATH/$common_name.key
-    csr_file=$TELEGRAF_CERT_PATH/$common_name.csr
-    cert_file=$TELEGRAF_CERT_PATH/$common_name.crt
+    common_name=$1 # CN of certificate
+    path=$2 # folder of certificates
+    csr_config=$path/$common_name.csr.conf
+    key_file=$path/$common_name.key
+    csr_file=$path/$common_name.csr
+    cert_file=$path/$common_name.crt
     cat > $csr_config <<EOF
 [ req ]
 default_bits        = 2048
@@ -141,14 +164,12 @@ EOF
 }
 
 function prepare_influxdb() {
-    if [ ! -d $INFLUX_DATA ]; then
+    if [ ! -d $INFLUXDB_DATA ]; then
         log "influxdb database folder does not exist, creating one"
-        mkdir $INFLUX_DATA
+        mkdir $INFLUXDB_DATA
     fi
-    #log "change permission of config and data folder of influxdb"
-    #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_CONFIG
-    #chown -R $INFLUX_UID:$INFLUX_GID $INFLUX_DATA
-    log "pull the latest version of image $INFLUXDB_IMAGE"
+
+    log "pull the required version of image $INFLUXDB_IMAGE"
     docker-compose pull influxdb
 }
 
@@ -164,31 +185,41 @@ function prepare_telegraf() {
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
     addresses="addresses = [$switch_list]"
 
-    # generate gnmi config file from example
-    if [ ! -e $TELEGRAF_CONFIG/gnmi_on_change.conf ]; then
-        sed -e "0,/^addresses\ =.*/s//$addresses/" \
-            -e "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" \
-            -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
-            $TELEGRAF_CONFIG/gnmi_on_change.conf.example > $TELEGRAF_CONFIG/gnmi_on_change.conf
+    # Modify urls in the ping plugin
+    IPs=()
+    for sw in "${switches[@]}"; do 
+        IFS=':' read -a ip <<< "$sw"
+        IPs+=(${ip[0]})
+    done 
+    url_list=`printf -- "\"%s\"," ${IPs[*]} | cut -d "," -f 1-${#IPs[@]}`
+    urls="urls = [$url_list]"
+
+
+    # modify token of telegraf.conf
+    if [ ! -e $TELEGRAF_CONFIG/telegraf.conf ]; then
+        sed -e "0,/^token\ =.*/s//token\ = \"$INFLUXDB_INIT_TOKEN\"/" \
+            -e "0,/^urls\ =.*/s//$urls/" \
+            $TELEGRAF_CONFIG/telegraf.conf.example > $TELEGRAF_CONFIG/telegraf.conf
     fi
 
+    # generate gnmi config file from example
     if [ ! -e $TELEGRAF_CONFIG/telegraf.d/gnmi.conf ]; then
         sed -e "0,/^addresses\ =.*/s//$addresses/" \
             -e "0,/^username\ =.*/s//username\ = \"$gnmi_user\"/" \
             -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
+            -e "0,/^token\ =.*/s//token\ = \"$INFLUXDB_INIT_TOKEN\"/" \
             $TELEGRAF_CONFIG/telegraf.d/gnmi.conf.example > $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
     fi
 
     log "pull the latest version of image $TELEGRAF_IMAGE"
     docker-compose pull telegraf
-    docker-compose pull telegraf2
 }
 function check_influxdb () {
     # check if influxdb is ready for connection
     log "waiting for influxdb getting ready"
     while true; do
-        result=`curl -w %{http_code} --silent --output /dev/null localhost:8086/ping`
-        if [ $result -eq 204 ]; then
+        result=`curl -w %{http_code} --silent --output /dev/null http://localhost:8086/api/v2/setup`
+        if [ $result -eq 200 ]; then
             log "influxdb is online!"
             break
         fi
@@ -206,7 +237,7 @@ function post_chronograf () {
         fi
         sleep 3
     done
-    sleep 3
+    
     result=`curl --silent http://localhost:8888/chronograf/v1/sources`
     if [[ $result == *'"sources":[]'* ]]; then
         log "datasource is empty, creating datasource"
@@ -253,25 +284,29 @@ function start() {
     fi
     prepare_influxdb
     prepare_telegraf
-    prepare_chronograf
-    #prepare_grafana
+    prepare_grafana
     log "starting docker containers"
     docker-compose up -d
     check_influxdb
-    post_chronograf
 }
 
-function stop(){
+function stop () {
     log "stopping docker containers"
+    docker-compose stop
+}
+
+function down () {
+    log "stopping and cleaning docker containers"
     docker-compose down
 }
 
 function reset () {
     # reset project to initial state
-    stop
+    down
     clean
     # remove certificates
     rm -rf $TELEGRAF_CERT_PATH
+    rm -rf $INFLUXDB_CONFIG/influxdb.*
 }
 
 function restart_svc () {
@@ -283,7 +318,6 @@ function restart_svc () {
     case "$1" in
         telegraf)
             docker-compose restart telegraf
-            docker-compose restart telegraf2
             ;;
         influxdb)
             docker-compose restart influxdb
@@ -295,17 +329,14 @@ function restart_svc () {
             display_help
             exit 1
     esac
-
-
-    
-
 }
 
 function display_help() {
     echo "Usage: $self {start|stop|restart|cert|clean}"
-    echo "  start  :   start docker service for telegraf/influxdb/grafana"
-    echo "  stop   :   stop docker service for telegraf/influxdb/grafana"
-    echo "  restart:   restart docker service for telegraf/influxdb/grafana"
+    echo "  start  :   start docker containers for telegraf/influxdb/grafana"
+    echo "  stop   :   stop docker containers for telegraf/influxdb/grafana"
+    echo "  down   :   stop and remove docker containers for telegraf/influxdb/grafana"
+    echo "  restart:   restart docker containers for telegraf/influxdb/grafana"
     echo "  cert   :   generate certificates for telegraf plugin"
     echo "  clean  :   clean the database of influxdb, volume of grafana"
     echo "  reset  :   reset project to inital state"
@@ -318,6 +349,9 @@ case "$1" in
         ;;
     stop)
         stop
+        ;;
+    down)
+        down
         ;;
     restart)
         restart_svc $2

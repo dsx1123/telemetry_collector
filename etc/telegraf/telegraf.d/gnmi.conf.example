@@ -14,189 +14,226 @@ insecure_skip_verify = true
 ### redial in case of failures after
 #redial = "10s"
 
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "DME"
-#path = "/sys/bgp/inst/dom-default"
-##path = "/sys/procsys/syscpusummary"
-## name = "BGP"
-## origin = "device"
-## path = "/System/bgp-items"
-## origin = "device"
-## path = "/System/intf-items"
-## origin = "openconfig"
-## path = "/interfaces/interface/"
-##path = "/bgp/"
-##path = "/components/component/cpu/"
 
-## Subscription mode (one of: "target_defined", "sample", "on_change") and interval
-#subscription_mode = "sample"
-#sample_interval = "5s"
-
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "dme"
-##path = "/sys/bgp/inst/dom-default"
-#path = "/sys/procsys/syscpusummary/syscpuhistory-last60seconds"
-## name = "bgp"
-## origin = "device"
-## path = "/system/bgp-items"
-## origin = "device"
-## path = "/system/intf-items"
-## origin = "openconfig"
-## path = "/interfaces/interface/"
-##path = "/bgp/"
-##path = "/components/component/cpu/"
-
-## on change sensor paths ####
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "openconfig"
-#path = "/interfaces/interface/state/oper-status"
-#subscription_mode = "on_change"
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "openconfig"
-#path = "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/session-state"
-#subscription_mode = "on_change"
-
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "openconfig"
-#path = "/network-instances/network-instance/afts/ipv4-unicast"
-#subscription_mode = "on_change"
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "openconfig"
-#path = "/network-instances/network-instance/fdb/mac-table"
-#subscription_mode = "on_change"
-
-## simpled sensor paths ####
+## simpled sensor paths for OC YANG model ####
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/components/component/state/temperature"
+name = "oc_temperature"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/system/processes/process/state"
+name = "oc_process_state"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/interfaces/interface/state/counters"
+name = "oc_int_counters"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/components/component/state/memory"
+name = "oc_memeory"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/system/cpus/cpu/state/total"
+name = "oc_cpu"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/components/component/power-supply/state"
+name = "oc_psu"
 subscription_mode = "sample"
 sample_interval = "10s"
 
-[[inputs.cisco_telemetry_gnmi.subscription]]
-origin = "openconfig"
-path = "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis"
-subscription_mode = "sample"
-sample_interval = "30s"
 
-### native yang #### 
+### Cisco NX-OS Native YANG#### 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/procsys-items"
+path = "/System/procsys-items/syscpusummary-items/syscpuhistory-items/SysCpuHistory-list/usageAvg"
+name = "native_cpu_load"
 subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/ch-items"
+path = "/System/procsys-items/sysmem-items/sysmemusage-items/curr"
+name = "native_mem_usage"
 subscription_mode = "sample"
 sample_interval = "10s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list"
+name = "native_temperature_sensor"
+subscription_mode = "sample"
+sample_interval = "15s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/ch-items/psuslot-items/PsuSlot-list/psu-items"
+name = "native_psu"
+subscription_mode = "sample"
+sample_interval = "15s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/alarms-items/alarm-items"
+name = "native_alarm"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/showversion-items"
+name = "native_system_version"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/name"
+name = "native_system_hostname"
+subscription_mode = "sample"
+sample_interval = "600s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/intf-items/phys-items/PhysIf-list/phys-items/operSt"
+name = "native_interface_operSt"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/intf-items/phys-items/PhysIf-list/phys-items/operSt"
+name = "native_interface_operSt"
+subscription_mode = "sample"
+sample_interval = "300s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
 path = "/System/intf-items/phys-items/PhysIf-list/dbgIfIn-items"
+name = "native_ingress_rate"
 subscription_mode = "sample"
-sample_interval = "10s"
+sample_interval = "30s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
 path = "/System/intf-items/phys-items/PhysIf-list/dbgIfOut-items"
+name = "native_egress_rate"
 subscription_mode = "sample"
-sample_interval = "10s"
+sample_interval = "30s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/procsys-items/syscpusummary-items/syscpuhistory-items/SysCpuHistory-list/usageAvg"
-subscription_mode = "sample"
-sample_interval = "10s"
+path = "/System/mac-items/table-items/vlan-items/MacAddressEntry-list"
+name = "native_mac_address_table"
+subscription_mode = "on_change"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/mac-items/table-items"
+path = "/System/mac-items/table-items/vlan-items/MacAddressEntry-list"
+name = "native_mac_address_table"
 subscription_mode = "sample"
-sample_interval = "25s"
+sample_interval = "300s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/evpn-items/bdevi-items"
-subscription_mode = "sample"
-sample_interval = "25s"
+path = "/System/bd-items/bd-items"
+name = "native_l2_vlan"
+subscription_mode = "on_change"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/urib-items"
+path = "/System/bd-items/bd-items"
+name = "native_l2_vlan"
 subscription_mode = "sample"
-sample_interval = "5s"
+sample_interval = "300s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/u6rib-items"
-subscription_mode = "sample"
-sample_interval = "5s"
+path = "/System/inst-items/Inst-list"
+name = "native_l3_vrf"
+subscription_mode = "on_change"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
-path = "/System/bgp-items"
+path = "/System/inst-items/Inst-list"
+name = "native_l3_vrf"
 subscription_mode = "sample"
-sample_interval = "15s"
+sample_interval = "300s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/urib-items/table4-items/Table4-list/routeCount"
+name = "native_urib_route_count"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/u6rib-items/table6-items/Table6-list/routeCount"
+name = "native_u6rib_route_count"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/urib-items/table4-items/Table4-list/routeCount"
+name = "native_urib_route_count"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/u6rib-items/table6-items/Table6-list/routeCount"
+name = "native_u6rib_route_count"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/numEstPeers"
+name = "native_bgp_established_peers"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/numEstPeers"
+name = "native_bgp_established_peers"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/numPeers"
+name = "native_bgp_configured_peers"
+subscription_mode = "on_change"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/numPeers"
+name = "native_bgp_configured_peers"
+subscription_mode = "sample"
+sample_interval = "30s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "device"
 path = "/System/bgp-items/inst-items/dom-items/Dom-list/af-items/DomAf-list"
+name = "native_bgp_address_family"
 subscription_mode = "sample"
-sample_interval = "15s"
+sample_interval = "30s"
 
-## Subscription mode (one of: "target_defined", "sample", "on_change") and interval
-#subscription_mode = "sample"
-#sample_interval = "5s"
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "DME"
-#path = "/sys/procsys/sysmem/sysmemusage"
-#subscription_mode = "sample"
-#sample_interval = "5s"
-
-#[[inputs.cisco_telemetry_gnmi.subscription]]
-#origin = "DME"
-#path = "/sys/bgp/inst/dom-default"
-#subscription_mode = "sample"
-#sample_interval = "5s"
-
-[[outputs.influxdb]]
+[[outputs.influxdb_v2]]
 urls = ["http://influxdb:8086"]
-database = "nxos"
-username = "telegraf"
-password = "telegraf"
+token = "telegraf"
+organization = "Cisco"
+bucket = "nxos"
