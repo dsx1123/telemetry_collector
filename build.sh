@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
 export GRAFANA_VOLUME="grafana-volume"
-export CHRONOGRAF_VOLUME="chronograf-volume"
 export TELEGRAF_CONFIG="`pwd`/etc/telegraf"
-export CHRONOGRAF_CONFIG="`pwd`/etc/chronograf"
-#export PROMETHEUS_CONFIG="`pwd`/etc/prometheus"
 export GRAFANA_CONFIG="`pwd`/etc/grafana"
 export INFLUXDB_CONFIG="`pwd`/etc/influxdb"
 export INFLUXDB_ENGINE="`pwd`/influxdb"
@@ -13,17 +10,17 @@ export CURRENT_GID=`id -g`
 
 export TELEGRAF_IMAGE="telegraf:latest"
 export INFLUXDB_IMAGE="influxdb:2.0.8"
-export CHRONOGRAF_IMAGE="chronograf:latest"
 export GRAFANA_IMAGE="grafana/grafana:8.1.2"
 
 export INFLUXDB_USER="influxdb"
 export INFLUXDB_PASSWD="cisco123"
 export INFLUXDB_ORG="Cisco"
-export INFLUXDB_BUCKET="nxos"
+export INFLUXDB_BUCKET="nxos_gnmi"
+export INFLUXDB_MDT_BUCKET="nxos_dialout"
 
 export GRAFANA_ADMIN_USER="grafana"
 export GRAFANA_ADMIN_PASSWD="cisco123"
-export INFLUXDB_INIT_TOKEN=`tr -dc A-Za-z0-9 </dev/urandom | head -c 16 ; echo ''`
+export INFLUXDB_INIT_TOKEN="MySecretToken"
 
 self=$0
 TELEGRAF_USER="telegraf"
@@ -94,16 +91,6 @@ function prepare_grafana() {
     docker-compose  pull grafana
 }
 
-function prepare_chronograf() {
-    docker volume inspect chronograf-volume 1>/dev/null 2>/dev/null
-    if [ ! $? -eq 0 ]; then
-        log "create docker volume $CHRONOGRAF_VOLUME"
-        docker volume create --name $CHRONOGRAF_VOLUME
-    fi
-    log "pull the latest image $CHRONOGRAF_IMAGE"
-    docker-compose  pull chronograf
-}
-
 function gen_telegraf_cert() {
     if [ ! -d $TELEGRAF_CERT_PATH ]; then
         log "gernerating self-signed certificates for telegraf plugins"
@@ -169,6 +156,20 @@ function prepare_influxdb() {
         mkdir $INFLUXDB_DATA
     fi
 
+    #influx_config="$INFLUXDB_CONFIG/influx-configs" 
+    #if [ -e $influx_config ]; then
+        #log "read token from existed config file"
+        #while IFS= read -r line
+        #do
+            #if [[ "$line" =~  ^[[:blank:]]+token* ]]; then
+                #IFS='=' read -a token_line <<< $line
+                #token=`sed -e 's/"//' -e 's/"$//' <<<"${token_line[1]}"`
+                #echo $token
+                #export INFLUXDB_INIT_TOKEN=$token
+            #fi
+        #done < "$influx_config"
+    #fi
+
     log "pull the required version of image $INFLUXDB_IMAGE"
     docker-compose pull influxdb
 }
@@ -187,10 +188,10 @@ function prepare_telegraf() {
 
     # Modify urls in the ping plugin
     IPs=()
-    for sw in "${switches[@]}"; do 
+    for sw in "${switches[@]}"; do
         IFS=':' read -a ip <<< "$sw"
         IPs+=(${ip[0]})
-    done 
+    done
     url_list=`printf -- "\"%s\"," ${IPs[*]} | cut -d "," -f 1-${#IPs[@]}`
     urls="urls = [$url_list]"
 
@@ -214,6 +215,7 @@ function prepare_telegraf() {
     log "pull the latest version of image $TELEGRAF_IMAGE"
     docker-compose pull telegraf
 }
+
 function check_influxdb () {
     # check if influxdb is ready for connection
     log "waiting for influxdb getting ready"
@@ -237,7 +239,7 @@ function post_chronograf () {
         fi
         sleep 3
     done
-    
+
     result=`curl --silent http://localhost:8888/chronograf/v1/sources`
     if [[ $result == *'"sources":[]'* ]]; then
         log "datasource is empty, creating datasource"
@@ -276,6 +278,27 @@ function post_chronograf () {
     fi
 }
 
+function setup_influxdb() {
+    # initalize infludb
+    result=`curl --silent http://localhost:8086/api/v2/setup`
+    if [[ $result == *'true'* ]]; then
+        log "influxbd is not initialized, setup influxdb"
+        docker exec -t influxdb influx setup \
+            --org $INFLUXDB_ORG\
+            --bucket $INFLUXDB_BUCKET\
+            --username $INFLUXDB_USER\
+            --password $INFLUXDB_PASSWD\
+            --token $INFLUXDB_INIT_TOKEN\
+            --retention 2h \
+            --force
+
+        # create second bucket for mdt dialout
+        docker exec -t influxdb influx bucket create \
+            -n $INFLUXDB_MDT_BUCKET \
+            -r 2h  
+    fi
+}
+
 function start() {
     docker --version >/dev/null 2>&1
     if [ ! $? -eq 0 ]; then
@@ -288,6 +311,7 @@ function start() {
     log "starting docker containers"
     docker-compose up -d
     check_influxdb
+    setup_influxdb
 }
 
 function stop () {
@@ -306,12 +330,12 @@ function reset () {
     clean
     # remove certificates
     rm -rf $TELEGRAF_CERT_PATH
-    rm -rf $INFLUXDB_CONFIG/influxdb.*
+    rm -rf $INFLUXDB_CONFIG/influx-configs
 }
 
 function restart_svc () {
     if [ $# -eq 0 ]; then
-        stop
+        stop 
         start
         exit 0
     fi

@@ -14,13 +14,6 @@ services:
       - ${INFLUXDB_ENGINE}:/var/lib/influxdb2
     environment:
       - INFLUXD_CONFIG_PATH=/etc/influxdb
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USER}
-      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWD}
-      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
-      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
-      - DOCKER_INFLUXDB_INIT_RETENTION=3h
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_INIT_TOKEN}
 
   telegraf:
     image: ${TELEGRAF_IMAGE}  #telegraf
@@ -46,7 +39,7 @@ services:
       - telemetry
     volumes:
       - ${GRAFANA_CONFIG}:/etc/grafana:ro
-      - grafana-volume:/var/lib/grafana # persistent volume
+      - grafana-volume:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWD}
