@@ -26,6 +26,7 @@ self=$0
 TELEGRAF_USER="telegraf"
 TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
+pull_image=false # pull required image every time start
 
 # swtiches accept gNMI dial-in
 switches=( "172.25.74.70:50051" \
@@ -87,8 +88,10 @@ function prepare_grafana() {
         log "create docker volume $GRAFANA_VOLUME"
         docker volume create --name $GRAFANA_VOLUME
     fi
-    log "pull the latest image $GRAFANA_IMAGE"
-    docker-compose  pull grafana
+    if [ "$pull_image" = true ]; then
+        log "pull the latest image $GRAFANA_IMAGE"
+        docker-compose  pull grafana
+    fi
 }
 
 function gen_telegraf_cert() {
@@ -156,7 +159,7 @@ function prepare_influxdb() {
         mkdir $INFLUXDB_DATA
     fi
 
-    #influx_config="$INFLUXDB_CONFIG/influx-configs" 
+    #influx_config="$INFLUXDB_CONFIG/influx-configs"
     #if [ -e $influx_config ]; then
         #log "read token from existed config file"
         #while IFS= read -r line
@@ -170,8 +173,10 @@ function prepare_influxdb() {
         #done < "$influx_config"
     #fi
 
-    log "pull the required version of image $INFLUXDB_IMAGE"
-    docker-compose pull influxdb
+    if [ "$pull_image" = true ]; then
+        log "pull the required version of image $INFLUXDB_IMAGE"
+        docker-compose pull influxdb
+    fi
 }
 
 function prepare_telegraf() {
@@ -212,8 +217,10 @@ function prepare_telegraf() {
             $TELEGRAF_CONFIG/telegraf.d/gnmi.conf.example > $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
     fi
 
-    log "pull the latest version of image $TELEGRAF_IMAGE"
-    docker-compose pull telegraf
+    if [ "$pull_image" = true ]; then
+        log "pull the latest version of image $TELEGRAF_IMAGE"
+        docker-compose pull telegraf
+    fi
 }
 
 function check_influxdb () {
@@ -295,7 +302,7 @@ function setup_influxdb() {
         # create second bucket for mdt dialout
         docker exec -t influxdb influx bucket create \
             -n $INFLUXDB_MDT_BUCKET \
-            -r 2h  
+            -r 2h
     fi
 }
 
@@ -335,7 +342,7 @@ function reset () {
 
 function restart_svc () {
     if [ $# -eq 0 ]; then
-        stop 
+        stop
         start
         exit 0
     fi

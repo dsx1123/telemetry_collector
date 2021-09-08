@@ -7,3 +7,10 @@ providers:
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_gnmi.json
+  - name: "VXLAN Dashboard dialout"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_dialout.json 

@@ -21,8 +21,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1630653847347,
+  "id": 2,
+  "iteration": 1631083692149,
   "links": [],
   "panels": [
     {
@@ -63,9 +63,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
-          "fields": "/^name */",
+          "fields": "/^name \\{host=\"telegraf\", path=\"sys\", source=\".*\", subscription=\"1\", sys=\"sys\", tag1=\"nxos_dialout\"\\}$/",
           "values": false
         },
         "text": {},
@@ -74,7 +74,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -356d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_system_hostname\")\n  |> filter(fn: (r) => r[\"_field\"] == \"name\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: -365d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys\")\n  |> filter(fn: (r) => r[\"_field\"] == \"name\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -145,7 +145,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n    |> filter(fn: (r) => r[\"url\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n    |> filter(fn: (r) => r[\"url\"] == \"${mgmt_ip}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -200,7 +200,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -356d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_system_version\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -256,7 +256,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -356d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_system_version\")\n  |> filter(fn: (r) => r[\"_field\"] == \"kernelUptime\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\" or r[\"_field\"] == \"kernelUptime\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> last()\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -312,7 +312,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -356d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_system_version\")\n  |> filter(fn: (r) => r[\"_field\"] == \"lastResetReason\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\" or r[\"_field\"] == \"lastResetReason\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> fill(column: \"_value\", usePrevious: true)\n",
           "refId": "A"
         }
       ],
@@ -368,7 +368,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_cpu_load\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usageAvg\")\n  |> filter(fn: (r) => r[\"durationname\"] == \"last60seconds\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/procsys/syscpusummary/syscpuhistory-last60seconds\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usageAvg\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -424,7 +424,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "  from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_mem_usage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"curr\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/procsys/sysmem/sysmemusage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -452,7 +452,7 @@
       },
       "targets": [
         {
-          "query": "descr = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_alarm\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Alarm_list/description\" )\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\nsev = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_alarm\")\n  |> filter(fn: (r) => r[\"_field\"] == \"Alarm_list/severity\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\njoin(tables: {descr, sev}, on: [\"id\"], method: \"inner\")\n  |> map(fn: (r) => ({\n      _time: r._time_descr,\n      _value: r._value_sev + \" \" + r._value_descr\n    })\n  )\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/alarms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"description\" )\n  |> unique(column: \"alarmsEntity/alarmsAlarm\")\n\n",
           "refId": "A"
         }
       ],
@@ -503,7 +503,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_psu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"pIn\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> group()\n  |> sum(column: \"_value\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/ch\")\n  |> filter(fn: (r) => r[\"_field\"] == \"pIn\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> group()\n  |> sum(column: \"_value\")\n",
           "refId": "A"
         }
       ],
@@ -560,7 +560,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "data1 = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_temperature_sensor\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tempValue\" )\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\",  \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"])\ndata2 = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_temperature_sensor\")\n  |> filter(fn: (r) => r[\"_field\"] == \"model\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"])\n  |> group(columns: [\"_value\"])\njoin(\n  tables: {d1: data1, d2: data2},\n  on: [\"_time\", \"device:/System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list/id\"]\n)",
+          "query": "tempValue = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/ch\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tempValue\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"dn\"])\n  |> last()\n  |> group(columns: [\"dn\"])\nmodel = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/ch\")\n  |> filter(fn: (r) => r[\"_field\"] == \"model\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"dn\"])\n  |> last()\n  |> group(columns: [\"dn\"])\njoin(tables: {d1: tempValue, d2: model}, on: [\"_time\", \"dn\"])\n  |> group(columns: [\"_value_d2\"], mode:\"by\")\n\n",
           "refId": "A"
         }
       ],
@@ -619,7 +619,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_l2_vlan\")\n  |> filter(fn: (r) => r[\"_field\"] == \"BD_list/accEncap\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bd\")\n  |> filter(fn: (r) => r[\"_field\"] == \"accEncap\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
       ],
@@ -678,7 +678,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_l3_vrf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"encap\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/inst-items/Inst-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"encap\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")\n",
           "refId": "A"
         }
       ],
@@ -733,7 +733,7 @@
       },
       "targets": [
         {
-          "query": "up = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_interface_operSt\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"_value\"] == \"up\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"id\")\n  |> count(column: \"id\")\n  |> map(fn: (r) => ({ _field: \"UP\",  _value: r.id}))\ndown = from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_interface_operSt\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"_value\"] == \"down\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"id\")\n  |> count(column: \"id\")\n  |> map(fn: (r) => ({ _field: \"DOWN\", _value: r.id}))\nunion(tables: [up, down])\n",
+          "query": "up = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/intf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> filter(fn: (r) => r[\"_value\"] == \"up\")\n  |> group()\n  |> unique(column: \"dn\")\n  |> count(column: \"dn\")\n  |> map(fn: (r) => ({ _field: \"UP\",  _value: r.dn}))\ndown = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/intf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> filter(fn: (r) => r[\"_value\"] == \"down\")\n  |> group()\n  |> unique(column: \"dn\")\n  |> count(column: \"dn\")\n  |> map(fn: (r) => ({ _field: \"DOWN\",  _value: r.dn}))\nunion(tables: [up, down])\n",
           "refId": "A"
         }
       ],
@@ -786,7 +786,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_mac_address_table\")\n  |> filter(fn: (r) => r[\"_field\"] == \"macAddress\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> unique(column: \"macAddress\")\n  |> group(columns: [\"vlan\"], mode:\"by\")\n  |> count(column: \"_value\")\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/mac-items/table-items/vlan-items/MacAddressEntry-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"macInfo\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> unique(column: \"macAddress\")\n  |> group(columns: [\"vlan\"], mode:\"by\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
       ],
@@ -867,7 +867,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -365d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_urib_route_count\")\n  |> filter(fn: (r) => r[\"_field\"] == \"routeCount\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/urib-items/table4-items/Table4-list/routeCount\")\n  |> filter(fn: (r) => r[\"_field\"] == \"routeCount\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> group(columns: [\"vrfName\"], mode:\"by\")\n   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")\n\n",
           "refId": "A"
         }
       ],
@@ -928,7 +928,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_l2_vlan\")\n  |> filter(fn: (r) => r[\"_field\"] == \"BD_list/id\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bd\")\n  |> filter(fn: (r) => r[\"_field\"] == \"id\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
       ],
@@ -987,7 +987,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_l3_vrf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"id\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/inst-items/Inst-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"id\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")\n",
           "refId": "A"
         }
       ],
@@ -1070,7 +1070,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_bgp_address_family\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPaths\")\n  |> filter(fn: (r) => r[\"type\"] == \"l2vpn-evpn\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst/dom-default/af-[l2vpn-evpn]\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPaths\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1112,7 +1112,7 @@
               "mode": "off"
             }
           },
-          "displayName": "${__field.labels.name}",
+          "displayName": "${__field.labels.dn}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1120,10 +1120,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -1141,7 +1137,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
@@ -1149,7 +1145,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -365d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_bgp_configured_peers\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1191,7 +1187,7 @@
               "mode": "off"
             }
           },
-          "displayName": "${__field.labels.name}",
+          "displayName": "${__field.labels.dn}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1220,7 +1216,7 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "bottom"
         },
         "tooltip": {
           "mode": "single"
@@ -1228,7 +1224,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: -365d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_bgp_established_peers\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numEstPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> fill(column: \"_value\", usePrevious: true)",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numEstPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1308,7 +1304,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_ingress_rate\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group(columns: [\"id\"], mode:\"by\")\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/intf-items/phys-items/PhysIf-list/dbgIfIn-items\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1388,7 +1384,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_egress_rate\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group(columns: [\"id\"], mode:\"by\")\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/intf-items/phys-items/PhysIf-list/dbgIfOut-items\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1405,12 +1401,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "172.25.74.163",
-          "value": "172.25.74.163"
+          "selected": true,
+          "text": "93240YC-FX2-L02",
+          "value": "93240YC-FX2-L02"
         },
         "datasource": null,
-        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"source\",\n  measurement: \"native_system_hostname\"\n)\n  ",
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_dialout\",\n  tag: \"source\",\n  measurement: \"sys/ch\"\n)\n  ",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1419,7 +1415,31 @@
         "multi": false,
         "name": "source",
         "options": [],
-        "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"source\",\n  measurement: \"native_system_hostname\"\n)\n  ",
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_dialout\",\n  tag: \"source\",\n  measurement: \"sys/ch\"\n)\n  ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "172.25.74.61",
+          "value": "172.25.74.61"
+        },
+        "datasource": null,
+        "definition": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/state/counters\" or r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "mgmt_ip",
+        "options": [],
+        "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/state/counters\" or r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1429,12 +1449,15 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "fabric dashboard gnmi",
-  "uid": "ug6ErxV7k",
-  "version": 2
+  "title": "fabric dashboard dialout",
+  "uid": "d3GC3s4nz",
+  "version": 19
 }
+
+
+
