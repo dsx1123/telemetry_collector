@@ -159,20 +159,6 @@ function prepare_influxdb() {
         mkdir $INFLUXDB_DATA
     fi
 
-    #influx_config="$INFLUXDB_CONFIG/influx-configs"
-    #if [ -e $influx_config ]; then
-        #log "read token from existed config file"
-        #while IFS= read -r line
-        #do
-            #if [[ "$line" =~  ^[[:blank:]]+token* ]]; then
-                #IFS='=' read -a token_line <<< $line
-                #token=`sed -e 's/"//' -e 's/"$//' <<<"${token_line[1]}"`
-                #echo $token
-                #export INFLUXDB_INIT_TOKEN=$token
-            #fi
-        #done < "$influx_config"
-    #fi
-
     if [ "$pull_image" = true ]; then
         log "pull the required version of image $INFLUXDB_IMAGE"
         docker-compose pull influxdb
