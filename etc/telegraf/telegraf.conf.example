@@ -5,7 +5,7 @@
 logtarget = "file"
 logfile = "/var/log/telegraf/telegraf.log"
 debug = true
-hostname = "telemetry_collector"
+hostname = "telegraf"
 interval = "10s"
 round_interval = false
 metric_batch_size = 1000
@@ -19,14 +19,22 @@ service_address = ":57000"
 tls_cert = "/etc/telegraf/cert/telegraf.crt"
 tls_key = "/etc/telegraf/cert/telegraf.key"
 
+[inputs.cisco_telemetry_mdt.tags]
+tag1 = "nxos_dialout"
 # nxos does not support client side authentication
 # tls_allowed_cacerts = ["/etc/telegraf/ca.pem"]
+[[inputs.ping]]
+urls = ["172.25.74.61", "172.25.74.70"]
+[inputs.ping.tags]
+tag1 = "ping"
 
-[[outputs.influxdb]]
+[[outputs.influxdb_v2]]
 urls = ["http://influxdb:8086"]
-database = "nxos"
-username = "telegraf"
-password = "telegraf"
+token = "telegraf"
+organization = "Cisco"
+bucket = "nxos_dialout"
+[outputs.influxdb_v2.tagpass]
+tag1 = ["nxos_dialout", "ping"]
 
 [[outputs.file]]
 ## Files to write to, "stdout" is a specially handled file.

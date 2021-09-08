@@ -10,13 +10,10 @@ services:
     networks:
       - telemetry
     volumes:
-      - ${INFLUX_CONFIG}:/etc/influxdb
-      - ${INFLUX_DATA}:/var/lib/influxdb
-      - ${INFLUX_CONFIG}/scripts:/docker-entrypoint-initdb.d
+      - ${INFLUXDB_CONFIG}:/etc/influxdb2
+      - ${INFLUXDB_ENGINE}:/var/lib/influxdb2
     environment:
-      - INFLUXDB_ADMIN_ENABLED=true
-      - INFLUXDB_ADMIN_USER=influxdb
-      - INFLUXDB_ADMIN_PASSWORD=influxdb
+      - INFLUXD_CONFIG_PATH=/etc/influxdb
 
   telegraf:
     image: ${TELEGRAF_IMAGE}  #telegraf
@@ -31,29 +28,24 @@ services:
       - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
     entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
 
-  telegraf2:
-    # second telegraf instance with gnmi on_change subscription config only
-    # refer to README.md for detail
-    image: ${TELEGRAF_IMAGE} #telegraf
-    container_name: telegraf2
-    restart: always
+  grafana:
+    image: ${GRAFANA_IMAGE}
+    container_name: grafana
     user: "${CURRENT_UID}:${CURRENT_GID}"
-    networks:
-      - telemetry
-    volumes:
-      - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
-    entrypoint: /entrypoint.sh -config /etc/telegraf/gnmi_on_change.conf
-
-  chronograf:
-    image: ${CHRONOGRAF_IMAGE}
-    container_name: chronograf
     restart: always
     ports:
-      - 8888:8888
+      - 3000:3000
     networks:
       - telemetry
     volumes:
-      - chronograf-volume:/var/lib/chronograf # persistent volume
+      - ${GRAFANA_CONFIG}:/etc/grafana:ro
+      - grafana-volume:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWD}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_TOKEN=${INFLUXDB_INIT_TOKEN}
 networks:
   telemetry:
     ipam:
@@ -61,9 +53,6 @@ networks:
       config:
         - subnet: 172.16.238.0/24
 volumes:
-  #grafana-volume:
-    #external:
-      #name: "${GRAFANA_VOLUME}"
-  chronograf-volume:
+  grafana-volume:
     external:
-      name: "${CHRONOGRAF_VOLUME}"
+      name: "${GRAFANA_VOLUME}"
