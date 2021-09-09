@@ -3,7 +3,8 @@ Automatically build telemetry collector with telegraf, influxdb and grafana, exa
 
 # NOTE:
 This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://github.com/dsx1123/telemetry_collector/tree/chronograf_influxdb_1_x)
-
+# Screenshoot
+![gnmi dashboard](https://github.com/dsx1123/telemetry_collector/blob/master/examples/gnmi.png?raw=true)
 ## Requirements:
 docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if trying it on MacOS
 ## How to use
