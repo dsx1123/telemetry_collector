@@ -25,24 +25,21 @@ export GRAFANA_ADMIN_USER="grafana"
 export GRAFANA_ADMIN_PASSWD="cisco123"
 export INFLUXDB_INIT_TOKEN="MySecretToken"
 
-self=$0 # "$0" is just the name of the running shell script.
+self=$0
 TELEGRAF_USER="telegraf"
 TELEGRAF_CERT_PATH="$TELEGRAF_CONFIG/cert"
 GNMI_CERT_PASSWD="cisco123"
-pull_image=false # Set to "true" if you want docker-compose to pre-pull the image.
+pull_image=false # pull required image every time start
 
-# switches accept gNMI dial-in
+# swtiches accept gNMI dial-in
 switches=( "172.25.74.70:50051" \
            "172.25.74.61:50051" \
            "172.25.74.87:50051" \
            "172.25.74.88:50051" \
            "172.25.74.163:50051" \
 )
-# The list of switches above will be used in the generation of telegraf.conf file
-# to specify which switches are allowed to log in to telegraf to send data.
 
-
-# user on switch for authentication, need network-operator role at least
+# user on swtich for authentication, need network-operator role at least
 gnmi_user="telemetry"
 gnmi_password="cisco123"
 
@@ -82,7 +79,7 @@ function clean() {
     rm -rf $TELEGRAF_CONFIG/telegraf.conf
     rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
-    log "deleting grafana volume $GRAFANA_VOLUME"
+    log "deleting grafana volume $CHRONOGRAF_VOLUME"
     docker volume rm $GRAFANA_VOLUME
 }
 
@@ -193,13 +190,12 @@ function prepare_telegraf() {
     urls="urls = [$url_list]"
 
 
-    # generate telegraf config file from example
+    # modify token of telegraf.conf
     if [ ! -e $TELEGRAF_CONFIG/telegraf.conf ]; then
         log "telegraf.conf is missing"
         sed -e "0,/^token\ =.*/s//token\ = \"$INFLUXDB_INIT_TOKEN\"/" \
             -e "0,/^urls\ =.*/s//$urls/" \
             $TELEGRAF_CONFIG/telegraf.conf.example > $TELEGRAF_CONFIG/telegraf.conf
-        log "telegraf.conf has been generated from telegraf.conf.example template"
     fi
 
     # generate gnmi config file from example
@@ -210,7 +206,6 @@ function prepare_telegraf() {
             -e "0,/^password\ =.*/s//password\ = \"$gnmi_password\"/" \
             -e "0,/^token\ =.*/s//token\ = \"$INFLUXDB_INIT_TOKEN\"/" \
             $TELEGRAF_CONFIG/telegraf.d/gnmi.conf.example > $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
-        log "gnmi.conf has been generated from gnmi.conf.example template"
     fi
 
     if [ "$pull_image" = true ]; then
@@ -232,10 +227,64 @@ function check_influxdb () {
     done
 }
 
+function post_chronograf () {
+    log "wait for chronograf getting ready"
+    while true; do
+        result=`curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]; then
+            log "chronograf is ready"
+            break
+        fi
+        sleep 3
+    done
+
+    result=`curl --silent http://localhost:8888/chronograf/v1/sources`
+    if [[ $result == *'"sources":[]'* ]]; then
+        log "datasource is empty, creating datasource"
+        result=`curl \
+            --write-out '%{http_code}' \
+            --silent \
+            --output /dev/null \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d @$CHRONOGRAF_CONFIG/datasource.json \
+            http://localhost:8888/chronograf/v1/sources`
+        if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
+            log "datasource influxdb is created!"
+        else
+            log "datasource influxdb is not created! api error: $result"
+        fi
+    fi
+    result=`curl --silent http://localhost:8888/chronograf/v1/dashboards`
+    if [[ $result == *'"dashboards":[]'* ]]; then
+        log "no dashboards, importing prebuild dashboards"
+        for d in "fabric_dashboard" "fabric_dashboard_gnmi" ; do
+            result=`curl \
+                --write-out '%{http_code}' \
+                --silent \
+                --output /dev/null \
+                -X POST \
+                -H "Content-Type: application/json" \
+                -d @$CHRONOGRAF_CONFIG/$d.json \
+                http://localhost:8888/chronograf/v1/dashboards`
+            if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
+                log "dashboard $d is created!"
+            else
+                log "failed to create dashboard $d! api error: $result"
+            fi
+        done
+    fi
+}
+
+
+#bucket_id=$(influx bucket list -n isardvdi |grep isardvdi | cut -f1)
+#influx auth create --write-bucket $bucket_id -o isardvdi -d hypervisor_remote_bucket_token -u admin -t $INFLUXDB_ADMIN_TOKEN_SECRET
+#influx auth create --write-bucket $bucket_id -o isardvdi -d hypervisor_remote_bucket_token -u isardvdi -t $INFLUXDB_ADMIN_TOKEN_SECRET
+# influx config create -u ï¿½http:/localhost:8086ï¿½ -o ï¿½your-orgï¿½ -t ï¿½your-user-tokenï¿½
 
 
 function setup_influxdb() {
-    # initalize influxdb
+    # initalize infludb
     result=`curl --silent http://localhost:8086/api/v2/setup`
     if [[ $result == *'true'* ]]; then
         log "influxbd is not initialized, setup influxdb"
@@ -252,10 +301,8 @@ function setup_influxdb() {
         --active 
 
         log "remove old influx-configs file"
-	# below is for testing only when container is already up, configs won't be present, on new build
         docker exec -t influxdb rm /etc/influxdb2/influx-configs
 
-	# below will generate /etc/influxdb2/influx-configs
         log "influx setup"
         docker exec -t influxdb influx setup \
         --org $INFLUXDB_ORG \
@@ -276,9 +323,52 @@ function setup_influxdb() {
 
         userName=`docker exec influxdb influx auth list --user $INFLUXDB_USER --json | jq -r ".[] | .userName"`
         echo "userName = $userName"
-
         userID=`docker exec influxdb influx auth list --user $INFLUXDB_USER --json | jq -r ".[] | .id"`
         echo "userID for $userName = $userID"
+
+        docker exec -t influxdb influx bucket create -n $INFLUXDB_MDT_BUCKET --org-id $GENERATED_ORG_ID -r 10h -t $GENERATED_TOKEN
+        docker exec -t influxdb influx bucket create -n nxos_dialout_2 --org-id $GENERATED_ORG_ID -r 10h -t $GENERATED_TOKEN
+        docker exec -t influxdb influx bucket create -n nxos_dialout_3 --org-id $GENERATED_ORG_ID -r 10h -t $GENERATED_TOKEN
+
+        docker exec -t influxdb influx bucket find -t $GENERATED_TOKEN
+        
+        docker exec -t influxdb influx org list -t $GENERATED_TOKEN
+        docker exec -t influxdb influx bucket list -t $GENERATED_TOKEN
+        docker exec -t influxdb influx org members list -n Cisco -t $GENERATED_TOKEN
+        docker exec -t influxdb influx user create -n sclake -o Cisco -t $GENERATED_TOKEN
+        docker exec -t influxdb influx user list -n sclake -t $GENERATED_TOKEN
+        
+        #docker exec -t influxdb influx bucket create -n nxos_dialout_2 --org-id 8baee1c8d62442f2 -r 10h -t R5Zn_KPIzvZagC5bcL_sQU3pgAV3NZd6wCDeEK64FKzsLDIU9SLC-VDY3xyfExN2fdSN4qZR1yKGGFIVCPZldg==
+
+        #docker exec -t influxdb influx org find -t oL87xTVEx7l769hJH29pHnk4GNQgfU-fiZ0-kHRzxwgWgt-CsERN7YMQnQXeO-TeZvG0g9aSYOn4c3Y9xQ-y4A==
+        
+
+        # docker exec influxdb influx auth create -o $INFLUXDB_ORG \
+        #   --description grafana \
+        #   --read-bucket $INFLUX_BUCKET_ID \
+        #   --read-checks \
+        #   --read-dashboards \
+        #   --read-dbrps \
+        #   --read-notificationEndpoints \
+        #   --read-notificationRules \
+        #   --read-orgs \
+        #   --read-tasks \
+        #   --read-telegrafs \
+        #   --read-user \
+        #   --json | jq -r '.["token"]' | tee ../grafana.token.txt
+
+
+        #  create second bucket for mdt dialout
+        #  log "influx bucket create"
+        #  docker exec -t influxdb influx bucket create \
+        #  --name $INFLUXDB_MDT_BUCKET \
+        #  --org $INFLUXDB_ORG \
+        #  --token $INFLUXDB_INIT_TOKEN \
+        #  --host http://127.0.0.1:8086 \
+        #  --retention 2h \
+        #  --skip-verify
+
+        #docker exec -t influxdb influx -t $INFLUXDB_INIT_TOKEN bucket create -o $INFLUXDB_ORG -r 72h --name $INFLUXDB_MDT_BUCKET
 
     fi
 }
