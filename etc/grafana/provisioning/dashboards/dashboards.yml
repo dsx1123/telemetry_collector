@@ -14,3 +14,10 @@ providers:
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_dialout.json 
+  - name: "N7K CLI dialout"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/dashboard_n7k_dialout.json 
