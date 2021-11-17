@@ -134,6 +134,7 @@ default_md          = sha256
 encrypt_key         = no
 prompt              = no
 distinguished_name  = $common_name
+x509_extensions     = v3_ca
 
 [ $common_name ]
 C                   =$country
@@ -143,13 +144,16 @@ L                   =$locality
 CN                  =$common_name
 OU                  =$organizationalunit
 emailAddress        =$email
+
+[ v3_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true
 EOF
     log "gernerating private key for CN $common_name"
-    log "gernerating csr for CN $common_name"
-    openssl req -config $csr_config -new -newkey rsa:2048 -nodes -keyout $key_file -out $csr_file
-
+    openssl genrsa  -out $key_file 2048
     log "gerenrating certificate for CN $common_name "
-    openssl x509 -req -days 3650 -in $csr_file  -signkey $key_file -out $cert_file
+    openssl req -new -x509 -days 3650 -config $csr_config  -key $key_file -out $cert_file
 
 }
 
