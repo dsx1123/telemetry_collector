@@ -1,0 +1,37 @@
+---
+all:
+  hosts:
+    MXC.TAC.L.11-8200-01:
+      ansible_host: 10.31.122.16
+    MXC.TAC.L.11-8200-02:
+      ansible_host: 10.31.122.15
+  vars:
+    ansible_user: cisco
+    ansible_password: cisco!123
+    ansible_connection: network_cli 
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: cisco!123
+    system_vrf: Mgmt_vrf
+    template_scenario: basic
+  children:
+    cisco_ios:
+      hosts:
+        MXC.TAC.L.11-8200-01:
+        MXC.TAC.L.11-8200-02:
+      vars:
+        ansible_network_os: ios
+    cisco_ios_xr:
+      hosts:
+      vars:
+        ansible_network_os: iosxr
+    cisco_nxos:
+      hosts:
+      vars:
+        ansible_network_os: nxos
+_meta:
+  hosts:
+    MXC.TAC.L.11-8200-01:
+      dial_out_subscriptions: [102]
+    MXC.TAC.L.11-8200-02:
+      dial_out_subscriptions: [101,102]

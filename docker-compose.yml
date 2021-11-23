@@ -16,7 +16,10 @@ services:
       - INFLUXD_CONFIG_PATH=/etc/influxdb
 
   telegraf:
-    image: ${TELEGRAF_IMAGE}  #telegraf
+#    image: ${TELEGRAF_IMAGE}
+    build:
+      context: ./etc/telegraf/images/
+      dockerfile: ./latest/Dockerfile
     container_name: telegraf
     restart: always
     user: "${CURRENT_UID}:${CURRENT_GID}"
@@ -24,9 +27,13 @@ services:
       - 57000:57000
     networks:
       - telemetry
+    links:
+      - influxdb
     volumes:
       - ${TELEGRAF_CONFIG}:/etc/telegraf:ro
-    entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
+    depends_on:
+      - influxdb
+    entrypoint: /entrypoint.sh -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d --debug
 
   grafana:
     image: ${GRAFANA_IMAGE}

@@ -1,0 +1,41 @@
+---
+all:
+  hosts:
+    KLANSW-9348U-5:
+      telnet_port: 2063
+      ansible_host: 10.62.149.174
+      dial_out_subscriptions: [101]
+    KLANSW-9348U-6:
+      telnet_port: 2058
+      ansible_host: 10.62.149.175
+      dial_out_subscriptions: [101,102]
+    KLANSW-9606R-1:
+      telnet_port: 2065
+      ansible_host: 10.62.149.173
+      dial_out_subscriptions: []
+  vars:
+    ansible_user: cisco
+    ansible_password: cisco!123
+    ansible_connection: network_cli 
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: cisco!123
+  children:
+    cisco_ios:
+      hosts:
+        KLANSW-9348U-5:
+        KLANSW-9348U-6:
+        KLANSW-9606R-1:
+      vars:
+        ansible_network_os: ios
+    cisco_ios_xr:
+      hosts:
+      vars:
+        ansible_network_os: iosxr
+    cisco_nxos:
+      hosts:
+      vars:
+        ansible_network_os: nxos
+
+
+    

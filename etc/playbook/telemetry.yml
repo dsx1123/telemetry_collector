@@ -1,0 +1,36 @@
+- name: Execute role(s) to bring up telemetry solution
+  hosts: all
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+
+  - name: Error-handling block
+    block:
+  
+    - name: List devices being processed
+      debug:
+        verbosity: 0
+        msg: | 
+              Devices being processed:
+              -----------------------------
+              {{ inventory_hostname }}
+
+    - name: Execute telemetry_configuration role
+      include_role: 
+          name: telemetry_configuration
+
+    rescue:
+
+    - name: Output the unhandled failure event details
+      debug:
+        msg: "somthing happened"
+        verbosity: 0
+
+    always:
+
+    - name: Output the contents of config_repave_catalyst_result
+      debug:
+        msg: "processing complete"
+        verbosity: 0
+    

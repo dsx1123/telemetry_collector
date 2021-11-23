@@ -1,6 +1,6 @@
 [default]
   url = "http://localhost:8086"
-  token = "gwzLy82joetP1Ez6xgAUEjiO_029FvqO22LSKWoSTbKHbIO40_8B-piIwSNQb7_J4z3tvz3x-T9y29N31HJn1A=="
+  token = "MySecretToken"
   org = "Cisco"
   active = true
 # 

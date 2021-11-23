@@ -1,0 +1,74 @@
+
+
+/home/vagrant/telemetry-collector/etc/playbook/telnet_lab_fixer.py
+
+ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "10.62.149.174"
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.174
+telnet krk-com-b9.cisco.com 2063
+
+telnet krk-com-b9.cisco.com 2058
+conf t
+aaa new-model
+aaa authorization exec default local
+ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "10.62.149.175"
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.175
+
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.173
+
+
+CAT KRK LAN CAT9K 9600-1
+KLANSW-9606R-1#
+conf t
+int gig 0/0
+ip add 10.62.149.173 255.255.255.0
+no shutdown
+exit
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.201.164.1
+user admin priv 15 password cisco!123
+user cisco priv 15 password cisco!123
+enable pass 0 cisco!123
+line vty 0 4
+login local
+exit
+netconf-yang
+
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.173 -p 830
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.173
+
+KLANSW-9348U-5
+conf t
+int gig 0/0
+ip add 10.62.149.174 255.255.255.0
+no shutdown
+exit
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.201.164.1
+user admin priv 15 password cisco!123
+user cisco priv 15 password cisco!123
+enable pass 0 cisco!123
+line vty 0 4
+login local
+exit
+netconf-yang
+
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.174
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.174 -p 830
+
+KLANSW-9348U-6
+conf t
+int gig 0/0
+ip add 10.62.149.175 255.255.255.0
+no shutdown
+exit
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.201.164.1
+user admin priv 15 password cisco!123
+user cisco priv 15 password cisco!123
+enable pass 0 cisco!123
+line vty 0 4
+login local
+exit
+netconf-yang
+
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.175
+ssh -o "StrictHostKeyChecking=no" admin@10.62.149.175 -p 830
+
+

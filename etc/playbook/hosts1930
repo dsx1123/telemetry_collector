@@ -1,0 +1,37 @@
+---
+all:
+  hosts:
+    513E-A-19-N9K-C93600CD-GX-1:
+      ansible_host: 10.201.164.122
+    513E-A-19-N9K-C93600CD-GX-2:
+      ansible_host: 10.201.164.123
+  vars:
+    ansible_user: admin
+    ansible_password: cisco!123
+    ansible_connection: network_cli 
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: cisco!123
+    system_vrf: management
+    template_scenario: basic
+  children:
+    cisco_ios:
+      hosts:
+      vars:
+        ansible_network_os: ios
+    cisco_ios_xr:
+      hosts:
+      vars:
+        ansible_network_os: iosxr
+    cisco_nxos:
+      hosts:
+        513E-A-19-N9K-C93600CD-GX-1:
+        513E-A-19-N9K-C93600CD-GX-2:
+      vars:
+        ansible_network_os: nxos
+_meta:
+  hosts:
+    513E-A-19-N9K-C93600CD-GX-1:
+      dial_out_subscriptions: [101]
+    513E-A-19-N9K-C93600CD-GX-2:
+      dial_out_subscriptions: [101]

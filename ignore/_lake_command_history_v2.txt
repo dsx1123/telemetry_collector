@@ -1,0 +1,406 @@
+
+
+ansible-playbook /vagrant/etc/playbook/telemetry.yml -i /vagrant/etc/playbook/hosts
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cisco@10.62.149.173
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cisco@10.62.149.174
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cisco@10.62.149.175
+
+echo > /dev/tcp/krk-com-a7.cisco.com/23 && echo "it's up" || echo "it's down"
+echo > /dev/tcp/krk-com-a7.cisco.com/2011 && echo "it's up" || echo "it's down"
+echo > /dev/tcp/krk-com-a8.cisco.com/2018 && echo "it's up" || echo "it's down"
+
+echo > /dev/tcp/mx066-l-11-comm.cisco.com/2122 && echo "it's up" || echo "it's down"
+
+
+
+      ansible_host: 10.62.149.174
+      dial_out_subscriptions: [101] 
+    KLANSW-9348U-6:
+      telnet_port: 2058
+      ansible_host: 10.62.149.175
+      dial_out_subscriptions: [101]
+    KLANSW-9606R-1:
+      telnet_port: 2065
+      ansible_host: 10.62.149.173
+
+
+
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+
+#am5-c3650-1:
+ssh cxteam@10.122.31.50
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.50
+Ptermassword is cisco.123
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+
+Docker Problems??
+In windows PowerShell
+& 'C:\Program Files\Docker\Docker\DockerCli.exe' -SwitchDaemon
+(yes, there is a "&" before the command)
+docker image pull mcr.microsoft.com/windows/servercore:19042
+IF THIS DOESN'T WORK:
+>> Shut down all docker services
+>> Kill all Docker processes in Task Manager
+NEXT TIME:
+>> Shut down all running containers
+>> Quit Docker Desktop
+
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+
+docker build -f ${pwd}\ignore\Dockerfile.alpine.3.11.bash.txt -t 2.9.15 .
+docker build -f C:\Users\sclake\Dropbox\edge\e360-svs-ansible\ignore\Dockerfile.alpine.3.11.bash.txt -t 2.9.15 .
+
+
+docker run -it --rm -v C:\Users\sclake\Dropbox\manuscript\ansible-autopods:/ansible-autopods 2.9.15_autopods bash -i
+docker run -it --rm -v ${pwd}:/e360-svs-ansible 2.9.15 bash -i
+
+####################################################################
+##  AUTOPODS CONTAINER FOR DUAL ACCESS TO NETWORK
+####################################################################
+docker run -it --rm -v C:\Users\sclake\Dropbox\manuscript\ansible-autopods:/ansible-autopods 2.9.15_autopods bash -i
+telnet 10.122.31.8 2084
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.50####################################################################
+
+####################################################################
+AM10-C3560X-1 IP =  ssh cxteam@10.122.31.80 Console = telnet 10.122.31.14:2072
+     ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.80
+AM5-C3650-1 IP =    ssh cxteam@10.122.31.50 Console = telnet 10.122.31.8:2084
+     ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.50
+AM.9-C3850-1 IP =   ssh cxteam@10.122.31.88 Console = telnet 10.122.31.12:2089
+     ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.88
+####################################################################
+##   LLDP TESTING
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/test_scp_dest_build_config.yml'
+                                                           
+
+
+
+
+
+
+
+
+
+
+
+
+#############################################################################################
+#############################################################################################
+#############################################################################################
+
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_write_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_write_config_scp.yml'
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_source_write_config.yml' --tags test_post_checks
+####################################################################
+
+copy flash:20210818_sh_run.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy flash:20210820_sh_run.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy flash:rollback.20210518.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy flash:rollback.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy flash:intent_for_diff.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy flash:20210621-1.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+
+
+copy flash:20210621-1.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+copy scp://svs-ansible:cisco.123@10.122.5.100/20210621-1.conf flash:20210621-1.conf vrf Mgmt-vrf 
+copy flash:20210621-1.conf start
+reload
+
+
+copy run 20210821_sh_run.conf
+copy flash:20210821_sh_run.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+
+
+
+
+show archive config differences system:running-config flash:intent_for_diff.conf
+
+python stuff
+cd /e360-svs-ansible/roles/config_repave_catalyst/tasks
+python3 newline.py
+
+cat /etc/ansible/ansible.cfg | less
+
+copy flash:intent.conf scp://svs-ansible:cisco.123@10.122.5.100 vrf Mgmt-vrf
+
+#am5-c3650-1:
+ssh cxteam@10.122.31.50
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null cxteam@10.122.31.50
+
+Docker Problems??
+In windows PowerShell
+& 'C:\Program Files\Docker\Docker\DockerCli.exe' -SwitchDaemon
+(yes, there is a "&" before the command)
+docker image pull mcr.microsoft.com/windows/servercore:19042
+IF THIS DOESN'T WORK:
+>> Shut down all docker services
+>> Kill all Docker processes in Task Manager
+NEXT TIME:
+>> Shut down all running containers
+>> Quit Docker Desktop
+
+docker build -f ${pwd}\ignore\Dockerfile.alpine.3.11.bash.txt -t 2.9.15 .
+docker run -it --rm -v ${pwd}:/e360-svs-ansible 2.9.15 bash -i
+
+docker run -it --rm -v C:\Users\sclake\Dropbox\manuscript\python:/python2 2.9.15_python bash -i
+
+####################################################################
+##  AUTOPODS CONTAINER FOR DUAL ACCESS TO NETWORK
+####################################################################
+docker run -it --rm -v C:\Users\sclake\Dropbox\manuscript\ansible-autopods:/ansible-autopods 2.9.15_autopods bash -i
+telnet 10.122.31.8 2084
+ssh cxteam@10.122.31.50
+####################################################################
+AM10-C3560X-1 IP =  ssh cxteam@10.122.31.80 Console = telnet 10.122.31.14:2072
+AM5-C3650-1 IP =    ssh cxteam@10.122.31.50 Console = telnet 10.122.31.8:2084
+AM.9-C3850-1 IP =   ssh cxteam@10.122.31.88 Console = telnet 10.122.31.12:2089
+
+
+
+# if already running
+docker attach stupefied_lumiere # or docker attach [insert first two characters of container ID]
+
+cd /root/.ansible/tmp/config_repave_catalyst
+cd /e360-svs-ansible/
+
+
+docker run -it --rm -v ${pwd}:/e360-svs-ansible 2.9.15 bash -i
+ansible-playbook config_repave_catalyst.yml -i inventory/svs_hosts -l am5-c3650-1
+###################### 
+
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1
+####################################################################
+ansible-playbook tags.yaml --list-tags
+ansible-playbook tags.yaml --list-tasks
+ansible-playbook tags.yaml --list-tasks --tags=install
+####################################################################
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["write_config"] }' --list-tasks --tags post_checks,get_diff
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["write_config"] }' --list-tasks --tags post_checks,check_state_aaa
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '{ "job_type":["write_config"] }' --tags post_checks,check_state_access_sessions
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '{ "job_type":["write_config"] }' --tags post_checks,c3850
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"] }' --list-tasks --tags j2_development
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"] }' --tags j2_development,parse_facts
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"] }' --tags j2_development
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"] }' --tags j2_development
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"], trunk_ok_on_cdp_neighbor: True }' --tags j2_development
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["build_config"], trunk_ok_on_cdp_neighbor: True, ignore_unexpected_config_errors: True }' --tags j2_development
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '/e360-svs-ansible/roles/config_repave_catalyst/repave_extra_vars.json' --tags j2_development
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e 'repave_extra_vars.json' --tags j2_development
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/repave_extra_vars_sc1.json' --tags j2_development
+
+docker build -f ${pwd}\Dockerfile.alpine.3.11.bash.txt -t 2.9.15 .
+docker run -it --rm -v ${pwd}:/e360-svs-ansible 2.9.15 bash -i
+cd /root/.ansible/tmp/config_repave_catalyst
+cd /e360-svs-ansible/
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/repave_extra_vars_sc1.yml' --tags test_scp_upload
+
+##########################################
+##########################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/am5-c3650-1_build_config_svs.yml'
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////   3560s, SVS
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+MSFT Testing ==>
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/test_scp_dest_build_config.yml'
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_source_write_config.yml'
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////   3560, non-SVS
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/am5-c3650-1_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/am5-c3650-1_write_config.yml'
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/am5-c3650-1_write_config_(missing_aaa_server).yml'
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 
+3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 3850 
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/##/
+
+
+ansible-playbook /e360-svs-ansible/_ternary_testing.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1
+
+
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_source_write_config.yml'
+####################################################################
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_source_write_config.yml' --tags test_post_checks
+
+ansible-playbook 
+/e360-svs-ansible/config_repave_catalyst.yml -i 
+/e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1
+/e360-svs-ansible/roles/config_repave_catalyst/repave_extra_vars.json'
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/am5-c3650-1_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_source_write_config.yml'
+
+[] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] 
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am10-c3560x-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '@/e360-svs-ansible/tests/config_repave_catalyst/extra_vars/svs_test_scp_dest_build_config.yml'
+[] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] [] 
+
+
+
+
+copy flash:intent.conf scp://svs-ansible@10.122.5.100/20210625-3_intent.conf vrf Mgmt-vrf
+copy run scp://svs-ansible@10.122.5.100/20210625-3_shrun.conf vrf Mgmt-vrf
+
+copy flash:intent.conf scp://svs-ansible@10.122.5.100/20210625-4_intent.conf vrf Mgmt-vrf
+copy flash:rollback.conf scp://svs-ansible@10.122.5.100/20210625-4_rollback.conf vrf Mgmt-vrf
+copy start scp://svs-ansible@10.122.5.100/20210625-5_startup.conf vrf Mgmt-vrf
+copy flash:vlan.dat scp://svs-ansible@10.122.5.100/20210625-4_vlan.dat vrf Mgmt-vrf
+
+copy start scp://svs-ansible@10.122.5.100/3560x-20210625-2_startup.conf vrf mgmt
+
+
+
+
+rollback.conf
+
+
+show archive config differences system:running-config flash:intent.conf
+show archive config differences flash:intent.conf system:running-config 
+
+
+####################################################################
+
+with edge <> with edge <> with edge <> with edge <> with edge <> with edge <> with edge <> with edge <> with edge <> with edge <> 
+####################################################################
+ansible-playbook /edge/e360-svs-ansible/config_repave_catalyst.yml -i /edge/e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1
+####################################################################
+ansible-playbook /edge/e360-svs-ansible/config_repave_catalyst.yml -i /edge/e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1
+####################################################################
+
+
+
+####################################################################
+# only the cleanup lines
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "diff_exceptions":["^!Contextual Config Diffs:","^!No changes were found","^end"] }'
+####################################################################
+# exclude the banner too (note: escape's needed to send extravars that contain "\", vs actual var which does not require escapes)
+####################################################################
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1 -e '{ "diff_exceptions":["^!Contextual Config Diffs:","^!No changes were found","^end","[+|-]banner motd \\^CCCCC[\\s\\S]*?\\^C\\n","[+|-]banner motd \\^CCCCC[\\s\\S]*?\\^C"] }'
+
+
+cd /e360-svs-ansible/roles/config_repave_catalyst/tasks
+ansible-playbook _lake_practice2.yml 
+ansible-playbook _lake_practice1.yml 
+
+
+
+
+ansible-playbook /e360-svs-ansible/config_repave_catalyst.yml -i /e360-svs-ansible/inventory/svs_hosts -l am9-c3850-1 -e '{ "diff_exceptions":["^!Contextual Config Diffs:","^!No changes were found","^end"] }'
+ 
+
+ansible-playbook arcade.yml --extra-vars '{"pacman":"mrs","ghosts":["inky","pinky","clyde","sue"]}'
+
+
+git log --graph --all --simplify-by-decoration
+ git log --graph --oneline --branches
+  
+
+
+ansible-playbook config_repave_catalyst.yml -i inventory/svs_hosts -l am5-c3650-1 - e '{ "job_type":["build_config"] }'
+ansible-playbook config_repave_catalyst.yml -i inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["write_config"] }'
+###
+ansible-playbook config_repave_catalyst.yml -i inventory/svs_hosts -l am5-c3650-1 - e '{ "job_type":["build_config"] }' -vvv
+ansible-playbook config_repave_catalyst.yml -i inventory/svs_hosts -l am5-c3650-1 -e '{ "job_type":["write_config"] }' -vvv
+
+copy flash:intent.conf flash:intent.conf.back
+del flash:intent.conf
+
+
+cd /
+cd /e360-svs-ansible/roles/autonet_proxy/tasks/cisco-ios
+ansible-playbook _lake_get_diff_test_cli_command.yml -i inventory/svs_hosts -l am5-c3650-1
+ansible-playbook _lake_get_diff_test_cli_command.yml -i /e360-svs-ansible/inventory/svs_hosts -l am5-c3650-1
+
+
+Execute Command Parser Test
+cd /e360-svs-ansible/roles/network-engine/tests/command_parser/
+ansible-playbook e360-svs-ansible/roles/network-engine/tests/command_parser/test.yml -i e360-svs-ansible/roles/network-engine/tests/command_parser/tests/inventory
+
+
+
+If ydk2 container NOT up and running (docker ps -a):
+
+docker run -it -v C:\Users\sclake\Dropbox\ipvzero\ydk-practice:/ydk-practice --name ydk2 ydkdev/ydk-gen bash
+cd /ydk-practice
+If ydk2 container IS up and running (docker ps -a):
+
+docker run -it -v C:\Users\sclake\Dropbox\ipvzero\ydk-practice:/ydk-practice ydkdev/ydk-gen bash
+cd /ydk-practice
+https://github.com/CiscoDevNet/ydk-py-samples
+
+
+diff \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1.cfg \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1_secrets.cfg \
+| expand | \
+grep -E -C3 '^.{123} [|<>]( |$)' | colordiff | less -rS
+
+    am5-c3650-1.cfg
+    
+    ~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1.cfg
+    ~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1_secrets.cfg
+
+
+diff \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1.cfg \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1_secrets.cfg 
+
+colordiff -y -W 170 --suppress-common-lines \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210604081734/am5-c3650-1.cfg \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210604081734/am5-c3650-1_secrets.cfg 
+
+mcdiff \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1.cfg \
+~/.ansible/tmp/config_repave_catalyst/am5-c3650-1_20210602182505/am5-c3650-1_secrets.cfg 

@@ -1,0 +1,27 @@
+
+
+netconf-yang
+
+{% for subscription in dial_out_subscriptions -%}
+{%   if subscription == 101  -%}
+telemetry ietf subscription 101
+  encoding encode-kvgpb
+  filter xpath /process-cpu-ios-xe-oper:cpu-usage/cpu-utilization/five-seconds
+  source-address {{ansible_host}}
+  stream yang-push
+  update-policy periodic 6000
+  source-vrf {{system_vrf}}
+  receiver ip address {{telegraf_ip}} {{mdt_dial_out_port}} protocol grpc-tcp 
+{%   endif -%}
+{%   if subscription == 102  -%}
+telemetry ietf subscription 102
+  encoding encode-kvgpb
+  filter xpath /process-cpu-ios-xe-oper:cpu-usage/cpu-utilization/one-second
+  source-address {{ansible_host}}
+  stream yang-push
+  update-policy periodic 6000
+  source-vrf {{system_vrf}}
+  receiver ip address {{telegraf_ip}} {{mdt_dial_out_port}} protocol grpc-tcp 
+{%   endif -%}
+{% endfor -%}
+

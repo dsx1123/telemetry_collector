@@ -1,0 +1,8 @@
+---
+gnxi_port: 50051
+mdt_dial_out_port: 57000
+telegraf_ip:  10.19.55.4
+system_vrf: Mgmt_vrf
+telemetry_username: telemetry
+telemetry_password: cisco!123
+template_scenario: basic

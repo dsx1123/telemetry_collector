@@ -14,3 +14,10 @@ providers:
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_dialout.json 
+  - name: "Router Health Check"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/dashboard_router_health_check.json 

@@ -1,0 +1,42 @@
+---
+all:
+  hosts:
+    513E-A-18-ASR9001-1:
+      ansible_host: 10.201.189.114
+    513E-A-18-ASR9001-2:
+      ansible_host: 10.201.189.115
+    513E-A-18-ASR9001-3:
+      ansible_host: 10.201.189.115
+  vars:
+    ansible_user: cisco
+    ansible_password: cisco!123
+    ansible_connection: network_cli 
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: cisco!123
+    system_vrf: Mgmt_vrf
+    template_scenario: basic
+  children:
+    cisco_ios:
+      hosts:
+      vars:
+        ansible_network_os: ios
+    cisco_ios_xr:
+      hosts:
+      513E-A-18-ASR9001-1:
+      513E-A-18-ASR9001-2:
+      513E-A-18-ASR9001-3:
+      vars:
+        ansible_network_os: iosxr
+    cisco_nxos:
+      hosts:
+      vars:
+        ansible_network_os: nxos
+_meta:
+  hosts:
+    513E-A-18-ASR9001-1:
+      dial_out_subscriptions: [102]
+    513E-A-18-ASR9001-2:
+      dial_out_subscriptions: [101,102]
+    513E-A-18-ASR9001-3:
+      dial_out_subscriptions: [101,102]

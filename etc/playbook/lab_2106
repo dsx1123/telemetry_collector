@@ -1,0 +1,28 @@
+[
+    {'name': 'MXC.TAC.L.11-8200-01',
+     'term_server_ip': '10.88.241.69',
+     'telnet_port': 2122,
+     'sw': 'iosxe',
+     'mgmt_vrf': 'Mgmt_vrf',
+     'mgmt_ip': '10.31.122.16',
+     'mgmt_mask': '255.255.255.224',
+     'mgmt_dgw': '10.31.122.1', 
+     'mgmt_intf_name': "Gi0/0/0",
+     'username': 'admin',
+     'password': 'cisco!123',
+     'problems': ['aaa_authorization', 'no_mgmt_ip']
+    },
+    {'name': 'MXC.TAC.L.11-8200-02',
+     'term_server_ip': '10.88.241.69',
+     'telnet_port': 2123,
+     'sw': 'iosxe',
+     'mgmt_vrf': 'Mgmt_vrf',
+     'mgmt_ip': '10.31.122.15',
+     'mgmt_mask': '255.255.255.224',
+     'mgmt_dgw': '10.31.122.1', 
+     'mgmt_intf_name': "Gi0/0/0",
+     'username': 'admin',
+     'password': 'cisco!123',
+     'problems': ['aaa_authorization', 'no_mgmt_ip']
+    }
+]

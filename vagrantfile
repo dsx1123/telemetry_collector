@@ -12,9 +12,9 @@ Vagrant.configure(2) do |config|
   config.vm.define "telemetry-collector"
   config.vm.hostname = "telemetry-collector"
   config.vm.network "forwarded_port", guest: 3000, host: 3000
-  config.vm.network "forwarded_port", guest: 57500, host: 57500
+  config.vm.network "forwarded_port", guest: 57000, host: 57000
   config.vm.network "forwarded_port", guest: 8086, host: 8086
-  config.vm.network :forwarded_port, guest: 22, host: 2223
+  #config.vm.network :forwarded_port, guest: 22, host: 2223
   
   config.vm.provider "virtualbox" do |vb|
     vb.name = 'telemetry_collector'
@@ -22,20 +22,83 @@ Vagrant.configure(2) do |config|
     vb.cpus = 4
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    # Added syntax below to retain source ip's when doing inbound nat from autopods
+    # See https://forums.virtualbox.org/viewtopic.php?f=7&t=98804
+    vb.customize ["modifyvm", :id, "--nataliasmode1", "proxyonly"]
   end
 
+  # Configure shared folders
+  config.vm.synced_folder "./", "/vagrant", type: 'virtualbox',
+    owner: "vagrant",
+    group: "vagrant",
+    mount_options: ["dmode=775,fmode=664"]
+  config.vm.synced_folder "./", "/home/vagrant/telemetry-collector", type: 'virtualbox',
+    owner: "vagrant",
+    group: "vagrant",
+    mount_options: ["dmode=775,fmode=664"]
+
+  # Add docker
   config.vm.provision :docker
   config.vm.provision :docker_compose
-#  config.vm.provision "shell", inline: "cd /vagrant"
+ 
+  # Fix ssh issue between newer ubuntu versions and cisco devices
+  # See https://unix.stackexchange.com/questions/615987/ssh-to-cisco-device-fails-with-diffie-hellman-group1-sha1
+  # See https://www.infosecmatter.com/solution-for-ssh-unable-to-negotiate-errors/
+  $script = <<-SCRIPT
+  echo -n "Ciphers " >> "$HOME/.ssh/config"
+  ssh -Q cipher | tr '\n' ',' | sed -e 's/,$//' >> "$HOME/.ssh/config"
+  echo >> "$HOME/.ssh/config"
+  echo -n 'MACs ' >> "$HOME/.ssh/config"
+  ssh -Q mac | tr '\n' ',' | sed -e 's/,$//' >> "$HOME/.ssh/config"
+  echo >> "$HOME/.ssh/config"
+  echo -n 'HostKeyAlgorithms ' >> "$HOME/.ssh/config"
+  ssh -Q key | tr '\n' ',' | sed -e 's/,$//' >> "$HOME/.ssh/config"
+  echo >> "$HOME/.ssh/config"
+  echo -n 'KexAlgorithms ' >> "$HOME/.ssh/config"
+  ssh -Q kex | tr '\n' ',' | sed -e 's/,$//' >> "$HOME/.ssh/config"
+  echo >> "$HOME/.ssh/config"
+    SCRIPT
+  
+  config.vm.provision "shell", inline: $script, privileged: false  
+
+ 
+  # Fix local ssh-to-vm issue "How to fix SSH Permission denied"
+  # See https://phoenixnap.com/kb/ssh-permission-denied-publickey # Solution 1
+  $script = <<-SCRIPT
+  sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+  SCRIPT
+  config.vm.provision "shell", inline: $script, privileged: false  
+
+  # Enable two-way file sync between host file system and virtualbox vm
+  # See https://stackoverflow.com/questions/38229791/default-shared-folder-in-vagrant-not-visible
+  $script = <<-SCRIPT
+  sudo apt-get --no-install-recommends install virtualbox-guest-utils
+  SCRIPT
+  config.vm.provision "shell", inline: $script, privileged: false  
 
   config.vm.provision "shell" do |p|
     p.path = "bootstrap.sh"
   end
 
-  config.vm.provision "shell" do |p|
-    p.path = "build.sh"
-    p.args   = "start"
-  end
+  #####################################################################################################
+  # config.vm.provision "shell" do |p|
+  #   p.path = "build.sh"
+  #   p.args   = "start"
+  # end
+  #####################################################################################################
+
+
+  # Saving this syntax for later in case we need to run docker exec
+  # commands after the containers have been brought up
+  # $script = <<-SCRIPT
+  # echo output of "ip address" command on telegraf container
+  # docker exec -t telegraf ip address
+  # SCRIPT
+  
+  # Vagrant.configure("2") do |config|
+  #   config.vm.provision "shell", inline: $script
+  # end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

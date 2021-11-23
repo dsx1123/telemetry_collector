@@ -1,0 +1,151 @@
+
+
+- name: Check that device is online via ssh
+  ignore_errors: false
+  wait_for:
+    port: 22
+    state: started
+    timeout: 10
+    delay: 0
+    host: "{{ ansible_host }}"
+  register: result_wait_for_responsive
+
+- name: debug message
+  debug:
+    msg: "a message"
+
+- name: Fact collection for required show commands
+  ignore_errors: True
+  ios_command:
+    commands:
+      - show version
+  register: gathered_facts
+
+- name: debug gathered_facts
+  debug:
+    var: "gathered_facts"
+
+- name: Display dial_out_subscriptions from HOSTS file
+  debug:
+    verbosity: 0
+    msg: | 
+          template_scenario
+          -----------------------------
+          {{ template_scenario }}
+
+- name: Display dial_out_subscriptions from HOSTS file
+  debug:
+    verbosity: 0
+    msg: | 
+          dial_out_subscriptions
+          -----------------------------
+          {{ dial_out_subscriptions }}
+
+- name: gather ios_facts
+  ios_facts:
+    gather_subset: 
+      - "hardware"
+
+- name: debug ios_facts
+  debug:
+    var: "{{ansible_facts.net_version | regex_search('(^\\S\\S).*$','\\1') | first}}"
+
+- name: debug ios_facts
+  set_fact:
+    maj_sw_version: "{{ansible_facts.net_version | regex_search('(^\\S\\S).*$','\\1') | first}}"
+
+- name: debug ios_facts
+  debug:
+    var: "maj_sw_version"
+
+- name: Render J2 template to generate desired state config files
+  ignore_errors: True
+  template:
+    src: "{{ role_path }}/templates/{{template_scenario}}/{{ansible_network_os}}/dial_out_scenario_01.j2"
+    dest: "{{ role_path }}/files/dial_out_scenario_01_{{ inventory_hostname }}.cfg"
+  register: results
+
+- name: debug results from previous play
+  debug:
+    var: "results"
+
+#########################################################
+#########################################################
+#########################################################
+
+- name: render a Jinja2 template onto an IOS device using cli_config module
+  cli_config:
+    config: "{{ lookup('template', '{{ role_path }}/templates/{{template_scenario}}/{{ansible_network_os}}/dial_out_scenario_01.j2') }}"
+  register: results
+
+# - name: debug results from previous play
+#   debug:
+#     var: "results"
+
+# - name: debug message
+#   debug:
+#     msg: "Generate and apply DIAL OUT configs"
+
+# - name: render a Jinja2 template onto an IOS device using ios_config module
+#   ios_config:
+#     src: "{{ lookup('template', '{{ role_path }}/templates/dial_out_scenario_01.j2') }}"
+#   register: results
+
+# - name: debug results from previous play
+#   debug:
+#     var: "results"
+
+- name: debug message
+  debug:
+    msg: "Generate and apply DIAL IN configs"
+
+- block:
+  - name: Render J2 template to generate desired state config files
+    ignore_errors: True
+    template:
+      src: "{{ role_path }}/templates/{{template_scenario}}/{{ansible_network_os}}/dial_in_scenario_01.j2"
+      dest: "{{ role_path }}/files/dial_in_scenario_01_{{ inventory_hostname }}.cfg"
+    register: results
+
+  - name: debug results from previous play
+    debug:
+      var: "results"
+
+  - name: configure device with config
+    cli_config:
+      config: "{{ lookup('template', '{{ role_path }}/templates/{{template_scenario}}/{{ansible_network_os}}/dial_in_scenario_01.j2') }}"
+    register: results
+
+  - name: debug results from previous play
+    debug:
+      var: "results"
+
+  when: maj_sw_version == '17'
+
+- block:
+  - name: Render J2 template to generate desired state config files
+    ignore_errors: True
+    template:
+      src: "{{ role_path }}/templates/dial_in_scenario_02.j2"
+      dest: "{{ role_path }}/files/dial_in_scenario_02_{{ inventory_hostname }}.cfg"
+    register: results
+
+  - name: debug results from previous play
+    debug:
+      var: "results"
+
+  - name: configure device with config
+    cli_config:
+      config: "{{ lookup('template', '{{ role_path }}/templates/{{template_scenario}}/{{ansible_network_os}}/dial_in_scenario_02.j2') }}"
+    register: results
+
+  - name: debug results from previous play
+    debug:
+      var: "results"
+  when: maj_sw_version == '16'
+
+#########################################################
+#########################################################
+#########################################################
+
+

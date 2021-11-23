@@ -1,0 +1,438 @@
+---
+all:
+  hosts:
+    cat9400-1:
+    cat9400-2:
+    cat9300-1:
+    cat9300-2:
+    cat9300-3:
+    AM.10-ASR9001-R2:
+    AM11-c9407-1:
+    AM4-ASR1002X-1:
+    AM4-ASR1002X-2:
+    AM4-ASR1002X-3:
+    AM10-ASR9001-R6:
+    AM10-ASR9001-R7:
+    AM4-ASR9901-5-PE:
+    am9-c3850-1:
+    am5-c3650-1:
+    AM7-C9407-2:
+cisco-ios:
+  hosts:
+    cat9400-1:
+    cat9400-2:
+    cat9300-1:
+    cat9300-2:
+    cat9300-3:
+    AM11-c9407-1:
+    AM4-ASR1002X-1:
+    AM4-ASR1002X-2:
+    AM4-ASR1002X-3:
+    am9-c3850-1:
+    am5-c3650-1:
+    AM7-C9407-2:
+  vars:
+    device_os: cisco-ios
+cisco-ios-xr:
+  hosts:
+    AM.10-ASR9001-R2:
+    AM10-ASR9001-R6:
+    AM10-ASR9001-R7:
+    AM4-ASR9901-5-PE:
+  vars:
+    device_os: cisco-ios-xr
+nisconfig:
+  hosts:
+    cat9400-1:
+    cat9400-2:
+    cat9300-1:
+    cat9300-2:
+    cat9300-3:
+    AM.10-ASR9001-R2:
+    AM11-c9407-1:
+    AM4-ASR1002X-1:
+    AM4-ASR1002X-2:
+    AM4-ASR1002X-3:
+    AM10-ASR9001-R6:
+    AM10-ASR9001-R7:
+    AM4-ASR9901-5-PE:
+    am9-c3850-1:
+    am5-c3650-1:
+_meta:
+  hosts:
+    cat9400-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 24.0.0.36
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    cat9400-2:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 24.0.0.42
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    cat9300-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 24.0.0.18
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    cat9300-2:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 24.0.0.24
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    cat9300-3:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.64
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM.10-ASR9001-R2:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.70
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM11-c9407-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: ''
+      msit_serialnumber: 
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.102
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM4-ASR1002X-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: ''
+      msit_serialnumber: 
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.86
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM4-ASR1002X-2:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: ''
+      msit_serialnumber: 
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.47
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM4-ASR1002X-3:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: ''
+      msit_serialnumber: 
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.48
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM10-ASR9001-R6:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.107
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM10-ASR9001-R7:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.108
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM4-ASR9901-5-PE:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.105
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    am9-c3850-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.88
+      ansible_user: cxteam
+      ansible_password: cisco.123
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    am5-c3650-1:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.50
+      ansible_user: cxteam
+      ansible_password: cisco.123
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+    AM7-C9407-2:
+      msit_buildingitsitetypedesc: High Availability Building (HA)
+      msit_devicemodel: Cisco 3560G-24TS
+      msit_county2: US
+      msit_city: REDMOND, WA
+      msit_assettag: '1651436'
+      msit_serialnumber: FOC1111Z986
+      msit_region: PUGET SOUND
+      msit_placeinnetwork: Building Access
+      msit_devicefamily: Cisco IOS
+      msit_sitecode: USREDRWE
+      msit_critical: 'No'
+      msit_partition: Default
+      msit_buildingname: REDW-E
+      msit_devicetypename: Switch
+      msit_sysobjid: 1.3.6.1.4.1.9.1.615
+      msit_username: admin
+      msit_vendor: Cisco
+      msit_country: United States
+      ansible_host: 10.122.31.112
+      ansible_user: cxteam
+      ansible_password: cisco.123
+      msit_buildingid: 33
+      msit_snmpdomain: CorpNet
+cisco:
+  hosts:
+    cat9400-1:
+    cat9400-2:
+    cat9300-1:
+    cat9300-2:
+    cat9300-3:
+    AM.10-ASR9001-R2:
+    AM11-c9407-1:
+    AM4-ASR1002X-1:
+    AM4-ASR1002X-2:
+    AM4-ASR1002X-3:
+    AM10-ASR9001-R6:
+    AM10-ASR9001-R7:
+    AM4-ASR9901-5-PE:
+    am9-c3850-1:
+    am5-c3650-1:
+    AM7-C9407-2:

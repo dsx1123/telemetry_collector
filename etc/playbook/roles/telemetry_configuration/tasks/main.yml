@@ -1,0 +1,7 @@
+---
+
+
+- name: apply template
+  include_tasks: apply_template.yml
+
+
