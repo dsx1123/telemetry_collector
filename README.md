@@ -60,7 +60,7 @@ docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if 
 4. It will import two pre-built dashboards. `fabric_dashboard` is example of querying data from telemetry dial-out, you can find the example of swtich telemetry config that is used for this dashboard in [telemetry.cfg](/examples/telemetry.cfg), `fabric_dashboard_gnmi` is example of querying data from gNMI dial-in.
 
 5. Example of telegraf configuration can be found below:
-   - [telegraf.conf](etc/telegraf/telegraf.conf) example of cisco_telemetry_mdt config
+   - [telegraf.conf.example](etc/telegraf/telegraf.d/telegraf.conf.example) example of cisco_telemetry_mdt config
    - [gnmi.conf.example](etc/telegraf/telegraf.d/gnmi.conf.example) exmaple of sample-based gnmi plugin config
    - [gnmi_on_change.conf.example](etc/telegraf/gnmi_on_change.conf.example) exmaple of event-based plugin config
 
