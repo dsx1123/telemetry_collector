@@ -1,5 +1,5 @@
 # telemetry_collector
-Automatically build telemetry collector with telegraf, influxdb and grafana, example of sensor paths is using native yang model and OpenConfig yang model of NX-OS as example. `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create containers with docker-compose. tested with `telegraf>=1.12.1`, `2.0 <=influxdb` and `grafana>=8.1`.
+Automatically build telemetry collector with telegraf, influxdb and grafana, example of sensor paths is using native yang model and OpenConfig yang model of NX-OS as example. `build.sh` script will create self-signled cerificates for TLS transport. Using docker images of telegraf, influxdb and grafana to create containers with docker-compose. tested with `telegraf >= 1.12.1`, `influxdb >= 2.0` and `grafana>=8.1`.
 
 # NOTE:
 This project has upgraded the influxdb to 2.0 which is not supported by chronograf anymore, dashboard is changed to grafana with new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://github.com/dsx1123/telemetry_collector/tree/chronograf_influxdb_1_x)
@@ -57,7 +57,7 @@ docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if 
     switch(config-trustpoint)# crypto ca import gnmi_trustpoint pkcs12 bootflash:gnmi.pfx <export password>
     switch(config)# grpc certificate gnmi_trustpoint
     ```
-4. It will import two pre-built dashboards. `fabric_dashboard` is example of querying data from telemetry dial-out, you can find the example of swtich telemetry config that is used for this dashboard in [telemetry.cfg](/examples/telemetry.cfg), `fabric_dashboard_gnmi` is example of querying data from gNMI dial-in.
+4. It will import two pre-built dashboards. `fabric dashboard dialout` is example of querying data from telemetry dial-out, you can find the example of swtich telemetry config that is used for this dashboard in [telemetry.cfg](/examples/telemetry.cfg), `fabric dashboard gnmi` is example of querying data from gNMI dial-in.
 
 5. Example of telegraf configuration can be found below:
    - [telegraf.conf.example](etc/telegraf/telegraf.conf.example) example of cisco_telemetry_mdt config
