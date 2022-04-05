@@ -37,8 +37,8 @@ switches=( "172.25.74.70:50051" \
 )
 
 # user on swtich for authentication, need network-operator role at least
-gnmi_user="telemetry"
-gnmi_password="cisco123"
+gnmi_user="$(echo $GNMI_USER)"
+gnmi_password="$(echo $GNMI_PASSWORD)"
 
 #For telegraf certificate
 country=US

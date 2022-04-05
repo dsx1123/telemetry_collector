@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1631083692149,
+  "iteration": 1649120041501,
   "links": [],
   "panels": [
     {
@@ -867,7 +867,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/urib-items/table4-items/Table4-list/routeCount\")\n  |> filter(fn: (r) => r[\"_field\"] == \"routeCount\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> group(columns: [\"vrfName\"], mode:\"by\")\n   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")\n\n",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/urib-items/table4-items/Table4-list/routeCount\")\n  |> filter(fn: (r) => r[\"_field\"] == \"routeCount\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group(columns: [\"vrfName\"], mode:\"by\")\n   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")\n\n",
           "refId": "A"
         }
       ],
@@ -1070,7 +1070,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst/dom-default/af-[l2vpn-evpn]\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPaths\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst/dom-default/af-[l2vpn-evpn]\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPaths\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1145,7 +1145,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1224,7 +1224,7 @@
       },
       "targets": [
         {
-          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numEstPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"93240YC-FX2-L01\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numEstPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -1401,7 +1401,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "93240YC-FX2-L02",
           "value": "93240YC-FX2-L02"
         },
@@ -1425,9 +1425,10 @@
       {
         "allValue": null,
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "172.25.74.61",
-          "value": "172.25.74.61"
+          "text": "None",
+          "value": ""
         },
         "datasource": null,
         "definition": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/state/counters\" or r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()",
@@ -1456,8 +1457,5 @@
   "timezone": "",
   "title": "fabric dashboard dialout",
   "uid": "d3GC3s4nz",
-  "version": 19
+  "version": 6
 }
-
-
-
