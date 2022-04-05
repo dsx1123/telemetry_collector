@@ -217,7 +217,7 @@ function check_influxdb () {
     # check if influxdb is ready for connection
     log "waiting for influxdb getting ready"
     while true; do
-        result=`curl -w %{http_code} --silent --output /dev/null http://localhost:8086/api/v2/setup`
+        result=`curl --noproxy '*' -w %{http_code} --silent --output /dev/null http://localhost:8086/api/v2/setup`
         if [ $result -eq 200 ]; then
             log "influxdb is online!"
             break
