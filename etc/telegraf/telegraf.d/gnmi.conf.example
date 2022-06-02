@@ -26,6 +26,13 @@ subscription_mode = "sample"
 sample_interval = "10s"
 
 [[inputs.cisco_telemetry_gnmi.subscription]]
+name = "boot-time"
+origin = "openconfig"
+path = "/system/state"
+subscription_mode = "sample"
+sample_interval = "600s"
+
+[[inputs.cisco_telemetry_gnmi.subscription]]
 origin = "openconfig"
 path = "/system/processes/process/state"
 name = "oc_process_state"
