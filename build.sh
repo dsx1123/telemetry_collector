@@ -106,6 +106,7 @@ function gen_telegraf_cert() {
         then
             log "$cn certificate does not exist, generating"
             generate_self_signed_cert $cn $TELEGRAF_CERT_PATH
+            chmod 444 $TELEGRAF_CERT_PATH/$cn.key
         fi
     done
     if [ ! -e $TELEGRAF_CERT_PATH/$cn_gnmi.pfx ]; then
