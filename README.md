@@ -11,9 +11,11 @@ docker-ce, openssl, docker-compose, any linux distribution, see Known Issues if 
 
  1. to quick start, set environment variables `GNMI_USER` and `GNMI_PASSWORD`, this user need be configured on nxos with network-operator role at least, then use `sudo ./build.sh start` to start the containers:
     ```bash
-    # export GNMI_USER=telemetry
-    # export GNMI_PASSWORD=SuperSecretPassword
-    # ./build.sh start
+    export GNMI_USER=telemetry
+    export GNMI_PASSWORD=SuperSecretPassword
+    ./build.sh start
+    ```
+    ```
     2020-07-30T22:49:02--LOG--influxdb database folder is not existed, creating one
     2020-07-30T22:49:02--LOG--change permission of config and data folder of influxdb
     2020-07-30T22:49:02--LOG--gernerating self-signed certificates for telegraf plugins
