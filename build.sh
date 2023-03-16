@@ -76,7 +76,7 @@ function clean() {
     rm -rf $TELEGRAF_CONFIG/telegraf.conf
     rm -rf $TELEGRAF_CONFIG/telegraf.d/gnmi.conf
 
-    log "deleting grafana volume $CHRONOGRAF_VOLUME"
+    log "deleting grafana volume $GRAFANA_VOLUME"
     docker volume rm $GRAFANA_VOLUME
 }
 
@@ -227,55 +227,6 @@ function check_influxdb () {
     done
 }
 
-function post_chronograf () {
-    log "wait for chronograf getting ready"
-    while true; do
-        result=`curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:8888/chronograf/v1/sources`
-        if [ $result -eq 200 ]; then
-            log "chronograf is ready"
-            break
-        fi
-        sleep 3
-    done
-
-    result=`curl --silent http://localhost:8888/chronograf/v1/sources`
-    if [[ $result == *'"sources":[]'* ]]; then
-        log "datasource is empty, creating datasource"
-        result=`curl \
-            --write-out '%{http_code}' \
-            --silent \
-            --output /dev/null \
-            -X POST \
-            -H "Content-Type: application/json" \
-            -d @$CHRONOGRAF_CONFIG/datasource.json \
-            http://localhost:8888/chronograf/v1/sources`
-        if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
-            log "datasource influxdb is created!"
-        else
-            log "datasource influxdb is not created! api error: $result"
-        fi
-    fi
-    result=`curl --silent http://localhost:8888/chronograf/v1/dashboards`
-    if [[ $result == *'"dashboards":[]'* ]]; then
-        log "no dashboards, importing prebuild dashboards"
-        for d in "fabric_dashboard" "fabric_dashboard_gnmi" ; do
-            result=`curl \
-                --write-out '%{http_code}' \
-                --silent \
-                --output /dev/null \
-                -X POST \
-                -H "Content-Type: application/json" \
-                -d @$CHRONOGRAF_CONFIG/$d.json \
-                http://localhost:8888/chronograf/v1/dashboards`
-            if [ $result -eq 200 ]  || [ $result -eq 201 ]; then
-                log "dashboard $d is created!"
-            else
-                log "failed to create dashboard $d! api error: $result"
-            fi
-        done
-    fi
-}
-
 function setup_influxdb() {
     # initalize infludb
     result=`curl --silent http://localhost:8086/api/v2/setup`
@@ -301,6 +252,10 @@ function start() {
     docker --version >/dev/null 2>&1
     if [ ! $? -eq 0 ]; then
         log "docker is not installed, exist"
+        exit 1
+    fi
+    if [ -z $gnmi_user ]; then 
+        log "set envrionment variables GNMI_USER first before start!"
         exit 1
     fi
     prepare_influxdb
@@ -333,8 +288,7 @@ function reset () {
 
 function restart_svc () {
     if [ $# -eq 0 ]; then
-        stop
-        start
+        docker-compose restart telegraf influxdb grafana
         exit 0
     fi
     case "$1" in
@@ -344,8 +298,8 @@ function restart_svc () {
         influxdb)
             docker-compose restart influxdb
             ;;
-        chronograf)
-            docker-compose restart chronograf
+        grafana)
+            docker-compose restart grafana
             ;;
         *)
             display_help
@@ -361,7 +315,7 @@ function display_help() {
     echo "  restart:   restart docker containers for telegraf/influxdb/grafana"
     echo "  cert   :   generate certificates for telegraf plugin"
     echo "  clean  :   clean the database of influxdb, volume of grafana"
-    echo "  reset  :   reset project to inital state"
+    echo "  reset  :   reset project to initial state"
 }
 
 
