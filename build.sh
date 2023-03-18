@@ -191,7 +191,6 @@ function prepare_telegraf() {
     url_list=`printf -- "\"%s\"," ${IPs[*]} | cut -d "," -f 1-${#IPs[@]}`
     urls="urls = [$url_list]"
 
-
     # modify token of telegraf.conf
     if [ ! -e $TELEGRAF_CONFIG/telegraf.conf ]; then
         sed -e "0,/^token\ =.*/s//token\ = \"$INFLUXDB_INIT_TOKEN\"/" \
@@ -254,7 +253,7 @@ function start() {
         log "docker is not installed, exist"
         exit 1
     fi
-    if [ -z $gnmi_user ]; then 
+    if [ -z $gnmi_user ]; then
         log "set envrionment variables GNMI_USER first before start!"
         exit 1
     fi

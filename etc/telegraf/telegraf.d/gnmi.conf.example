@@ -102,12 +102,14 @@ origin = "device"
 path = "/System/alarms-items/alarm-items"
 name = "native_alarm"
 subscription_mode = "on_change"
+heartbeat_interval = "300s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/showversion-items"
 name = "native_system_version"
 subscription_mode = "on_change"
+heartbeat_interval = "3600s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -121,6 +123,7 @@ origin = "device"
 path = "/System/intf-items/phys-items/PhysIf-list/phys-items/operSt"
 name = "native_interface_operSt"
 subscription_mode = "on_change"
+heartbeat_interval = "300s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -134,20 +137,21 @@ origin = "device"
 path = "/System/intf-items/phys-items/PhysIf-list/dbgIfIn-items"
 name = "native_ingress_rate"
 subscription_mode = "sample"
-sample_interval = "30s"
+sample_interval = "10s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/intf-items/phys-items/PhysIf-list/dbgIfOut-items"
 name = "native_egress_rate"
 subscription_mode = "sample"
-sample_interval = "30s"
+sample_interval = "10s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/mac-items/table-items/vlan-items/MacAddressEntry-list"
 name = "native_mac_address_table"
 subscription_mode = "on_change"
+heartbeat_interval = "300s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -161,6 +165,7 @@ origin = "device"
 path = "/System/bd-items/bd-items"
 name = "native_l2_vlan"
 subscription_mode = "on_change"
+heartbeat_interval = "300s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -174,6 +179,7 @@ origin = "device"
 path = "/System/inst-items/Inst-list"
 name = "native_l3_vrf"
 subscription_mode = "on_change"
+heartbeat_interval = "300s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -187,12 +193,14 @@ origin = "device"
 path = "/System/urib-items/table4-items/Table4-list/routeCount"
 name = "native_urib_route_count"
 subscription_mode = "on_change"
+heartbeat_interval = "30s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/u6rib-items/table6-items/Table6-list/routeCount"
 name = "native_u6rib_route_count"
 subscription_mode = "on_change"
+heartbeat_interval = "30s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -213,19 +221,21 @@ origin = "device"
 path = "/System/bgp-items/inst-items/dom-items/Dom-list/numEstPeers"
 name = "native_bgp_established_peers"
 subscription_mode = "on_change"
+heartbeat_interval = "10s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/bgp-items/inst-items/dom-items/Dom-list/numEstPeers"
 name = "native_bgp_established_peers"
 subscription_mode = "sample"
-sample_interval = "30s"
+sample_interval = "10s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/bgp-items/inst-items/dom-items/Dom-list/numPeers"
 name = "native_bgp_configured_peers"
 subscription_mode = "on_change"
+heartbeat_interval = "30s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"

@@ -22,7 +22,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1659982379607,
+  "iteration": 1679101585623,
   "links": [],
   "panels": [
     {
@@ -145,7 +145,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n    |> filter(fn: (r) => r[\"url\"] == \"${mgmt_ip}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n  |> filter(fn: (r) => r[\"url\"] == \"${mgmt_ip}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
@@ -560,7 +560,7 @@
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "query": "tempValue = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tempValue\")\n  |> filter(fn: (r) => r[\"source\"] == \"93180YC-FX-L03-S4\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"dn\"])\nmodel = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"model\")\n  |> filter(fn: (r) => r[\"source\"] == \"93180YC-FX-L03-S4\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"id\"])\njoin(tables: {d1: tempValue, d2: model}, on: [\"_time\", \"id\"])\n  |> group(columns: [\"_value_d2\"], mode:\"by\")\n",
+          "query": "tempValue = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tempValue\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"dn\"])\nmodel = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"model\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"id\"])\njoin(tables: {d1: tempValue, d2: model}, on: [\"_time\", \"id\"])\n  |> group(columns: [\"_value_d2\"], mode:\"by\")\n",
           "refId": "A"
         }
       ],
@@ -1392,7 +1392,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
@@ -1430,7 +1430,7 @@
           "value": "172.25.74.87"
         },
         "datasource": null,
-        "definition": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface[name=mgmt0]/subinterfaces/subinterface[index=0]/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> yield(name: \"last\")",
+        "definition": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"name\"] == \"mgmt0\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> yield(name: \"last\")",
         "description": null,
         "error": null,
         "hide": 2,
@@ -1439,7 +1439,7 @@
         "multi": false,
         "name": "mgmt_ip",
         "options": [],
-        "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface[name=mgmt0]/subinterfaces/subinterface[index=0]/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> yield(name: \"last\")",
+        "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"name\"] == \"mgmt0\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> yield(name: \"last\")",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1456,5 +1456,5 @@
   "timezone": "",
   "title": "fabric dashboard dialout",
   "uid": "d3GC3s4nz",
-  "version": 6
+  "version": 5
 }

@@ -18,13 +18,15 @@ service_address = ":57000"
 # uncomment below to enable tls for dial-out plguin
 tls_cert = "/etc/telegraf/cert/telegraf.crt"
 tls_key = "/etc/telegraf/cert/telegraf.key"
+# nxos does not support client side authentication
+# tls_allowed_cacerts = ["/etc/telegraf/ca.pem"]
 
 [inputs.cisco_telemetry_mdt.tags]
 tag1 = "nxos_dialout"
-# nxos does not support client side authentication
-# tls_allowed_cacerts = ["/etc/telegraf/ca.pem"]
+
 [[inputs.ping]]
 urls = ["172.25.74.61", "172.25.74.70"]
+
 [inputs.ping.tags]
 tag1 = "ping"
 
