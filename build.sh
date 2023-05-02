@@ -230,7 +230,7 @@ function setup_influxdb() {
     # initalize infludb
     result=`curl --silent http://localhost:8086/api/v2/setup`
     if [[ $result == *'true'* ]]; then
-        log "influxbd is not initialized, setup influxdb"
+        log "influxdb is not initialized, setup influxdb"
         docker exec -t influxdb influx setup \
             --org $INFLUXDB_ORG\
             --bucket $INFLUXDB_BUCKET\
