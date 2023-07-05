@@ -9,8 +9,8 @@ export CURRENT_UID=`id -u`
 export CURRENT_GID=`id -g`
 
 export TELEGRAF_IMAGE="telegraf:latest"
-export INFLUXDB_IMAGE="influxdb:2.0.8"
-export GRAFANA_IMAGE="grafana/grafana:8.1.2"
+export INFLUXDB_IMAGE="influxdb:2.7.1"
+export GRAFANA_IMAGE="grafana/grafana:9.5.2"
 
 export INFLUXDB_USER="influxdb"
 export INFLUXDB_PASSWD="cisco123"
@@ -29,12 +29,16 @@ GNMI_CERT_PASSWD="cisco123"
 pull_image=false # pull required image every time start
 
 # swtiches accept gNMI dial-in
+# exmaple 
 switches=( "172.25.74.70:50051" \
            "172.25.74.61:50051" \
            "172.25.74.87:50051" \
            "172.25.74.88:50051" \
            "172.25.74.163:50051" \
+           "172.25.74.60:50051" \
+           "172.25.74.62:50051" \
 )
+#switches=()
 
 # user on swtich for authentication, need network-operator role at least
 gnmi_user="$(echo $GNMI_USER)"
@@ -68,7 +72,7 @@ function join_by {
 function clean() {
     # clean database of influxdb and volume of grafana
     log "cleaning influxdb database"
-    rm -rf $INFLUXDB_ENGINE
+    rm -rf $INFLUXDB_ENGINE/engine
     rm -rf $INFLUXDB_CONFIG/influx-configs
 
     log "remove generated gnmi config"
@@ -308,13 +312,14 @@ function restart_svc () {
 
 function display_help() {
     echo "Usage: $self {start|stop|restart|cert|clean}"
-    echo "  start  :   start docker containers for telegraf/influxdb/grafana"
-    echo "  stop   :   stop docker containers for telegraf/influxdb/grafana"
-    echo "  down   :   stop and remove docker containers for telegraf/influxdb/grafana"
-    echo "  restart:   restart docker containers for telegraf/influxdb/grafana"
-    echo "  cert   :   generate certificates for telegraf plugin"
-    echo "  clean  :   clean the database of influxdb, volume of grafana"
-    echo "  reset  :   reset project to initial state"
+    echo "  start   :   start docker containers for telegraf/influxdb/grafana"
+    echo "  stop    :   stop docker containers for telegraf/influxdb/grafana"
+    echo "  down    :   stop and remove docker containers for telegraf/influxdb/grafana"
+    echo "  restart :   restart docker containers for telegraf/influxdb/grafana"
+    echo "  generate:   generate telegraf config"
+    echo "  cert    :   generate certificates for telegraf plugin"
+    echo "  clean   :   clean the database of influxdb, volume of grafana"
+    echo "  reset   :   reset project to initial state"
 }
 
 
@@ -330,6 +335,9 @@ case "$1" in
         ;;
     restart)
         restart_svc $2
+        ;;
+    generate)
+        prepare_telegraf
         ;;
     cert)
         gen_telegraf_cert

@@ -14,6 +14,7 @@ services:
       - ${INFLUXDB_ENGINE}:/var/lib/influxdb2
     environment:
       - INFLUXD_CONFIG_PATH=/etc/influxdb
+      - INFLUXD_ENGINE_PATH=/var/lib/influxdb2/engine
 
   telegraf:
     image: ${TELEGRAF_IMAGE}  #telegraf
@@ -41,6 +42,9 @@ services:
       - ${GRAFANA_CONFIG}:/etc/grafana:ro
       - grafana-volume:/var/lib/grafana
     environment:
+      - http_proxy=http://proxy.esl.cisco.com
+      - https_proxy=http://proxy.esl.cisco.com
+      - no_proxy=localhost,influxdb,.cisco.com
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWD}
       - INFLUXDB_ORG=${INFLUXDB_ORG}

@@ -9,11 +9,12 @@ password = "cisco"
 ### enable client-side TLS and define CA to authenticate the device
 enable_tls = true
 tls_ca = "/etc/telegraf/cert/gnmi.crt"
+# set insecure_skip_verify to false to enable server certificate verification
 insecure_skip_verify = true
 
 ### redial in case of failures after
-#redial = "10s"
-#
+redial = "10s"
+
 [inputs.gnmi.tags]
 tag1 = "nxos_gnmi"
 
@@ -99,6 +100,13 @@ sample_interval = "15s"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
+path = "/System/cdp-items/inst-items/if-items/If-list/adj-items/AdjEp-list"
+name = "native_cdp_adj"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
 path = "/System/alarms-items/alarm-items"
 name = "native_alarm"
 subscription_mode = "on_change"
@@ -108,8 +116,15 @@ subscription_mode = "on_change"
 origin = "device"
 path = "/System/showversion-items"
 name = "native_system_version"
-subscription_mode = "on_change"
-#heartbeat_interval = "3600s"
+subscription_mode = "sample"
+sample_interval = "5m"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/ch-items/model"
+name = "native_hardware_model"
+subscription_mode = "sample"
+sample_interval = "5m"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -145,6 +160,13 @@ path = "/System/intf-items/phys-items/PhysIf-list/dbgIfOut-items"
 name = "native_egress_rate"
 subscription_mode = "sample"
 sample_interval = "10s"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/intf-items/phys-items/PhysIf-list/phys-items/operSpeed"
+name = "native_oper_speed"
+subscription_mode = "sample"
+sample_interval = "5m"
 
 [[inputs.gnmi.subscription]]
 origin = "device"
@@ -251,6 +273,39 @@ name = "native_bgp_address_family"
 subscription_mode = "sample"
 sample_interval = "30s"
 
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/peer-items/Peer-list/ent-items/PeerEntry-list/operSt"
+name = "native_bgp_peers_status"
+subscription_mode = "sample"
+sample_interval = "5m"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/bgp-items/inst-items/dom-items/Dom-list/peer-items/Peer-list/ent-items/PeerEntry-list/operSt"
+name = "native_bgp_peers_status"
+subscription_mode = "on_change"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/capacity-items/scale-items"
+name = "native_scale"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+[[inputs.gnmi.subscription]]
+origin = "Syslog-oper"
+path = "/syslog/messages"
+name = "native_syslog"
+subscription_mode = "on_change"
+
+[[inputs.gnmi.subscription]]
+origin = "device"
+path = "/System/arp-items/inst-items/dom-items/Dom-list/db-items/Db-list/adj-items/AdjEp-list"
+name = "native_arp_table"
+subscription_mode = "sample"
+sample_interval = "30"
+
 [[outputs.influxdb_v2]]
 urls = ["http://influxdb:8086"]
 token = "telegraf"
@@ -258,3 +313,4 @@ organization = "Cisco"
 bucket = "nxos_gnmi"
 [outputs.influxdb_v2.tagpass]
 tag1 = ["nxos_gnmi", "ping"]
+

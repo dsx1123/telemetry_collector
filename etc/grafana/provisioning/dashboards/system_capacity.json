@@ -1,0 +1,215 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 5,
+  "iteration": 1683906413928,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "panels": [],
+      "repeat": "source",
+      "title": "${source}",
+      "type": "row"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": ""
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 12,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^_value scale$/",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.1.2",
+      "repeat": "Type",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "hide": false,
+          "query": "type = \"${Type}\"\nfrom(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_scale\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tech_items/Technology_list/feat_items/Feature_list/scale_value\" )\n  |> filter(fn: (r) => r[\"device:/System/capacity-items/scale-items/tech-items/Technology-list/feat-items/Feature-list/name\"] == type)\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> map(fn: (r) => ({ _field: \"scale\",  _value: r._value}))",
+          "refId": "A"
+        },
+        {
+          "hide": false,
+          "query": "import \"math\"\ntype = \"${Type}\"\nfrom(bucket: \"nxos_gnmi\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"native_scale\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tech_items/Technology_list/feat_items/Feature_list/verified_scale\" )\n  |> filter(fn: (r) => r[\"device:/System/capacity-items/scale-items/tech-items/Technology-list/feat-items/Feature-list/name\"] == type)\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> map(fn: (r) => ({ _field: \"verified\",  _value: r._value, threshold: math.round(x: float(v: r._value) * 0.8)}))",
+          "refId": "B"
+        }
+      ],
+      "title": "${Type}",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byType",
+              "options": "number"
+            },
+            "configRefId": "B",
+            "mappings": [
+              {
+                "fieldName": "_value verified",
+                "handlerKey": "max"
+              },
+              {
+                "fieldName": "threshold verified",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "gauge"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": null,
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"source\",\n  measurement: \"native_system_hostname\"\n)\n  ",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": false,
+        "name": "source",
+        "options": [],
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"source\",\n  measurement: \"native_system_hostname\"\n)\n  ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "IPv4-Arp",
+            "IPv4-Host-Routes",
+            "IPv4-LPM-routes",
+            "IPv6-Host-Routes",
+            "IPv6-LPM-routes",
+            "IPv6-ND",
+            "MAC-Addresses",
+            "VLANs",
+            "VRFs"
+          ],
+          "value": [
+            "IPv4-Arp",
+            "IPv4-Host-Routes",
+            "IPv4-LPM-routes",
+            "IPv6-Host-Routes",
+            "IPv6-LPM-routes",
+            "IPv6-ND",
+            "MAC-Addresses",
+            "VLANs",
+            "VRFs"
+          ]
+        },
+        "datasource": null,
+        "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"device:/System/capacity-items/scale-items/tech-items/Technology-list/feat-items/Feature-list/name\",\n  measurement: \"native_scale\"\n)\n  ",
+        "description": null,
+        "error": null,
+        "hide": 1,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Type",
+        "options": [],
+        "query": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_gnmi\",\n  tag: \"device:/System/capacity-items/scale-items/tech-items/Technology-list/feat-items/Feature-list/name\",\n  measurement: \"native_scale\"\n)\n  ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "System Capacity",
+  "uid": "6MmYMD8Vz",
+  "version": 32
+}

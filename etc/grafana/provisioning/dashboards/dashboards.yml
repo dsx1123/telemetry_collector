@@ -14,3 +14,27 @@ providers:
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/dashboard_vxlan_dialout.json 
+
+  - name: "System Capacity"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 300
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/system_capacity.json
+
+  - name: "Endpoints"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/endpoints.json
+
+  - name: "Interface Counters"
+    orgId: 1
+    type: file
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/interface_counters.json
