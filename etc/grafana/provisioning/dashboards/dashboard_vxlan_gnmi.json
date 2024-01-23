@@ -77,7 +77,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -155,7 +155,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -217,7 +217,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -280,7 +280,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -343,7 +343,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -395,6 +395,8 @@
       },
       "id": 2,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -407,7 +409,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -459,6 +461,8 @@
       },
       "id": 4,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -471,7 +475,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -540,7 +544,7 @@
               }
             ]
           },
-          "unit": "kwatt"
+          "unit": "watt"
         },
         "overrides": []
       },
@@ -555,6 +559,7 @@
         "displayMode": "lcd",
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -567,7 +572,7 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -622,6 +627,7 @@
         "displayMode": "lcd",
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -634,7 +640,7 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -662,6 +668,7 @@
           },
           "mappings": [],
           "min": 0,
+          "noValue": "N/A",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -700,7 +707,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -728,6 +735,7 @@
           },
           "mappings": [],
           "min": 0,
+          "noValue": "N/A",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -766,7 +774,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -871,7 +879,8 @@
             }
           },
           "displayName": "${__field.labels.vlan}",
-          "mappings": []
+          "mappings": [],
+          "noValue": "N/A"
         },
         "overrides": []
       },
@@ -1008,7 +1017,7 @@
         "frameIndex": 3,
         "showHeader": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -1074,7 +1083,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -1140,7 +1149,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -1166,6 +1175,7 @@
             "mode": "fixed"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1179,6 +1189,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1259,6 +1270,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1272,6 +1284,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1351,6 +1364,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1364,6 +1378,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 2,
@@ -1441,6 +1456,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1454,6 +1470,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1531,6 +1548,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1544,6 +1562,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1567,8 +1586,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1629,6 +1647,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1642,6 +1661,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1664,8 +1684,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1719,16 +1738,14 @@
   ],
   "refresh": "5s",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "172.25.74.163",
+          "value": "172.25.74.163"
         },
         "datasource": {
           "type": "influxdb",
@@ -1757,7 +1774,6 @@
   "timezone": "",
   "title": "fabric dashboard gnmi",
   "uid": "ug6ErxV7k",
-  "version": 33,
+  "version": 5,
   "weekStart": ""
 }
-

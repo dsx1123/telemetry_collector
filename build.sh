@@ -10,7 +10,7 @@ export CURRENT_GID=`id -g`
 
 export TELEGRAF_IMAGE="telegraf:latest"
 export INFLUXDB_IMAGE="influxdb:2.7.1"
-export GRAFANA_IMAGE="grafana/grafana:9.5.2"
+export GRAFANA_IMAGE="grafana/grafana:10.2.0"
 
 export INFLUXDB_USER="influxdb"
 export INFLUXDB_PASSWD="cisco123"
@@ -29,14 +29,14 @@ GNMI_CERT_PASSWD="cisco123"
 pull_image=false # pull required image every time start
 
 # swtiches accept gNMI dial-in
-# exmaple 
-switches=( "172.25.74.70:50051" \
-           "172.25.74.61:50051" \
-           "172.25.74.87:50051" \
-           "172.25.74.88:50051" \
-           "172.25.74.163:50051" \
-           "172.25.74.60:50051" \
-           "172.25.74.62:50051" \
+# exmaple
+switches=( "172.25.74.70:50050" \
+           "172.25.74.61:50050" \
+           "172.25.74.87:50050" \
+           "172.25.74.88:50050" \
+           "172.25.74.163:50050" \
+           "172.25.74.60:50050" \
+           "172.25.74.62:50050" \
 )
 #switches=()
 
