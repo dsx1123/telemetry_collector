@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -19,14 +22,17 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1679101585623,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -71,9 +77,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: -365d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys\")\n  |> filter(fn: (r) => r[\"_field\"] == \"name\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -81,7 +91,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -142,9 +155,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n  |> filter(fn: (r) => r[\"url\"] == \"${mgmt_ip}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -152,7 +169,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -197,9 +217,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
@@ -208,7 +232,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -253,9 +280,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\" or r[\"_field\"] == \"kernelUptime\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> last()\n  |> fill(column: \"_value\", usePrevious: true)",
           "refId": "A"
         }
@@ -264,7 +295,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -309,9 +343,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/showversion\")\n  |> filter(fn: (r) => r[\"_field\"] == \"nxosVersion\" or r[\"_field\"] == \"lastResetReason\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n   |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> fill(column: \"_value\", usePrevious: true)\n",
           "refId": "A"
         }
@@ -320,7 +358,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -354,6 +395,9 @@
       },
       "id": 2,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -365,9 +409,13 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ping\" or r[\"_measurement\"] == \"sys/procsys/syscpusummary/syscpuhistory-last60seconds\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usageAvg\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -376,7 +424,10 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -410,6 +461,9 @@
       },
       "id": 4,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -421,9 +475,13 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/procsys/sysmem/sysmemusage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"avg\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -432,7 +490,10 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "gridPos": {
         "h": 6,
         "w": 10,
@@ -452,6 +513,10 @@
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/alarms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"description\" )\n  |> unique(column: \"alarmsEntity/alarmsAlarm\")\n\n",
           "refId": "A"
         }
@@ -460,7 +525,10 @@
       "type": "logs"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -476,7 +544,7 @@
               }
             ]
           },
-          "unit": "kwatt"
+          "unit": "watt"
         },
         "overrides": []
       },
@@ -489,6 +557,9 @@
       "id": 20,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -498,11 +569,16 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/psuslot-items\")\n  |> filter(fn: (r) => r[\"_field\"] == \"PsuSlot_list/psu_items/pIn\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> last()\n  |> group()\n  |> sum(column: \"_value\")\n",
           "refId": "A"
         }
@@ -511,7 +587,10 @@
       "type": "bargauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -546,6 +625,9 @@
       "id": 8,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -555,11 +637,16 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "tempValue = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tempValue\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"dn\"])\nmodel = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/ch-items/supslot-items/SupCSlot-list/sup-items/sensor-items/Sensor-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"model\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> keep(columns: [\"_time\",\"_value\", \"id\"])\n  |> last()\n  |> group(columns: [\"id\"])\njoin(tables: {d1: tempValue, d2: model}, on: [\"_time\", \"id\"])\n  |> group(columns: [\"_value_d2\"], mode:\"by\")\n",
           "refId": "A"
         }
@@ -568,7 +655,10 @@
       "type": "bargauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "description": "number of L2 VNI",
       "fieldConfig": {
         "defaults": {
@@ -616,9 +706,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bd\")\n  |> filter(fn: (r) => r[\"_field\"] == \"accEncap\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
@@ -627,7 +721,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "description": "number of L3 VNI",
       "fieldConfig": {
         "defaults": {
@@ -675,9 +772,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/inst-items/Inst-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"encap\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")\n",
           "refId": "A"
         }
@@ -686,7 +787,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -717,7 +821,8 @@
         ],
         "legend": {
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -728,11 +833,16 @@
           "values": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "up = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/intf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> filter(fn: (r) => r[\"_value\"] == \"up\")\n  |> group()\n  |> unique(column: \"dn\")\n  |> count(column: \"dn\")\n  |> map(fn: (r) => ({ _field: \"UP\",  _value: r.dn}))\ndown = from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/intf\")\n  |> filter(fn: (r) => r[\"_field\"] == \"operSt\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> filter(fn: (r) => r[\"_value\"] == \"down\")\n  |> group()\n  |> unique(column: \"dn\")\n  |> count(column: \"dn\")\n  |> map(fn: (r) => ({ _field: \"DOWN\",  _value: r.dn}))\nunion(tables: [up, down])\n",
           "refId": "A"
         }
@@ -741,7 +851,10 @@
       "type": "piechart"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -770,6 +883,7 @@
         "legend": {
           "displayMode": "list",
           "placement": "right",
+          "showLegend": true,
           "values": []
         },
         "pieType": "pie",
@@ -781,11 +895,16 @@
           "values": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/mac-items/table-items/vlan-items/MacAddressEntry-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"macInfo\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> unique(column: \"macAddress\")\n  |> group(columns: [\"vlan\"], mode:\"by\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
@@ -794,13 +913,19 @@
       "type": "piechart"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -812,6 +937,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -858,26 +984,33 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/urib-items/table4-items/Table4-list/routeCount\")\n  |> filter(fn: (r) => r[\"_field\"] == \"routeCount\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group(columns: [\"vrfName\"], mode:\"by\")\n   |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")\n\n",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Routes Per Vrf",
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "description": "number of VLANs",
       "fieldConfig": {
         "defaults": {
@@ -925,9 +1058,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bd\")\n  |> filter(fn: (r) => r[\"_field\"] == \"id\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")",
           "refId": "A"
         }
@@ -936,7 +1073,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "description": "number of VRFs",
       "fieldConfig": {
         "defaults": {
@@ -984,9 +1124,13 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/inst-items/Inst-list\")\n  |> filter(fn: (r) => r[\"_field\"] == \"id\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> group()\n  |> unique(column: \"_value\")\n  |> count(column: \"_value\")\n",
           "refId": "A"
         }
@@ -995,7 +1139,10 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1003,6 +1150,9 @@
             "mode": "fixed"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1014,6 +1164,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -1062,14 +1213,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst/dom-default/af-[l2vpn-evpn]\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPaths\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -1078,13 +1235,19 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1096,6 +1259,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1137,14 +1301,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -1153,13 +1323,19 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1171,6 +1347,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1216,14 +1393,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"sys/bgp/inst\")\n  |> filter(fn: (r) => r[\"_field\"] == \"numEstPeers\")\n  |> filter(fn: (r) => r[\"source\"] == \"$source\")\n  |> filter(fn: (r) => r[\"subscription\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -1232,13 +1415,19 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1250,6 +1439,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1296,14 +1486,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/intf-items/phys-items/PhysIf-list/dbgIfIn-items\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -1312,13 +1508,19 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb01"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1330,6 +1532,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1376,14 +1579,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb01"
+          },
           "query": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Cisco-NX-OS-device:System/intf-items/phys-items/PhysIf-list/dbgIfOut-items\")\n  |> filter(fn: (r) => r[\"_field\"] == \"octetRate\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
@@ -1393,25 +1602,23 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
-  "style": "dark",
+  "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "93180YC-FX-L03-S4",
           "value": "93180YC-FX-L03-S4"
         },
-        "datasource": null,
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb01"
+        },
         "definition": "import \"influxdata/influxdb/schema\"\n\nschema.measurementTagValues(\n  bucket: \"nxos_dialout\",\n  tag: \"source\",\n  measurement: \"sys\"\n)\n  ",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "source",
         "options": [],
@@ -1423,19 +1630,18 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "172.25.74.87",
           "value": "172.25.74.87"
         },
-        "datasource": null,
+        "datasource": {
+          "type": "influxdb",
+          "uid": "influxdb01"
+        },
         "definition": "from(bucket: \"nxos_dialout\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"openconfig-interfaces:interfaces/interface/subinterfaces/subinterface/ipv4/addresses/address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"config/ip\")\n  |> filter(fn: (r) => r[\"name\"] == \"mgmt0\")\n  |> filter(fn: (r) => r[\"source\"] == \"${source}\")\n  |> yield(name: \"last\")",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "mgmt_ip",
         "options": [],
@@ -1456,5 +1662,6 @@
   "timezone": "",
   "title": "fabric dashboard dialout",
   "uid": "d3GC3s4nz",
-  "version": 5
+  "version": 2,
+  "weekStart": ""
 }
