@@ -178,7 +178,7 @@ function prepare_telegraf() {
     # generate certificate if doesn't exist
     gen_telegraf_cert
 
-    for a in ${swtiches[@]}; do
+    for a in ${switches[@]}; do
         echo "\" $a \" "
     done
 
