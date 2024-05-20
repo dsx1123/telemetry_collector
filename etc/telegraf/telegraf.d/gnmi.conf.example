@@ -68,8 +68,22 @@ name = "oc_psu"
 subscription_mode = "sample"
 sample_interval = "10s"
 
+[[inputs.gnmi.subscription]]
+origin = "openconfig"
+path = "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/config"
+name = "oc_bgp_peer_config"
+subscription_mode = "sample"
+sample_interval = "30s"
 
-### Cisco NX-OS Native YANG#### 
+[[inputs.gnmi.subscription]]
+origin = "openconfig"
+path = "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state"
+name = "oc_bgp_peer_state"
+subscription_mode = "sample"
+sample_interval = "30s"
+
+
+### Cisco NX-OS Native YANG####
 [[inputs.gnmi.subscription]]
 origin = "device"
 path = "/System/procsys-items/syscpusummary-items/syscpuhistory-items/SysCpuHistory-list/usageAvg"
@@ -313,4 +327,3 @@ organization = "Cisco"
 bucket = "nxos_gnmi"
 [outputs.influxdb_v2.tagpass]
 tag1 = ["nxos_gnmi", "ping"]
-

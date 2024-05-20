@@ -8,7 +8,7 @@ export INFLUXDB_ENGINE="`pwd`/influxdb"
 export CURRENT_UID=`id -u`
 export CURRENT_GID=`id -g`
 
-export TELEGRAF_IMAGE="telegraf:latest"
+export TELEGRAF_IMAGE="telegraf:1.29.2"
 export INFLUXDB_IMAGE="influxdb:2.7.1"
 export GRAFANA_IMAGE="grafana/grafana:10.2.0"
 
@@ -177,10 +177,6 @@ function prepare_influxdb() {
 function prepare_telegraf() {
     # generate certificate if doesn't exist
     gen_telegraf_cert
-
-    for a in ${swtiches[@]}; do
-        echo "\" $a \" "
-    done
 
     # Modify the addresses in gnmi config to the switches provided
     switch_list=`printf -- "\"%s\"," ${switches[*]} | cut -d "," -f 1-${#switches[@]}`
