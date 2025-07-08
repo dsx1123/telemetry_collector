@@ -15,6 +15,7 @@ services:
     environment:
       - INFLUXD_CONFIG_PATH=/etc/influxdb
       - INFLUXD_ENGINE_PATH=/var/lib/influxdb2/engine
+      - INFLUXD_BOLT_PATH=/var/lib/influxdb2/influxd.bolt
 
   telegraf:
     image: ${TELEGRAF_IMAGE}  #telegraf
