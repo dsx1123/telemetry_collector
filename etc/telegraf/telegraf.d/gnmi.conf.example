@@ -7,7 +7,7 @@ username = "cisco"
 password = "cisco"
 
 ### enable client-side TLS and define CA to authenticate the device
-enable_tls = true
+tls_enable = true
 tls_ca = "/etc/telegraf/cert/gnmi.crt"
 # set insecure_skip_verify to false to enable server certificate verification
 insecure_skip_verify = true

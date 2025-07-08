@@ -1,5 +1,5 @@
 # telemetry_collector
-Automatically build telemetry collector with [Telegraf](https://github.com/influxdata/telegraf), [Influxdb](https://github.com/influxdata/influxdb), and [Grafana](https://github.com/grafana/grafana), the example of sensor paths is using the native yang model and OpenConfig yang model of NX-OS as an example. `build.sh` script will create self-signed certificates for TLS transport. Using docker images of Telegraf, Influxdb, and Grafana to create containers with docker-compose. tested with `telegraf >= 1.12.1`, `influxdb >= 2.0` and `grafana>=8.1`.
+Automatically build telemetry collector with [Telegraf](https://github.com/influxdata/telegraf), [Influxdb](https://github.com/influxdata/influxdb), and [Grafana](https://github.com/grafana/grafana), the example of sensor paths is using the native yang model and OpenConfig yang model of NX-OS as an example. `build.sh` script will create self-signed certificates for TLS transport. Using docker images of Telegraf, Influxdb, and Grafana to create containers with docker-compose. tested with `telegraf >= 1.34.2`, `influxdb >= 2.7.12` and `grafana>=11.6.0`.
 
 # NOTE:
 This project has upgraded the Influxdb to 2.0 which is not supported by Chronograf anymore, the dashboard is changed to Grafana with a new set of sensor paths. original code is moved to branch [chronograf_influxdb_1_x](https://github.com/dsx1123/telemetry_collector/tree/chronograf_influxdb_1_x)
@@ -50,7 +50,7 @@ docker-ce, OpenSSL, docker-compose, any Linux distribution, see Known Issues if 
 
     ```
 
-3. TLS need to be enabled for the gNMI plugin as well as nx-os, when configuring feature gRPC on a switch, a default certificate with 1-day validation is auto-generated, to configure the certificate for gRPC on nx-os, copy `etc/telegraf/cert/gnmi.pfx` to bootflash, then use below commands to import the certificate, the `<export password>` is set to `cisco123` by default, you could modify it in `build.sh`, these steps are optional as the gnmi plugin in telegraf is set to disable certificate verification. 
+3. TLS need to be enabled for the gNMI plugin as well as nx-os, when configuring feature gRPC on a switch, a default certificate with 1-day validation is auto-generated, to configure the certificate for gRPC on nx-os, copy `etc/telegraf/cert/gnmi.pfx` to bootflash, then use below commands to import the certificate, the `<export password>` is set to `cisco123` by default, you could modify it in `build.sh`, these steps are optional as the gnmi plugin in telegraf is set to disable certificate verification.
     ```
     switch(config)# crypto ca trustpoint gnmi_trustpoint
     switch(config-trustpoint)# crypto ca import gnmi_trustpoint pkcs12 bootflash:gnmi.pfx <export password>
