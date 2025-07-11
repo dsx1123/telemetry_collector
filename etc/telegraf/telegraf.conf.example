@@ -2,7 +2,6 @@
 # Full example please refer to command telegraf config
 #
 [agent]
-logtarget = "file"
 logfile = "/var/log/telegraf/telegraf.log"
 debug = true
 hostname = "telegraf"
