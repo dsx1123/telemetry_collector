@@ -94,7 +94,7 @@ function prepare_grafana() {
     fi
     if [ "$pull_image" = true ]; then
         log "pull the latest image $GRAFANA_IMAGE"
-        docker-compose  pull grafana
+        docker compose  pull grafana
     fi
 }
 
@@ -170,7 +170,7 @@ function prepare_influxdb() {
 
     if [ "$pull_image" = true ]; then
         log "pull the required version of image $INFLUXDB_IMAGE"
-        docker-compose pull influxdb
+        docker compose pull influxdb
     fi
 }
 
@@ -209,7 +209,7 @@ function prepare_telegraf() {
 
     if [ "$pull_image" = true ]; then
         log "pull the latest version of image $TELEGRAF_IMAGE"
-        docker-compose pull telegraf
+        docker compose pull telegraf
     fi
 }
 
@@ -261,19 +261,19 @@ function start() {
     prepare_telegraf
     prepare_grafana
     log "starting docker containers"
-    docker-compose up -d
+    docker compose up -d
     check_influxdb
     setup_influxdb
 }
 
 function stop () {
     log "stopping docker containers"
-    docker-compose stop
+    docker compose stop
 }
 
 function down () {
     log "stopping and cleaning docker containers"
-    docker-compose down
+    docker compose down
 }
 
 function reset () {
@@ -287,18 +287,18 @@ function reset () {
 
 function restart_svc () {
     if [ $# -eq 0 ]; then
-        docker-compose restart telegraf influxdb grafana
+        docker compose restart telegraf influxdb grafana
         exit 0
     fi
     case "$1" in
         telegraf)
-            docker-compose restart telegraf
+            docker compose restart telegraf
             ;;
         influxdb)
-            docker-compose restart influxdb
+            docker compose restart influxdb
             ;;
         grafana)
-            docker-compose restart grafana
+            docker compose restart grafana
             ;;
         *)
             display_help
