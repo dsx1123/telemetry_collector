@@ -8,9 +8,9 @@ export INFLUXDB_ENGINE="`pwd`/influxdb"
 export CURRENT_UID=`id -u`
 export CURRENT_GID=`id -g`
 
-export TELEGRAF_IMAGE="telegraf:1.34.2"
-export INFLUXDB_IMAGE="influxdb:2.7.12"
-export GRAFANA_IMAGE="grafana/grafana:11.6.0"
+export TELEGRAF_IMAGE="telegraf:1.38.3"
+export INFLUXDB_IMAGE="influxdb:2.9"
+export GRAFANA_IMAGE="grafana/grafana:13.0.1"
 
 export INFLUXDB_USER="influxdb"
 export INFLUXDB_PASSWD="cisco123"
