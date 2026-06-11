@@ -1504,7 +1504,7 @@
           "refId": "A"
         }
       ],
-      "title": "Ingress Octect Rate",
+      "title": "Ingress Octet Rate",
       "type": "timeseries"
     },
     {
@@ -1597,7 +1597,7 @@
           "refId": "A"
         }
       ],
-      "title": "Egress Octect Rate",
+      "title": "Egress Octet Rate",
       "type": "timeseries"
     }
   ],

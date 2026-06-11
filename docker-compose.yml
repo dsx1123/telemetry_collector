@@ -1,4 +1,3 @@
-version: "3"
 services:
   influxdb:
     image: ${INFLUXDB_IMAGE}
@@ -57,7 +56,8 @@ networks:
       driver: default
       config:
         - subnet: 172.16.238.0/24
+
 volumes:
   grafana-volume:
-    external:
-      name: "${GRAFANA_VOLUME}"
+    name: "${GRAFANA_VOLUME}"
+    external: true
